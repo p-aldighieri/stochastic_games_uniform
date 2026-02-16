@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "created_at": "2026-02-16T00:00:00Z",
-  "updated_at": "2026-02-16T23:47:28.575350+00:00",
-  "current_agent": "orchestrator",
+  "updated_at": "2026-02-16T23:47:30.531660+00:00",
+  "current_agent": "researcher",
   "agent_status": {
     "orchestrator": {
       "status": "completed",
@@ -11,8 +11,8 @@
       "error": null
     },
     "researcher": {
-      "status": "pending",
-      "started_at": null,
+      "status": "in_progress",
+      "started_at": "2026-02-16T23:47:30.531637+00:00",
       "completed_at": null,
       "error": null
     },
@@ -39,16 +39,16 @@
           "id": "item_001",
           "description": "Analyze repository structure and document all modules, files, and their purposes",
           "acceptance_criteria": "A written document (or section in a research notes file) listing every file and directory in the repo, its purpose, and how it connects to the research problem. Must cover: problem statement MD, resolution criteria PDF, figures/, results/, .gitattributes LFS config, and identify that no code or experimental results exist yet.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "Documented in research_notes.md Section 1. Covers all files, directories, their purposes, LFS config, and confirms no code/results exist yet.",
           "error": null
         },
         {
           "id": "item_002",
           "description": "Formalize the precise mathematical problem statement with all quantifiers explicit",
           "acceptance_criteria": "A written summary that states Neyman's open problem in full quantified form: for all finite stochastic games G, for all epsilon > 0, there exists a strategy profile sigma and threshold T0 such that for all T >= T0, sigma is an epsilon-equilibrium for the T-stage average payoff game. Must distinguish this from: discounted equilibrium, horizon-dependent equilibrium, correlated equilibrium, and restricted-deviation equilibrium.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "Documented in research_notes.md Section 2. Full quantified statement with distinction table covering discounted, horizon-dependent, correlated, and restricted-deviation equilibria.",
           "error": null
         },
         {
@@ -284,9 +284,9 @@
   ],
   "summary": {
     "total_items": 27,
-    "completed": 0,
+    "completed": 2,
     "in_progress": 0,
     "failed": 0,
-    "pending": 27
+    "pending": 25
   }
 }
