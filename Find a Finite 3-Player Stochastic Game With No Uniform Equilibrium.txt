@@ -1,0 +1,37 @@
+Title: Find a Finite 3-Player Stochastic Game With No Uniform Equilibrium
+
+Goal: Construct a finite 3-player stochastic game (finite states and actions) that has no uniform ε-equilibrium payoff for some explicit ε > 0, or else provide a rigorous argument that no such counterexample exists within the specified size bounds.
+
+Rationale / context:
+- A long-standing open question in dynamic game theory asks whether every finite n-player stochastic game (n ≥ 3) admits a uniform equilibrium payoff (equivalently, uniform ε-equilibria for every ε > 0).
+- The 2-player case has positive existence results, but the general multiplayer case remains unresolved.
+- A single explicit counterexample would settle the question negatively and clarify what additional structural assumptions are needed (for example, special transition structure, payoff restrictions, public correlation, etc.).
+- This is well-suited to a search-plus-verify workflow: generate small candidate games, compute equilibria for many discount factors / horizons, and look for failure of uniformity.
+
+Preferences:
+- Prioritize minimality: fewest states and smallest action sets.
+- Output must include a complete explicit game specification:
+  - state set S
+  - action sets A_i(s) for each player i and state s
+  - payoff tables u_i(s, a)
+  - transition probabilities P(s' | s, a)
+- Provide a clear verification plan:
+  - how to test uniform ε-equilibrium failure computationally (discounted and/or finite-horizon)
+  - what signatures to look for (payoff nonconvergence, switching best responses, cycling incentive constraints)
+- Provide a proof strategy outline for the final step:
+  - how to turn computational evidence into a clean impossibility argument
+  - what lemmas or invariants would be needed
+- Prefer constructions that are robust to small payoff perturbations (not knife-edge).
+
+Attributes (use these to rank candidate constructions):
+- Minimality (number of states, number of actions)
+- Verifiability (can we algorithmically check the claim and then prove it cleanly?)
+- Mechanism of failure (why uniformity breaks: oscillations, punishment instability, state-switching incentives)
+- Robustness (does the phenomenon persist under small changes?)
+- Novelty (not a known example already in the literature)
+
+Flags:
+- Restrict to at most 3 states and 2 actions per player per state in the initial search.
+- Restrict payoffs to [0, 1] and transitions to rational probabilities for readability.
+- Start by analyzing Markov (state-dependent) strategies, then expand to history-dependent strategies if necessary.
+- If no counterexample is found at that size, propose the smallest next-size expansion and justify why.
