@@ -55,40 +55,40 @@
           "id": "item_003",
           "description": "Conduct web search for foundational papers on uniform equilibrium in stochastic games",
           "acceptance_criteria": "Search results documented covering at minimum: Shapley (1953) discounted stochastic games, Mertens-Neyman (1981) two-player zero-sum uniform value, Vieille (2000 I & II) two-player non-zero-sum existence, Solan-Vieille (2002) correlated equilibrium, Solan (1999/2001) three-player quitting games, Flesch-Thuijsman-Vrieze (1996/1997) multiplayer absorbing and cyclic equilibria, Neyman (2003) multiplayer minmax. All papers added to sources.bib.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "All foundational papers found and added to sources.bib: Shapley 1953, Blackwell-Ferguson 1968, Bewley-Kohlberg 1976, Mertens-Neyman 1981/1982, Fink 1964, Vieille 2000 I&II, Flesch-Thuijsman-Vrieze 1997, Solan 1999, Solan-Vieille 2001/2002, Neyman 2003, Abreu-Pearce-Stacchetti 1990, Solan-Vieille 2015 survey.",
           "error": null
         },
         {
           "id": "item_004",
           "description": "Conduct web search for recent advances (2018-2026) on the open problem and related multiplayer stochastic game equilibria",
           "acceptance_criteria": "Search results documented covering recent work including: absorption paths in quitting games (Solan et al., Math Programming 2022), learning in multi-player stochastic games (Brown et al. 2022), computational complexity of multiplayer Nash equilibria (Ummels, LMCS), turn-taking stochastic game algorithms (2024), and any 2025-2026 results on n-player uniform equilibrium existence. All papers added to sources.bib.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "Found and added to sources.bib: Ashkenazi-Golan et al. 2023 (absorption paths), Ummels-Wojtczak 2011 (complexity), Flesch-Solan 2024 (general payoffs), Flesch-Solan 2023 (shift-invariant), Hansen-Ibsen-Jensen-Neyman 2025 (limited memory), Ashkenazi-Golan et al. 2025 (Blackwell games regularity, undiscounted absorbing), Solan-Solan 2020 (LCP quitting), Ganzfried 2020 (computing NE), Berthon et al. 2025 (constant-memory).",
           "error": null
         },
         {
           "id": "item_005",
           "description": "Search for existing computational tools, code repositories, and solvers for stochastic game equilibrium computation",
           "acceptance_criteria": "Documented survey of at least 5 existing software tools or code repositories for stochastic game solving (e.g., Gambit, PRISM model checker, Nashpy, Lemke-Howson implementations, any Python/Julia stochastic game solvers). For each, document: language, capabilities, limitations, and relevance to uniform equilibrium computation. Added to sources.bib where applicable.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "Surveyed 6 tools in research_notes.md Section 3: Gambit, Nashpy, PRISM-games, sgamesolver, MarkovGameSolvers, QuantEcon. All added to sources.bib. Decision: build custom framework; use sgamesolver for discounted equilibria reference.",
           "error": null
         },
         {
           "id": "item_006",
           "description": "Create and populate sources.bib with BibTeX entries for all consulted literature",
           "acceptance_criteria": "A valid BibTeX file sources.bib in the repo root containing at least 15 entries covering: (1) foundational results (Shapley, Mertens-Neyman, Blackwell-Ferguson), (2) two-player existence (Vieille 2000), (3) multiplayer partial results (Solan, Flesch-Thuijsman-Vrieze), (4) correlated equilibrium (Solan-Vieille 2002), (5) computational approaches, (6) recent advances (2020+). Each entry must have author, title, year, and venue fields.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "sources.bib contains 32 entries covering all 6 required categories: foundational (Shapley, Blackwell-Ferguson, Bewley-Kohlberg, Mertens-Neyman, Fink), two-player (Vieille 2000 I&II), multiplayer (Flesch-Thuijsman-Vrieze, Solan, Neyman), correlated (Solan-Vieille 2002), computational (Gambit, Nashpy, PRISM-games, sgamesolver, QuantEcon), recent (2020-2025: 10 entries).",
           "error": null
         },
         {
           "id": "item_007",
           "description": "Classify known positive results and identify the exact frontier of what remains open",
           "acceptance_criteria": "A written taxonomy document that partitions finite stochastic games into classes with known existence results vs. open cases. Must cover: (a) 2-player zero-sum (solved, Mertens-Neyman 1981), (b) 2-player general-sum (solved, Vieille 2000), (c) 3-player quitting/absorbing (solved, Solan 1999), (d) n-player with correlated equilibrium (solved, Solan-Vieille 2002), (e) n-player Nash uniform equilibrium (OPEN), (f) 4+ player absorbing (OPEN). Must identify that the gap is specifically n >= 3 players for Nash (not correlated) uniform equilibrium.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "Taxonomy in research_notes.md Section 4. Covers 8 solved classes (a-h) and 4 open cases (i-l). Identifies frontier: Nash uniform equilibrium open for n>=3 general, n>=4 absorbing/quitting. Includes structural observations on cyclic equilibria, memory, and computational complexity.",
           "error": null
         }
       ]
@@ -284,9 +284,9 @@
   ],
   "summary": {
     "total_items": 27,
-    "completed": 2,
+    "completed": 7,
     "in_progress": 0,
     "failed": 0,
-    "pending": 25
+    "pending": 20
   }
 }
