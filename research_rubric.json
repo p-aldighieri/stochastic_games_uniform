@@ -1,0 +1,292 @@
+{
+  "version": "1.0",
+  "created_at": "2026-02-16T00:00:00Z",
+  "updated_at": "2026-02-16T23:47:28.575350+00:00",
+  "current_agent": "orchestrator",
+  "agent_status": {
+    "orchestrator": {
+      "status": "completed",
+      "started_at": "2026-02-16T00:00:00Z",
+      "completed_at": "2026-02-16T23:47:28.575327+00:00",
+      "error": null
+    },
+    "researcher": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "error": null
+    },
+    "writer": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "error": null
+    },
+    "reviewer": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "error": null
+    }
+  },
+  "phases": [
+    {
+      "id": "phase_1",
+      "name": "Problem Analysis & Literature Review",
+      "order": 1,
+      "items": [
+        {
+          "id": "item_001",
+          "description": "Analyze repository structure and document all modules, files, and their purposes",
+          "acceptance_criteria": "A written document (or section in a research notes file) listing every file and directory in the repo, its purpose, and how it connects to the research problem. Must cover: problem statement MD, resolution criteria PDF, figures/, results/, .gitattributes LFS config, and identify that no code or experimental results exist yet.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_002",
+          "description": "Formalize the precise mathematical problem statement with all quantifiers explicit",
+          "acceptance_criteria": "A written summary that states Neyman's open problem in full quantified form: for all finite stochastic games G, for all epsilon > 0, there exists a strategy profile sigma and threshold T0 such that for all T >= T0, sigma is an epsilon-equilibrium for the T-stage average payoff game. Must distinguish this from: discounted equilibrium, horizon-dependent equilibrium, correlated equilibrium, and restricted-deviation equilibrium.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_003",
+          "description": "Conduct web search for foundational papers on uniform equilibrium in stochastic games",
+          "acceptance_criteria": "Search results documented covering at minimum: Shapley (1953) discounted stochastic games, Mertens-Neyman (1981) two-player zero-sum uniform value, Vieille (2000 I & II) two-player non-zero-sum existence, Solan-Vieille (2002) correlated equilibrium, Solan (1999/2001) three-player quitting games, Flesch-Thuijsman-Vrieze (1996/1997) multiplayer absorbing and cyclic equilibria, Neyman (2003) multiplayer minmax. All papers added to sources.bib.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_004",
+          "description": "Conduct web search for recent advances (2018-2026) on the open problem and related multiplayer stochastic game equilibria",
+          "acceptance_criteria": "Search results documented covering recent work including: absorption paths in quitting games (Solan et al., Math Programming 2022), learning in multi-player stochastic games (Brown et al. 2022), computational complexity of multiplayer Nash equilibria (Ummels, LMCS), turn-taking stochastic game algorithms (2024), and any 2025-2026 results on n-player uniform equilibrium existence. All papers added to sources.bib.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_005",
+          "description": "Search for existing computational tools, code repositories, and solvers for stochastic game equilibrium computation",
+          "acceptance_criteria": "Documented survey of at least 5 existing software tools or code repositories for stochastic game solving (e.g., Gambit, PRISM model checker, Nashpy, Lemke-Howson implementations, any Python/Julia stochastic game solvers). For each, document: language, capabilities, limitations, and relevance to uniform equilibrium computation. Added to sources.bib where applicable.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_006",
+          "description": "Create and populate sources.bib with BibTeX entries for all consulted literature",
+          "acceptance_criteria": "A valid BibTeX file sources.bib in the repo root containing at least 15 entries covering: (1) foundational results (Shapley, Mertens-Neyman, Blackwell-Ferguson), (2) two-player existence (Vieille 2000), (3) multiplayer partial results (Solan, Flesch-Thuijsman-Vrieze), (4) correlated equilibrium (Solan-Vieille 2002), (5) computational approaches, (6) recent advances (2020+). Each entry must have author, title, year, and venue fields.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_007",
+          "description": "Classify known positive results and identify the exact frontier of what remains open",
+          "acceptance_criteria": "A written taxonomy document that partitions finite stochastic games into classes with known existence results vs. open cases. Must cover: (a) 2-player zero-sum (solved, Mertens-Neyman 1981), (b) 2-player general-sum (solved, Vieille 2000), (c) 3-player quitting/absorbing (solved, Solan 1999), (d) n-player with correlated equilibrium (solved, Solan-Vieille 2002), (e) n-player Nash uniform equilibrium (OPEN), (f) 4+ player absorbing (OPEN). Must identify that the gap is specifically n >= 3 players for Nash (not correlated) uniform equilibrium.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "phase_2",
+      "name": "Baseline Implementation & Metrics",
+      "order": 2,
+      "items": [
+        {
+          "id": "item_008",
+          "description": "Implement the finite stochastic game data structure in Python",
+          "acceptance_criteria": "A Python module (e.g., stoch_game/core.py) defining a FiniteStochasticGame class with: player set N, state set S, action sets A_i(s), payoff function u_i(s,a), and transition kernel P(s'|s,a). Must support: (1) construction from explicit arrays, (2) validation that transitions sum to 1, (3) payoffs bounded in [0,1]. Include at least 3 unit tests verifying construction of example games (2-player 2-state, 3-player 3-state, absorbing game).",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_009",
+          "description": "Implement finite-horizon average payoff computation via dynamic programming",
+          "acceptance_criteria": "A function computing gamma_i^T(s0, sigma) for any behavioral strategy profile sigma represented as a mapping from (time, history) to mixed action distributions. Must handle: (1) exact computation for small games via enumeration of play paths, (2) Monte Carlo estimation for larger games with configurable sample count. Verified against hand-computed examples for a 2-state 2-action 2-player game with known equilibrium payoffs. Include unit tests with error tolerance < 0.01 for MC estimates with 10^5 samples.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_010",
+          "description": "Implement best-response computation (MDP solver) for unilateral deviations",
+          "acceptance_criteria": "A function that, given a game G, a strategy profile sigma, a deviating player i, horizon T, and initial state s0, computes the best-response value max_{tau_i} gamma_i^T(s0, (tau_i, sigma_{-i})) by solving the induced MDP via backward induction. Must return both the optimal value and the optimal deviation strategy. Verified on at least 2 test games where best-response values are known analytically. Runtime must be polynomial in |S|, max|A_i|, and T.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_011",
+          "description": "Implement regret computation and uniform equilibrium verification",
+          "acceptance_criteria": "A function computing Regret_{i,T}(sigma) = max_{tau_i} gamma_i^T(s0, (tau_i, sigma_{-i})) - gamma_i^T(s0, sigma) for all players i and initial states s0. A verification function that, given sigma and epsilon, checks whether sigma is a uniform epsilon-equilibrium by computing regret for a range of horizons T in [T_min, T_max] and reporting: (1) max regret across all (i, s0, T), (2) whether regret <= epsilon for all T >= some detected T0, (3) regret trajectory plots saved to figures/. Include unit tests on a known 2-player game with a known uniform equilibrium.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_012",
+          "description": "Implement discounted payoff equilibrium solver as a baseline comparison tool",
+          "acceptance_criteria": "A solver that computes discounted Nash equilibrium (or epsilon-Nash) for a given discount factor delta using support enumeration or Lemke-Howson for 2-player games, and fictitious play or gradient-based methods for n-player games. Must output: equilibrium strategy profile and payoff vector. Verified by reproducing known discounted equilibria from the literature (cite at least one specific example from sources.bib). Must support discount factors delta in [0.9, 0.999] to study limiting behavior.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "phase_3",
+      "name": "Core Research & Novel Approaches",
+      "order": 3,
+      "items": [
+        {
+          "id": "item_013",
+          "description": "Implement systematic search for candidate counterexample games with 3+ players",
+          "acceptance_criteria": "A game generator that enumerates finite stochastic games with: 3 players, 2-4 states, 2-3 actions per player per state, payoffs on a rational grid {0, 1/4, 1/2, 3/4, 1}, and transitions with small denominators {0, 1/3, 1/2, 2/3, 1}. For each generated game, compute regret profiles for horizons T in [10, 500] and flag games where: (a) max regret does not converge to 0, (b) regret exhibits periodic spikes, or (c) equilibrium strategies show cycling with period scaling with T. Output flagged candidates to results/counterexample_candidates.json.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_014",
+          "description": "Investigate the discounted-to-uniform bridge: analyze equilibrium payoff convergence as delta approaches 1",
+          "acceptance_criteria": "For at least 10 test games (including 2-player and 3-player examples), compute discounted equilibrium payoffs for delta in {0.9, 0.95, 0.99, 0.995, 0.999, 0.9999} and finite-horizon equilibrium payoffs for T in {10, 50, 100, 500, 1000}. Produce comparison plots showing convergence (or lack thereof) saved to figures/. Document whether the discounted equilibrium payoffs converge and whether the limit agrees with any uniform equilibrium payoff candidates. Compare findings against Mertens-Neyman (1981) bridge results cited in sources.bib.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_015",
+          "description": "Implement and test phase-based strategy construction (play-monitor-punish-reset)",
+          "acceptance_criteria": "Implement a parameterizable strategy template with four phases: (1) cooperative play targeting a payoff vector, (2) statistical monitoring detecting deviations via empirical frequency tests, (3) punishment phase using minimax strategies, (4) reset phase returning to cooperative play. Parameters: target payoff vector, monitoring window length, detection threshold, punishment duration. Test on at least 3 games (2-player absorbing, 3-player quitting, 3-player general). Report for each: achieved payoff, regret profile, and whether the construction yields a uniform epsilon-equilibrium for epsilon = 0.1.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_016",
+          "description": "Analyze finite-memory sufficiency: test whether bounded-memory strategies suffice for uniform equilibrium",
+          "acceptance_criteria": "For at least 5 test games, compute uniform equilibrium candidates using strategies with memory bounds M in {1, 2, 5, 10, 50, unbounded}. For each memory bound, report: best achievable uniform epsilon (minimum epsilon such that an M-memory uniform epsilon-equilibrium exists for T >= T0), and how T0 depends on M. Document whether there exist games where unbounded memory is necessary (regret does not converge for any finite M). Save results to results/memory_analysis.json and comparison plots to figures/.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_017",
+          "description": "Investigate self-generation of payoff sets as a proof technique",
+          "acceptance_criteria": "Implement the self-generation operator B(W) that maps a set of payoff vectors W to the set of payoff vectors achievable by one-shot equilibrium play with continuation payoffs in W. For at least 3 test games, compute: (1) the largest self-generating set starting from the feasible-individually-rational payoff set, (2) whether the uniform equilibrium payoff candidates lie in this set, (3) convergence properties of iterated application of B. Document findings with comparison to Abreu-Pearce-Stacchetti (1990) self-generation theory cited in sources.bib.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_018",
+          "description": "Study structural properties of potential counterexamples: minimum game size and required recurrence",
+          "acceptance_criteria": "Using the counterexample search from item_013, prove or provide strong computational evidence for lower bounds on counterexample structure. Specifically: (1) verify that no counterexample exists among games with <= 2 players (confirming Vieille 2000), (2) check all 3-player 2-state 2-action games with rational payoffs on a 1/4 grid and transitions with denominator <= 3 for uniform equilibrium existence, (3) if all such games have uniform equilibria, document the exhaustive search and its scope. Save exhaustive search results to results/exhaustive_search.json.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "phase_4",
+      "name": "Experiments & Evaluation",
+      "order": 4,
+      "items": [
+        {
+          "id": "item_019",
+          "description": "Run large-scale regret experiments across a diverse game suite",
+          "acceptance_criteria": "Generate a suite of at least 100 games spanning: 2-player (20 games), 3-player (40 games), 4-player (40 games), with varying numbers of states (2-5) and actions (2-3). For each game, compute regret profiles for horizons T in [10, 1000] using the best available strategy construction. Report: (1) fraction of games where uniform epsilon-equilibrium is found for epsilon = 0.05, (2) distribution of required T0 values, (3) any games exhibiting regret non-convergence. Save all results to results/large_scale_regret.json and summary statistics to results/summary_stats.json.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_020",
+          "description": "Benchmark strategy constructions against prior results from the literature",
+          "acceptance_criteria": "Reproduce at least 3 specific equilibrium constructions from the literature: (1) Mertens-Neyman optimal strategy for a 2-player zero-sum game, (2) Vieille's equilibrium construction for a 2-player non-zero-sum absorbing game, (3) Solan's cyclic equilibrium for a 3-player quitting game (Flesch-Thuijsman-Vrieze 1997 example). For each, verify the strategy achieves the claimed payoffs (within tolerance 0.01) and satisfies uniform epsilon-equilibrium for the claimed epsilon. Cite the specific papers from sources.bib for each benchmark.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_021",
+          "description": "Analyze regret trajectory signatures to classify game behavior",
+          "acceptance_criteria": "For all games in the experimental suite (item_019), classify regret trajectories into categories: (A) convergent-to-zero (uniform equilibrium exists), (B) convergent-to-positive-constant (equilibrium gap), (C) oscillating/periodic (potential counterexample signature), (D) divergent. Report the frequency of each category broken down by number of players. Produce visualization of representative trajectories for each category saved to figures/regret_classification.png. Document whether category C or D games exist; if so, analyze them in detail as potential counterexample candidates.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_022",
+          "description": "Test the Lean formalization blueprint: verify that the Lean code skeleton from the PDF compiles",
+          "acceptance_criteria": "Set up a Lean 4 + mathlib project and verify that the Definitions.lean and Statement.lean files from the resolution criteria PDF (Section 5) compile without errors. Document any required modifications to make the code compile with the current mathlib version. Verify that UniformEquilibriumConjecture is a well-formed Prop. If Lean is not available, document the exact steps needed and any blocking issues. Save the Lean project to a lean/ subdirectory.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_023",
+          "description": "Perform sensitivity analysis on strategy construction parameters",
+          "acceptance_criteria": "For the phase-based strategy construction (item_015), vary parameters systematically: monitoring window length in {5, 10, 20, 50, 100}, detection threshold in {0.01, 0.05, 0.1, 0.2}, punishment duration in {5, 10, 20, 50}. For at least 5 representative games, report: (1) how regret depends on each parameter, (2) whether there exists a parameter setting that works uniformly across games, (3) Pareto-optimal parameter configurations. Save results to results/sensitivity_analysis.json and heatmap visualizations to figures/.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "phase_5",
+      "name": "Analysis & Documentation",
+      "order": 5,
+      "items": [
+        {
+          "id": "item_024",
+          "description": "Synthesize findings into a structured research report",
+          "acceptance_criteria": "A comprehensive report (research_report.md or .pdf in repo root) containing: (1) problem statement and formal definitions, (2) literature review summarizing prior results with citations to sources.bib, (3) methodology description for all computational experiments, (4) results from counterexample search, discounted-to-uniform bridge, phase-based strategies, memory analysis, self-generation analysis, and large-scale experiments, (5) discussion of whether results support existence or suggest counterexample directions, (6) concrete next steps. Must cite at least 10 papers from sources.bib.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_025",
+          "description": "Document the exact frontier: what this research resolved and what remains open",
+          "acceptance_criteria": "A section in the research report that explicitly states: (1) which subclasses of games were computationally verified to have uniform equilibria (with game size bounds), (2) whether any counterexample candidates were found (and if so, their detailed analysis), (3) which proof techniques (phase-based, self-generation, discounted bridge) showed the most promise and why, (4) a clear statement of the tightest remaining open case (e.g., 'uniform Nash equilibrium existence remains open for n >= 3 players with >= k states'), (5) comparison of findings against Solan (2003) and other survey results cited in sources.bib.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_026",
+          "description": "Organize all experimental outputs and ensure reproducibility",
+          "acceptance_criteria": "All code is runnable from a single entry point (e.g., Makefile, run_all.py, or documented commands in README). results/ directory contains all JSON output files from experiments. figures/ directory contains all visualization PNGs/PDFs. A requirements.txt or pyproject.toml lists all Python dependencies. A README.md in the repo root documents: (1) how to install dependencies, (2) how to run each experiment, (3) where to find results. All random seeds are documented for reproducibility.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        },
+        {
+          "id": "item_027",
+          "description": "Propose concrete proof strategies based on computational evidence",
+          "acceptance_criteria": "A document (proof_strategies.md or section in research report) proposing at least 2 concrete proof strategies informed by computational findings. Each must include: (1) the precise theorem statement to be proved, (2) the key lemma or invariant identified from computational experiments, (3) a sketch of the proof approach with specific references to which experimental results motivate it, (4) the main technical obstacles. At least one strategy should target the constructive (existence) direction and at least one should explore the counterexample direction. Must reference specific game instances and regret data from experiments.",
+          "status": "pending",
+          "notes": null,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_items": 27,
+    "completed": 0,
+    "in_progress": 0,
+    "failed": 0,
+    "pending": 27
+  }
+}
