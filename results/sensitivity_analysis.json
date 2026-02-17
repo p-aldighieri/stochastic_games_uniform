@@ -1,0 +1,1107 @@
+[
+  {
+    "game": "2p_matching",
+    "tests": [
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.03133371157042149
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.031328099334135745
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.03132529321599289
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.03137860946070736
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.03135054827927869
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.03133651768856435
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.03143473182356471
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.03137860946070736
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.03135054827927869
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.03133750870659886
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.03132999790222444
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.031326242500037224
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.03139759514159424
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.031360041119722126
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.03134126410878607
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.03147270318533846
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.03139759514159424
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.031360041119722126
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.03134155950080495
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.03133202329932749
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.031327255198588755
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.03141784911262472
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.03137016810523737
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.03134632760154369
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.03151321112739943
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.03141784911262472
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.03137016810523737
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.03134711800938042
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.03133480255361521
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.03132864482573262
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.03144564165550202
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.03138406437667602
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.03135327573726302
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.031568796213154025
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.03144564165550202
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.03138406437667602
+      }
+    ]
+  },
+  {
+    "game": "2p_absorbing",
+    "tests": [
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.008827714687709924
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.0088261335401788
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.00882534296641324
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.008840363867958903
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.008832458130303292
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.008828505261475484
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.008856175343270128
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.008840363867958903
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.008832458130303292
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.008828784463141056
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.008826668427894367
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.008825610410271021
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.00884571274511457
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.008835132568881124
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.0088298424807644
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.00886687309758146
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.00884571274511457
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.008835132568881124
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.008829925702200134
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.008827239047423906
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.008825895720035792
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.008851418940409958
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.008837985666528818
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.008831269029588248
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.008878285488172242
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.008851418940409958
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.008837985666528818
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.008831491712906625
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.00882802205277715
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.008826287222712413
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.008859248993942408
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.008841900693295044
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.00883322654297136
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.00889394559523714
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.008859248993942408
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.008841900693295044
+      }
+    ]
+  },
+  {
+    "game": "3p_quitting",
+    "tests": [
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.0004812345352862066
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.00048114834052071214
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.000481105243137965
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.0004819240934101618
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.0004814931195826899
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.00048127763266895375
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.00048278604106510593
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.0004819240934101618
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.0004814931195826899
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.0004812928530842635
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.00048117749941974065
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.00048111982258747916
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.0004822156824004464
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.0004816389140778321
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.00048135052991652496
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.0004833692190456751
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.0004822156824004464
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.0004816389140778321
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.00048135506665455594
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.00048120860620488686
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.00048113537598005237
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.0004825267502519089
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.0004817944480035633
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.00048142829687939054
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.0004839913547486001
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.0004825267502519089
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.0004817944480035633
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.00048144043625034056
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.0004812512910027791
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.00048115671837899843
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.0004829535982308315
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.00048200787199302467
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.0004815350088741212
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.00048484505070644525
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.0004829535982308315
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.00048200787199302467
+      }
+    ]
+  },
+  {
+    "game": "3p_rand_2s",
+    "tests": [
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.010029973438770943
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.010028176952556676
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.010027278709449543
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.010044345328485063
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.010035362897413738
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.010030871681878073
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.010062310190627715
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.010044345328485063
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.010035362897413738
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.010031188908407115
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.010028784687374764
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.010027582576858585
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.01005042267666593
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.010038401571504171
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.01003239101892329
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.01007446488698945
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.01005042267666593
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.010038401571504171
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.010032485574402195
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.010029433020372304
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.010027906743357358
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.010056906006641341
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.010041643236491876
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.010034011851417142
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.010087431546940273
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.010056906006641341
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.010041643236491876
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.010034264862286613
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.010030322664314511
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.01002835156532846
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.010065802446063423
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.010046091456202918
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.010036235961272663
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.010105224425784433
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.010065802446063423
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.010046091456202918
+      }
+    ]
+  },
+  {
+    "game": "3p_rand_3s",
+    "tests": [
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.032339616970239994
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.032333824564465805
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.03233092836157871
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.03238595621643347
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.03235699418756255
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.03234251317312708
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.03244388027417531
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.03238595621643347
+      },
+      {
+        "monitor_window": 5,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.03235699418756255
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.03234353600579006
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.032335784082240845
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.03233190812046623
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.03240555139418382
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.03236679177643772
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.032347411967564674
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.03248307062967602
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.03240555139418382
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.03236679177643772
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.03234771684254654
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.03233787450061908
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.032332953329655356
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.0324264555779662
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.03237724386832891
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.032352638013510265
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.03252487899724078
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.0324264555779662
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.03237724386832891
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 5,
+        "max_regret": 0.03235345379579104
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 10,
+        "max_regret": 0.03234074297724133
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.01,
+        "punishment_duration": 20,
+        "max_regret": 0.03233438756796647
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 5,
+        "max_regret": 0.0324551403441887
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.03239158625144017
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.03235980920506589
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 5,
+        "max_regret": 0.03258224852968578
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.0324551403441887
+      },
+      {
+        "monitor_window": 50,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.03239158625144017
+      }
+    ]
+  }
+]

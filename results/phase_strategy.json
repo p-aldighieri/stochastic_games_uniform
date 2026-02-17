@@ -1,0 +1,353 @@
+[
+  {
+    "game": "2p_absorbing",
+    "tests": [
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.004691255870721722,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.004691255870721722,
+          0.003889734223515462,
+          0.0031332326070370176,
+          0.002151517950056747
+        ]
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.004691255870721722,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.004691255870721722,
+          0.003889734223515462,
+          0.0031332326070370176,
+          0.002151517950056747
+        ]
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.004691255870721722,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.004691255870721722,
+          0.003889734223515462,
+          0.0031332326070370176,
+          0.002151517950056747
+        ]
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.004691255870721722,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.004691255870721722,
+          0.003889734223515462,
+          0.0031332326070370176,
+          0.002151517950056747
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.004691255870721722,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.004691255870721722,
+          0.003889734223515462,
+          0.0031332326070370176,
+          0.002151517950056747
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.004691255870721722,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.004691255870721722,
+          0.003889734223515462,
+          0.0031332326070370176,
+          0.002151517950056747
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.004691255870721722,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.004691255870721722,
+          0.003889734223515462,
+          0.0031332326070370176,
+          0.002151517950056747
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.004691255870721722,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.004691255870721722,
+          0.003889734223515462,
+          0.0031332326070370176,
+          0.002151517950056747
+        ]
+      }
+    ]
+  },
+  {
+    "game": "3p_quitting",
+    "tests": [
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.000245137071721635,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.000245137071721635,
+          4.902741434426039e-05,
+          2.451370717215795e-05,
+          1.2256853586078975e-05
+        ]
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.000245137071721635,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.000245137071721635,
+          4.902741434426039e-05,
+          2.451370717215795e-05,
+          1.2256853586078975e-05
+        ]
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.000245137071721635,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.000245137071721635,
+          4.902741434426039e-05,
+          2.451370717215795e-05,
+          1.2256853586078975e-05
+        ]
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.000245137071721635,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.000245137071721635,
+          4.902741434426039e-05,
+          2.451370717215795e-05,
+          1.2256853586078975e-05
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.000245137071721635,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.000245137071721635,
+          4.902741434426039e-05,
+          2.451370717215795e-05,
+          1.2256853586078975e-05
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.000245137071721635,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.000245137071721635,
+          4.902741434426039e-05,
+          2.451370717215795e-05,
+          1.2256853586078975e-05
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.000245137071721635,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.000245137071721635,
+          4.902741434426039e-05,
+          2.451370717215795e-05,
+          1.2256853586078975e-05
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.000245137071721635,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.000245137071721635,
+          4.902741434426039e-05,
+          2.451370717215795e-05,
+          1.2256853586078975e-05
+        ]
+      }
+    ]
+  },
+  {
+    "game": "3p_random",
+    "tests": [
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.005041673239663758,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.005041673239663758,
+          0.0046658246938025005,
+          0.004618843622460456,
+          0.004595353086794041
+        ]
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.005041673239663758,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.005041673239663758,
+          0.0046658246938025005,
+          0.004618843622460456,
+          0.004595353086794041
+        ]
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.005041673239663758,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.005041673239663758,
+          0.0046658246938025005,
+          0.004618843622460456,
+          0.004595353086794041
+        ]
+      },
+      {
+        "monitor_window": 10,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.005041673239663758,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.005041673239663758,
+          0.0046658246938025005,
+          0.004618843622460456,
+          0.004595353086794041
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 10,
+        "max_regret": 0.005041673239663758,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.005041673239663758,
+          0.0046658246938025005,
+          0.004618843622460456,
+          0.004595353086794041
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.05,
+        "punishment_duration": 20,
+        "max_regret": 0.005041673239663758,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.005041673239663758,
+          0.0046658246938025005,
+          0.004618843622460456,
+          0.004595353086794041
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 10,
+        "max_regret": 0.005041673239663758,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.005041673239663758,
+          0.0046658246938025005,
+          0.004618843622460456,
+          0.004595353086794041
+        ]
+      },
+      {
+        "monitor_window": 20,
+        "threshold": 0.1,
+        "punishment_duration": 20,
+        "max_regret": 0.005041673239663758,
+        "is_uniform_0.1": true,
+        "T0": 10,
+        "regret_trajectory": [
+          0.005041673239663758,
+          0.0046658246938025005,
+          0.004618843622460456,
+          0.004595353086794041
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "total_games": 40,
+  "games_completed": 40,
+  "n_uniform_eq": 32,
+  "fraction_uniform": 0.8,
+  "T0_distribution": {
+    "mean": 17.1875,
+    "median": 10.0,
+    "min": 10,
+    "max": 200
+  },
+  "by_players": {
+    "2": {
+      "total": 10,
+      "n_uniform_eq": 10,
+      "fraction": 1.0
+    },
+    "3": {
+      "total": 15,
+      "n_uniform_eq": 12,
+      "fraction": 0.8
+    },
+    "4": {
+      "total": 14,
+      "n_uniform_eq": 10,
+      "fraction": 0.7142857142857143
+    }
+  }
+}

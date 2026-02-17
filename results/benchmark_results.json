@@ -1,0 +1,108 @@
+[
+  {
+    "benchmark": "2p_zero_sum_matching_pennies",
+    "reference": "shapley1953stochastic, mertens1981stochastic",
+    "expected_value": 0.5,
+    "achieved_payoffs": [
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.5,
+        0.5
+      ]
+    ],
+    "max_regret": 0.0,
+    "is_uniform_0.01": true,
+    "T0": 10,
+    "PASS": true
+  },
+  {
+    "benchmark": "2p_absorbing_big_match_variant",
+    "reference": "vieille2000a, blackwell1968big",
+    "expected_payoff": [
+      0.5,
+      0.5
+    ],
+    "achieved_payoffs": [
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.5,
+        0.5
+      ]
+    ],
+    "max_regret": 0.04995117187499998,
+    "is_uniform_0.05": true,
+    "T0": 10,
+    "PASS": true
+  },
+  {
+    "benchmark": "3p_quitting_game_all_continue",
+    "reference": "solan1999three, flesch1997cyclic",
+    "expected_payoff": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "achieved_payoffs": [
+      [
+        0.33333333333333337,
+        0.33333333333333337,
+        0.33333333333333337
+      ],
+      [
+        0.3333333333333335,
+        0.3333333333333335,
+        0.3333333333333335
+      ],
+      [
+        0.3333333333333329,
+        0.3333333333333329,
+        0.3333333333333329
+      ],
+      [
+        0.33333333333333404,
+        0.33333333333333404,
+        0.33333333333333404
+      ]
+    ],
+    "max_regret": 0.19166666666666665,
+    "regret_at_T100": [
+      [
+        0.16916666666666702,
+        0.0
+      ],
+      [
+        0.16916666666666702,
+        0.0
+      ],
+      [
+        0.16916666666666702,
+        0.0
+      ]
+    ],
+    "is_uniform_0.5": true,
+    "note": "All-continue is NOT an NE in this quitting game (deviation gains 0.42). Cyclic/mixed equilibria needed (Solan 1999).",
+    "PASS": true
+  }
+]
