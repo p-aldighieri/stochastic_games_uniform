@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "created_at": "2026-02-16T00:00:00Z",
-  "updated_at": "2026-02-16T23:47:30.531660+00:00",
+  "updated_at": "2026-02-17T00:45:00+00:00",
   "current_agent": "researcher",
   "agent_status": {
     "orchestrator": {
@@ -251,32 +251,32 @@
           "id": "item_024",
           "description": "Synthesize findings into a structured research report",
           "acceptance_criteria": "A comprehensive report (research_report.md or .pdf in repo root) containing: (1) problem statement and formal definitions, (2) literature review summarizing prior results with citations to sources.bib, (3) methodology description for all computational experiments, (4) results from counterexample search, discounted-to-uniform bridge, phase-based strategies, memory analysis, self-generation analysis, and large-scale experiments, (5) discussion of whether results support existence or suggest counterexample directions, (6) concrete next steps. Must cite at least 10 papers from sources.bib.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "research_report.md: 9 sections + 2 appendices. Contains: problem statement (Sec 1), literature review citing 17 papers (Sec 2), methodology (Sec 3), results from all experiments (Sec 4), discussion (Sec 5), frontier (Sec 6), Lean status (Sec 7), next steps (Sec 8), references (Sec 9).",
           "error": null
         },
         {
           "id": "item_025",
           "description": "Document the exact frontier: what this research resolved and what remains open",
           "acceptance_criteria": "A section in the research report that explicitly states: (1) which subclasses of games were computationally verified to have uniform equilibria (with game size bounds), (2) whether any counterexample candidates were found (and if so, their detailed analysis), (3) which proof techniques (phase-based, self-generation, discounted bridge) showed the most promise and why, (4) a clear statement of the tightest remaining open case (e.g., 'uniform Nash equilibrium existence remains open for n >= 3 players with >= k states'), (5) comparison of findings against Solan (2003) and other survey results cited in sources.bib.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "Section 6 of research_report.md covers: verified classes with size bounds, no counterexamples found, discounted bridge most promising, tightest open case: 3p 2 non-absorbing states, consistent with Solan 2022 survey.",
           "error": null
         },
         {
           "id": "item_026",
           "description": "Organize all experimental outputs and ensure reproducibility",
           "acceptance_criteria": "All code is runnable from a single entry point (e.g., Makefile, run_all.py, or documented commands in README). results/ directory contains all JSON output files from experiments. figures/ directory contains all visualization PNGs/PDFs. A requirements.txt or pyproject.toml lists all Python dependencies. A README.md in the repo root documents: (1) how to install dependencies, (2) how to run each experiment, (3) where to find results. All random seeds are documented for reproducibility.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "requirements.txt created. run_experiments.py is single entry point. results/ has 9 JSON files, figures/ has 8 files (4 PNG + 4 PDF). Appendix B documents reproducibility. Seed=42 throughout.",
           "error": null
         },
         {
           "id": "item_027",
           "description": "Propose concrete proof strategies based on computational evidence",
           "acceptance_criteria": "A document (proof_strategies.md or section in research report) proposing at least 2 concrete proof strategies informed by computational findings. Each must include: (1) the precise theorem statement to be proved, (2) the key lemma or invariant identified from computational experiments, (3) a sketch of the proof approach with specific references to which experimental results motivate it, (4) the main technical obstacles. At least one strategy should target the constructive (existence) direction and at least one should explore the counterexample direction. Must reference specific game instances and regret data from experiments.",
-          "status": "pending",
-          "notes": null,
+          "status": "completed",
+          "notes": "Appendix A of research_report.md: Strategy 1 (existence via discounted bridge) and Strategy 2 (counterexample via cycling). Each has theorem statement, key lemma, proof sketch, obstacles, and computational evidence references.",
           "error": null
         }
       ]
@@ -284,9 +284,9 @@
   ],
   "summary": {
     "total_items": 27,
-    "completed": 23,
+    "completed": 27,
     "in_progress": 0,
     "failed": 0,
-    "pending": 4
+    "pending": 0
   }
 }
