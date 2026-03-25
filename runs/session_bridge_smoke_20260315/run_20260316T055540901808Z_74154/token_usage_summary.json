@@ -1,0 +1,36 @@
+{
+  "by_role": {
+    "formalizer": {
+      "calls": 2,
+      "estimated_calls": 2,
+      "input_tokens": 8038,
+      "model": "codex-session-bridge-chain",
+      "output_tokens": 143,
+      "provider": "external_agent",
+      "total_tokens": 8181
+    },
+    "searcher": {
+      "calls": 1,
+      "estimated_calls": 1,
+      "input_tokens": 4161,
+      "model": "codex-session-bridge-chain",
+      "output_tokens": 26,
+      "provider": "external_agent",
+      "total_tokens": 4187
+    },
+    "workflow_router": {
+      "calls": 1,
+      "estimated_calls": 1,
+      "input_tokens": 0,
+      "model": "none",
+      "output_tokens": 0,
+      "provider": "disabled",
+      "total_tokens": 0
+    }
+  },
+  "calls": 4,
+  "estimated_calls": 4,
+  "input_tokens": 12199,
+  "output_tokens": 169,
+  "total_tokens": 12368
+}

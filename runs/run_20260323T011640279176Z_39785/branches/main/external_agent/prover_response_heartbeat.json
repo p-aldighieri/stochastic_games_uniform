@@ -1,0 +1,16 @@
+{
+  "command": "submit",
+  "status": "completed",
+  "project_url": "https://chatgpt.com/g/g-p-69b78396b3808191ad15bcc609e7ebf6-game-theory-proof/project",
+  "request_file": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/run_20260323T011640279176Z_39785/branches/main/external_agent/prover_request.md",
+  "response_file": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/run_20260323T011640279176Z_39785/branches/main/external_agent/prover_response.md",
+  "heartbeat_at": "2026-03-23T04:14:36.487Z",
+  "submitted_at": "2026-03-23T03:52:16.988Z",
+  "poll_seconds": 10,
+  "max_wait_seconds": 5400,
+  "base_model": "5.4 Pro",
+  "effort_mode": "Extended Pro",
+  "chat_url": "https://chatgpt.com/g/g-p-69b78396b3808191ad15bcc609e7ebf6-game-theory-proof/c/69c0b8f6-defc-832a-82a0-9e294cf7228a",
+  "completed_at": "2026-03-23T04:14:36.486Z",
+  "response_chars": 15736
+}

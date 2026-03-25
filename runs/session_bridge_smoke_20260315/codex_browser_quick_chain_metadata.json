@@ -1,0 +1,13 @@
+{
+  "bootstrap_log": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/session_bridge_smoke_20260315/codex_browser_quick_chain_metadata.bootstrap.jsonl",
+  "claim_file": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/uniform_equilibrium_stochastic_games_problem.md",
+  "config_file": "/Users/p-aldighieri/Downloads/MathPipeProver-session-bridge-smoke/config/session_bridge_chain.toml",
+  "created_at": "2026-03-16T06:13:21.305622Z",
+  "orchestrator": "codex",
+  "response_file": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/session_bridge_smoke_20260315/run_20260316T061224913447Z_90017/branches/main/external_agent/formalizer_response.md",
+  "run_dir": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/session_bridge_smoke_20260315/run_20260316T061224913447Z_90017",
+  "run_id": "run_20260316T061224913447Z_90017",
+  "sandbox_root": "/Users/p-aldighieri/Downloads/MathPipeProver-session-bridge-smoke",
+  "session_id": "019cf545-e778-7d20-914e-de65db0e18c1",
+  "target_repo": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform"
+}

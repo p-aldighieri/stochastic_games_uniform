@@ -1,0 +1,72 @@
+{
+  "by_role": {
+    "breakdown": {
+      "calls": 1,
+      "estimated_calls": 1,
+      "input_tokens": 0,
+      "model": "stub",
+      "output_tokens": 8,
+      "provider": "stub",
+      "total_tokens": 8
+    },
+    "consolidator": {
+      "calls": 1,
+      "estimated_calls": 1,
+      "input_tokens": 0,
+      "model": "stub",
+      "output_tokens": 16,
+      "provider": "stub",
+      "total_tokens": 16
+    },
+    "formalizer": {
+      "calls": 2,
+      "estimated_calls": 2,
+      "input_tokens": 8038,
+      "model": "codex-session-bridge-smoke",
+      "output_tokens": 40,
+      "provider": "external_agent",
+      "total_tokens": 8078
+    },
+    "prover": {
+      "calls": 1,
+      "estimated_calls": 1,
+      "input_tokens": 0,
+      "model": "stub",
+      "output_tokens": 28,
+      "provider": "stub",
+      "total_tokens": 28
+    },
+    "reviewer": {
+      "calls": 1,
+      "estimated_calls": 1,
+      "input_tokens": 0,
+      "model": "stub",
+      "output_tokens": 6,
+      "provider": "stub",
+      "total_tokens": 6
+    },
+    "searcher": {
+      "calls": 1,
+      "estimated_calls": 1,
+      "input_tokens": 0,
+      "model": "stub",
+      "output_tokens": 27,
+      "provider": "stub",
+      "total_tokens": 27
+    },
+    "workflow_router": {
+      "calls": 6,
+      "estimated_calls": 6,
+      "input_tokens": 0,
+      "model": "none",
+      "output_tokens": 0,
+      "provider": "disabled",
+      "total_tokens": 0
+    }
+  },
+  "calls": 13,
+  "estimated_calls": 13,
+  "input_tokens": 8038,
+  "output_tokens": 125,
+  "total_tokens": 8163
+}

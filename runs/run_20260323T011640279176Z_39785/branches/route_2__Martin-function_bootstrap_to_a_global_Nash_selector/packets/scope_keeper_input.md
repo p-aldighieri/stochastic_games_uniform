@@ -1,0 +1,29 @@
+# Input Packet: scope_keeper
+
+Readable files:
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/assumption_delta.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/breakdown.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/breakdown_amendments.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/formalizer.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/knowledge_ledger.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/literature.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/prover_01.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/prover_02.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/prover_03.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/prover_04.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/prover_05.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/prover_06.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/prover_07.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/prover_08.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/prover_09.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/reviewer_01.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/reviewer_02.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/reviewer_03.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/reviewer_04.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/reviewer_05.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/reviewer_06.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/reviewer_07.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/reviewer_08.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/reviewer_09.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/scope_decision.md
+- branches/route_2__Martin-function_bootstrap_to_a_global_Nash_selector/context/strategy.md

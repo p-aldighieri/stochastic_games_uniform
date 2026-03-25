@@ -1,0 +1,44 @@
+- phase=breakdown completed
+- prover cycle=1 completed
+- reviewer cycle=1 verdict=PATCH_BIG next=breakdown
+- phase=breakdown completed
+- prover cycle=2 completed
+- reviewer cycle=2 verdict=PATCH_BIG next=breakdown
+- phase=breakdown completed
+- prover cycle=3 completed
+- reviewer cycle=3 verdict=PATCH_BIG next=stop_stall
+- run terminated: STALL
+- branch revived with soft profile at 20260323T165929Z; next=breakdown; preserved review_cycles=3
+- phase=breakdown completed
+- prover cycle=4 completed
+- reviewer cycle=4 verdict=PATCH_BIG next=stop_stall
+- run terminated: STALL
+- state corrected after reviewer verdict parser bug fix; prior PASS/consolidator terminal event was invalid
+- branch revived after parser fix and soft-cycle increase at 2026-03-23; next=breakdown; preserved review_cycles=4
+- phase=breakdown completed
+- prover cycle=5 completed
+- reviewer cycle=5 verdict=PATCH_BIG next=breakdown
+- phase=breakdown completed
+- prover cycle=6 completed
+- reviewer cycle=6 verdict=PATCH_BIG next=stop_stall
+- run terminated: STALL
+- branch revived after soft-cycle cap increase to 20 at 2026-03-23; next=breakdown; preserved review_cycles=6
+- phase=breakdown completed
+- prover cycle=7 completed
+- reviewer cycle=7 verdict=PATCH_BIG next=stop_fail_scope
+- run terminated: FAIL_SCOPE
+- orchestrator revive: stop_phase=stop_fail_scope suggested_phase=breakdown reason=One-time revival after old auto-terminal soft stop
+- orchestrator revive: stop_phase=stop_stall suggested_phase=breakdown reason=debug revive
+- orchestrator continue: next=breakdown
+- phase=breakdown completed
+- prover cycle=8 completed
+- reviewer cycle=8 verdict=PATCH_BIG next=stop_fail_scope
+- orchestrator handoff: stop_phase=stop_fail_scope suggested_phase=breakdown reason=scope rejected
+- orchestrator continue: next=breakdown
+- phase=breakdown completed
+- prover cycle=9 completed
+- reviewer cycle=9 verdict=PATCH_BIG next=stop_fail_scope
+- orchestrator handoff: stop_phase=stop_fail_scope suggested_phase=breakdown reason=scope rejected
+- orchestrator continue: next=breakdown
+- phase=breakdown completed
+- prover cycle=10 completed

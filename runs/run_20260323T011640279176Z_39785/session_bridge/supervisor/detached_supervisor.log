@@ -1,0 +1,5 @@
+page.waitForTimeout: Target page, context or browser has been closed
+browserType.connectOverCDP: connect ECONNREFUSED 127.0.0.1:9333
+Call log:
+[2m  - <ws preparing> retrieving websocket url from http://127.0.0.1:9333[22m
+

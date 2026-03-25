@@ -1,0 +1,18 @@
+{
+  "command": "submit",
+  "status": "waiting_reply",
+  "project_url": "https://chatgpt.com/g/g-p-69b78396b3808191ad15bcc609e7ebf6-game-theory-proof/project",
+  "request_file": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/session_bridge_smoke_20260315/run_20260316T053722627396Z_26597/branches/main/external_agent/formalizer_request.md",
+  "response_file": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/session_bridge_smoke_20260315/run_20260316T053722627396Z_26597/branches/main/external_agent/formalizer_response.md",
+  "heartbeat_at": "2026-03-16T05:52:54.258Z",
+  "submitted_at": "2026-03-16T05:38:17.692Z",
+  "poll_seconds": 10,
+  "max_wait_seconds": 1800,
+  "base_model": "5.4 Pro",
+  "effort_mode": "Extended Pro",
+  "chat_url": "https://chatgpt.com/g/g-p-69b78396b3808191ad15bcc609e7ebf6-game-theory-proof/c/69b7974e-b9b0-8325-9f85-d574448ba4ce",
+  "generating": true,
+  "stable_cycles": 0,
+  "latest_response_chars": 333,
+  "deadline_at": "2026-03-16T06:08:23.641Z"
+}

@@ -1,0 +1,13 @@
+- prelude phase=formalizer completed
+- prelude phase=literature completed
+- prelude phase=searcher completed
+- phase=breakdown completed
+- prover cycle=1 completed
+- reviewer cycle=1 verdict=PATCH_BIG next=breakdown
+- phase=breakdown completed
+- prover cycle=2 completed
+- reviewer cycle=2 verdict=PATCH_BIG next=breakdown
+- phase=breakdown completed
+- prover cycle=3 completed
+- reviewer cycle=3 verdict=PATCH_BIG next=stop_stall
+- run terminated: STALL

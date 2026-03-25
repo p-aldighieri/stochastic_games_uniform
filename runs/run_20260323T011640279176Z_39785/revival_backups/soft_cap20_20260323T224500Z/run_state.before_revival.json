@@ -1,0 +1,132 @@
+{
+  "branch_order": [
+    "main",
+    "route_2__Martin-function_bootstrap_to_a_global_Nash_selector"
+  ],
+  "branches": {
+    "main": {
+      "current_phase": "stop_stall",
+      "last_reason": "stalled",
+      "last_verdict": "PATCH_BIG",
+      "metrics": {
+        "calls": 29,
+        "estimated_calls": 29,
+        "input_tokens": 133049,
+        "output_tokens": 36427,
+        "total_tokens": 169476
+      },
+      "review_cycles": 3,
+      "score": 0.0,
+      "selected_route": "**Hybrid modified-game + continuation-orbit construction.**",
+      "status": "stall"
+    },
+    "route_2__Martin-function_bootstrap_to_a_global_Nash_selector": {
+      "current_phase": "stop_stall",
+      "last_reason": "stalled",
+      "last_verdict": "PATCH_BIG",
+      "metrics": {
+        "calls": 46,
+        "estimated_calls": 46,
+        "input_tokens": 353052,
+        "output_tokens": 54734,
+        "total_tokens": 407786
+      },
+      "review_cycles": 6,
+      "score": 661.023,
+      "selected_route": "**Martin-function bootstrap to a global Nash selector.**",
+      "status": "stall"
+    }
+  },
+  "branches_spawned": true,
+  "current_phase": "done",
+  "metrics": {
+    "by_role": {
+      "breakdown": {
+        "calls": 13,
+        "estimated_calls": 13,
+        "input_tokens": 29316,
+        "model": "chatgpt-5.4-pro-extended",
+        "output_tokens": 27767,
+        "provider": "external_agent",
+        "total_tokens": 57083
+      },
+      "consolidator": {
+        "calls": 2,
+        "estimated_calls": 2,
+        "input_tokens": 67784,
+        "model": "chatgpt-5.4-pro-extended",
+        "output_tokens": 4682,
+        "provider": "external_agent",
+        "total_tokens": 72466
+      },
+      "formalizer": {
+        "calls": 2,
+        "estimated_calls": 2,
+        "input_tokens": 8038,
+        "model": "chatgpt-5.4-pro-extended",
+        "output_tokens": 1570,
+        "provider": "external_agent",
+        "total_tokens": 9608
+      },
+      "literature": {
+        "calls": 2,
+        "estimated_calls": 2,
+        "input_tokens": 11166,
+        "model": "chatgpt-5.4-pro-extended",
+        "output_tokens": 3692,
+        "provider": "external_agent",
+        "total_tokens": 14858
+      },
+      "prover": {
+        "calls": 13,
+        "estimated_calls": 13,
+        "input_tokens": 113923,
+        "model": "chatgpt-5.4-pro-extended",
+        "output_tokens": 36881,
+        "provider": "external_agent",
+        "total_tokens": 150804
+      },
+      "reviewer": {
+        "calls": 13,
+        "estimated_calls": 13,
+        "input_tokens": 237296,
+        "model": "chatgpt-5.4-pro-extended",
+        "output_tokens": 14404,
+        "provider": "external_agent",
+        "total_tokens": 251700
+      },
+      "searcher": {
+        "calls": 2,
+        "estimated_calls": 2,
+        "input_tokens": 18578,
+        "model": "chatgpt-5.4-pro-extended",
+        "output_tokens": 2165,
+        "provider": "external_agent",
+        "total_tokens": 20743
+      },
+      "workflow_router": {
+        "calls": 28,
+        "estimated_calls": 28,
+        "input_tokens": 0,
+        "model": "none",
+        "output_tokens": 0,
+        "provider": "disabled",
+        "total_tokens": 0
+      }
+    },
+    "calls": 75,
+    "estimated_calls": 75,
+    "input_tokens": 486101,
+    "output_tokens": 91161,
+    "total_tokens": 577262
+  },
+  "mode": "semi_strict",
+  "prelude_done": true,
+  "prelude_phase": "done",
+  "pruned_branches": [
+    "**[SCOPE] Minimal-counterexample reduction to a rigid core.**",
+    "**Counterexample via horizon-tuning obstruction in a multiplayer quitting/absorbing gadget.**"
+  ],
+  "run_id": "run_20260323T011640279176Z_39785",
+  "status": "failed"
+}

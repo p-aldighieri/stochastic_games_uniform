@@ -1,0 +1,51 @@
+# Breakdown Amendments
+
+Accepted by orchestrator policy:
+- L5 as written needs one repair before the proof starts: to choose the root bias (\beta((s))), one needs the nonemptiness of (B_\delta((s),v^s)), which comes from L2, not from L4 alone. So either add L2 to the dependencies of L5, or strengthen L4 so that it also returns an admissible current bias when only (h) and (v) are given.
+- L5 should quantify over the full rooted public-history tree starting from (s), not merely “reachable” histories in an on-path sense. The later deviation analysis in L7 needs (\beta(h)) and (x(h)) on histories created by arbitrary unilateral deviations.
+- As written, item 2 of L6 is ambiguous if punishment mode is ever actually used. A mode variable (M_t\in{\mathrm{normal}}\cup N) remembers only the punished player, not the history at which the punishment began. If the intended meaning is “after switching at history (h), continue with the whole strategy (p^{i,h}),” then the public mode needs to remember that anchor history, or an equivalent finite/public encoding of it. The literal statement below is still provable.
+- If L6 is intended to play a non-vacuous role in L7, it must be strengthened to specify an actual switching rule and a public state rich enough to remember the punishment anchor.
+- L7 should list L2 explicitly among its dependencies, because the proof uses the bias bound (C_\delta).
+- Replace the current L7 by L7′ above. After L4 and L5 are available, the deviation verification is a direct telescope; L6 is not needed for this step, and the (\pm 2\delta) slack is unnecessary.
+- Under L7′, the closing step can be sharpened substantially.
+- The dependency spine can be shortened after the open selector step:
+- L5 as written needs one repair before the proof starts: to choose the root bias (\beta((s))), one needs the nonemptiness of (B_\delta((s),v^s)), which comes from L2, not from L4 alone. So either add L2 to the dependencies of L5, or strengthen L4 so that it also returns an admissible current bias when only (h) and (v) are given.
+- L5 should quantify over the full rooted public-history tree starting from (s), not merely “reachable” histories in an on-path sense. The later deviation analysis in L7 needs (\beta(h)) and (x(h)) on histories created by arbitrary unilateral deviations.
+- As written, item 2 of L6 is ambiguous if punishment mode is ever actually used. A mode variable (M_t\in{\mathrm{normal}}\cup N) remembers only the punished player, not the history at which the punishment began. If the intended meaning is “after switching at history (h), continue with the whole strategy (p^{i,h}),” then the public mode needs to remember that anchor history, or an equivalent finite/public encoding of it. The literal statement below is still provable.
+- If L6 is intended to play a non-vacuous role in L7, it must be strengthened to specify an actual switching rule and a public state rich enough to remember the punishment anchor.
+- L7 should list L2 explicitly among its dependencies, because the proof uses the bias bound (C_\delta).
+- Replace the current L7 by L7′ above. After L4 and L5 are available, the deviation verification is a direct telescope; L6 is not needed for this step, and the (\pm 2\delta) slack is unnecessary.
+- Under L7′, the closing step can be sharpened substantially.
+- The dependency spine can be shortened after the open selector step:
+- L5 as written needs one repair before the proof starts: to choose the root bias (\beta((s))), one needs the nonemptiness of (B_\delta((s),v^s)), which comes from L2, not from L4 alone. So either add L2 to the dependencies of L5, or strengthen L4 so that it also returns an admissible current bias when only (h) and (v) are given.
+- L5 should quantify over the full rooted public-history tree starting from (s), not merely “reachable” histories in an on-path sense. The later deviation analysis in L7 needs (\beta(h)) and (x(h)) on histories created by arbitrary unilateral deviations.
+- As written, item 2 of L6 is ambiguous if punishment mode is ever actually used. A mode variable (M_t\in{\mathrm{normal}}\cup N) remembers only the punished player, not the history at which the punishment began. If the intended meaning is “after switching at history (h), continue with the whole strategy (p^{i,h}),” then the public mode needs to remember that anchor history, or an equivalent finite/public encoding of it. The literal statement below is still provable.
+- If L6 is intended to play a non-vacuous role in L7, it must be strengthened to specify an actual switching rule and a public state rich enough to remember the punishment anchor.
+- L7 should list L2 explicitly among its dependencies, because the proof uses the bias bound (C_\delta).
+- Replace the current L7 by L7′ above. After L4 and L5 are available, the deviation verification is a direct telescope; L6 is not needed for this step, and the (\pm 2\delta) slack is unnecessary.
+- Under L7′, the closing step can be sharpened substantially.
+- The dependency spine can be shortened after the open selector step:
+- Use the corrected post-L4 backbone
+- The proof above establishes only the literal displayed statement of L6. It does **not** build a non-vacuous punishment-mode mechanism. Any stronger “switch to a punishment plan anchored at a remembered history” reading remains unproved unless the public state is enriched to remember that anchor.
+- Replace the old L7 by the following corrected version.
+- Replace L8 by the following corrected version, which explicitly cites the standing hypothesis (\eta_t\ge0).
+- The remaining gap is now cleanly localized. L1 and L2 remain imported. L4 remains the unresolved selector theorem. Everything after L4 is tree recursion plus telescoping bookkeeping.
+- I will use the typed reading
+- The weak telescope is the exact output of the current L3-L6 data. It does **not** imply the displayed L7' in the packet, because the right-hand sides contain the visited promise process (w_i(H_t)), not the root promise (w_i^s). Also, the expectation in (WT-ob) is taken under obedient play and the expectation in (WT-dev) under deviating play, so the promise averages do not cancel. The current local relation uses successor **biases** but never successor **promises**, so no fixed-promise invariant is propagated. Therefore the current L7' requires a genuine amendment upstream, at L3-L4, exactly where the route memo says amendments should be made first.
+- For each history (h) and promise vector (w\in[0,1]^N), define the bias fiber
+- **Required packet repair.**
+- I will use the typed reading
+- The weak telescope is the exact output of the current L3-L6 data. It does **not** imply the displayed L7' in the packet, because the right-hand sides contain the visited promise process (w_i(H_t)), not the root promise (w_i^s). Also, the expectation in (WT-ob) is taken under obedient play and the expectation in (WT-dev) under deviating play, so the promise averages do not cancel. The current local relation uses successor **biases** but never successor **promises**, so no fixed-promise invariant is propagated. Therefore the current L7' requires a genuine amendment upstream, at L3-L4, exactly where the route memo says amendments should be made first.
+- For each history (h) and promise vector (w\in[0,1]^N), define the bias fiber
+- **Required packet repair.**
+- The downstream proof should use the **increment form** of the current breakdown’s local invariant and should stop citing the canceled-promise formulas from the superseded prover_07 setup. The current breakdown already has a fixed root promise (\rho^s) and a varying bias (b^s(h)):
+- The L5 proof does **not** need a Kőnig-style compactness limit once L4 is available on the full rooted tree. Direct recursion on depth is enough. Also, L5 must cite L2 for the root bias choice. This matches the accepted amendment and the stable route-memo takeaway.
+- Demote L6 to the **literal** statement that L5 defines a rooted behavioral profile. Do not cite L6 as a nonvacuous punishment-mode mechanism unless the public state is enlarged to remember punishment anchors. The route memo explicitly warns that the current stronger punishment reading is too weak / vacuous.
+- Replace the current L7 by the following corrected lemma. Its proof uses only L2 and the full-tree L5 selector; L6 is not needed.
+- Replace the current L8 by the corrected bookkeeping lemma below, with explicit use of (\eta_t\ge 0).
+- The present L9 asks for a stronger current-state re-rooting compatibility:
+- Replace the downstream backbone by
+- I normalize the live Route B backbone to the fixed-promise version
+- Replace the canceled-promise setup by the fixed-promise local increment system.
+- Old L6 should be demoted to literal strategy construction only; it is not needed in the deviation proof. Old L7 and old L8 should be retired and replaced by corrected L7′ and L8′ above. The present packet should also record that L5(^\ast) depends on L2 for the root choice and must quantify over the full rooted tree, not just on-path histories.
+- The official breakdown should mark L4(^\ast), not the old variable-promise L4, as the live research bottleneck. The local fixed-promise system above is the one that actually supports the root-promise telescope.

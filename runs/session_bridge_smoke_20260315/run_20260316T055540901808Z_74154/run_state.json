@@ -1,0 +1,72 @@
+{
+  "branch_order": [
+    "main"
+  ],
+  "branches": {
+    "main": {
+      "current_phase": "formalizer",
+      "last_reason": "",
+      "metrics": {
+        "calls": 4,
+        "estimated_calls": 4,
+        "input_tokens": 12199,
+        "output_tokens": 169,
+        "total_tokens": 12368
+      },
+      "review_cycles": 0,
+      "score": 0.0,
+      "selected_route": "",
+      "status": "running"
+    }
+  },
+  "branches_spawned": false,
+  "current_phase": "waiting_external_agent:main:searcher",
+  "metrics": {
+    "by_role": {
+      "formalizer": {
+        "calls": 2,
+        "estimated_calls": 2,
+        "input_tokens": 8038,
+        "model": "codex-session-bridge-chain",
+        "output_tokens": 143,
+        "provider": "external_agent",
+        "total_tokens": 8181
+      },
+      "searcher": {
+        "calls": 1,
+        "estimated_calls": 1,
+        "input_tokens": 4161,
+        "model": "codex-session-bridge-chain",
+        "output_tokens": 26,
+        "provider": "external_agent",
+        "total_tokens": 4187
+      },
+      "workflow_router": {
+        "calls": 1,
+        "estimated_calls": 1,
+        "input_tokens": 0,
+        "model": "none",
+        "output_tokens": 0,
+        "provider": "disabled",
+        "total_tokens": 0
+      }
+    },
+    "calls": 4,
+    "estimated_calls": 4,
+    "input_tokens": 12199,
+    "output_tokens": 169,
+    "total_tokens": 12368
+  },
+  "mode": "semi_strict",
+  "pending_external_agent": {
+    "branch": "main",
+    "response_path": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/session_bridge_smoke_20260315/run_20260316T055540901808Z_74154/branches/main/external_agent/searcher_response.md",
+    "role": "searcher"
+  },
+  "prelude_done": false,
+  "prelude_phase": "searcher",
+  "pruned_branches": [],
+  "run_id": "run_20260316T055540901808Z_74154",
+  "status": "waiting_external_agent",
+  "winning_branch": ""
+}

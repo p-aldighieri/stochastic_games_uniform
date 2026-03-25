@@ -1,0 +1,54 @@
+{
+  "branch_order": [
+    "main"
+  ],
+  "branches": {
+    "main": {
+      "current_phase": "formalizer",
+      "last_reason": "",
+      "metrics": {
+        "calls": 1,
+        "estimated_calls": 1,
+        "input_tokens": 4019,
+        "output_tokens": 26,
+        "total_tokens": 4045
+      },
+      "review_cycles": 0,
+      "score": 0.0,
+      "selected_route": "",
+      "status": "running"
+    }
+  },
+  "branches_spawned": false,
+  "current_phase": "waiting_external_agent:main:formalizer",
+  "metrics": {
+    "by_role": {
+      "formalizer": {
+        "calls": 1,
+        "estimated_calls": 1,
+        "input_tokens": 4019,
+        "model": "codex-session-bridge-smoke",
+        "output_tokens": 26,
+        "provider": "external_agent",
+        "total_tokens": 4045
+      }
+    },
+    "calls": 1,
+    "estimated_calls": 1,
+    "input_tokens": 4019,
+    "output_tokens": 26,
+    "total_tokens": 4045
+  },
+  "mode": "semi_strict",
+  "pending_external_agent": {
+    "branch": "main",
+    "response_path": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/session_bridge_smoke_20260315/run_20260316T053722627396Z_26597/branches/main/external_agent/formalizer_response.md",
+    "role": "formalizer"
+  },
+  "prelude_done": false,
+  "prelude_phase": "formalizer",
+  "pruned_branches": [],
+  "run_id": "run_20260316T053722627396Z_26597",
+  "status": "waiting_external_agent",
+  "winning_branch": ""
+}

@@ -1,0 +1,81 @@
+{
+  "by_role": {
+    "breakdown": {
+      "calls": 21,
+      "estimated_calls": 21,
+      "input_tokens": 47236,
+      "model": "chatgpt-5.4-pro-extended",
+      "output_tokens": 40926,
+      "provider": "external_agent",
+      "total_tokens": 88162
+    },
+    "consolidator": {
+      "calls": 2,
+      "estimated_calls": 2,
+      "input_tokens": 67784,
+      "model": "chatgpt-5.4-pro-extended",
+      "output_tokens": 4682,
+      "provider": "external_agent",
+      "total_tokens": 72466
+    },
+    "formalizer": {
+      "calls": 2,
+      "estimated_calls": 2,
+      "input_tokens": 8038,
+      "model": "chatgpt-5.4-pro-extended",
+      "output_tokens": 1570,
+      "provider": "external_agent",
+      "total_tokens": 9608
+    },
+    "literature": {
+      "calls": 2,
+      "estimated_calls": 2,
+      "input_tokens": 11166,
+      "model": "chatgpt-5.4-pro-extended",
+      "output_tokens": 3692,
+      "provider": "external_agent",
+      "total_tokens": 14858
+    },
+    "prover": {
+      "calls": 21,
+      "estimated_calls": 21,
+      "input_tokens": 271844,
+      "model": "chatgpt-5.4-pro-extended",
+      "output_tokens": 53604,
+      "provider": "external_agent",
+      "total_tokens": 325448
+    },
+    "reviewer": {
+      "calls": 19,
+      "estimated_calls": 19,
+      "input_tokens": 498836,
+      "model": "chatgpt-5.4-pro-extended",
+      "output_tokens": 19055,
+      "provider": "external_agent",
+      "total_tokens": 517891
+    },
+    "searcher": {
+      "calls": 2,
+      "estimated_calls": 2,
+      "input_tokens": 18578,
+      "model": "chatgpt-5.4-pro-extended",
+      "output_tokens": 2165,
+      "provider": "external_agent",
+      "total_tokens": 20743
+    },
+    "workflow_router": {
+      "calls": 39,
+      "estimated_calls": 39,
+      "input_tokens": 0,
+      "model": "none",
+      "output_tokens": 0,
+      "provider": "disabled",
+      "total_tokens": 0
+    }
+  },
+  "calls": 108,
+  "estimated_calls": 108,
+  "input_tokens": 923482,
+  "output_tokens": 125694,
+  "total_tokens": 1049176
+}

@@ -1,0 +1,16 @@
+{
+  "created_at": "2026-03-24T00:00:00Z",
+  "orchestrator": "claude",
+  "session_id": "36ed9ecb-7c1e-4231-9d52-f7a89dd58853",
+  "run_id": "run_20260323T011640279176Z_39785",
+  "target_repo": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform",
+  "repo_root": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Codebook/MathPipeProver",
+  "config_file": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Codebook/MathPipeProver/config/browser_chatgpt_soft.toml",
+  "claude_bin": "claude",
+  "claude_permission_mode": "bypassPermissions",
+  "claude_dangerously_skip_permissions": true,
+  "claude_add_dir": [
+    "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Codebook/MathPipeProver"
+  ],
+  "log_path": "/Users/p-aldighieri/Library/CloudStorage/OneDrive-Personal/Economia/Projetos/Ai4Science/game_theory/stochastic_games_uniform/runs/run_20260323T011640279176Z_39785/session_bridge/claude_bootstrap_attach.jsonl"
+}

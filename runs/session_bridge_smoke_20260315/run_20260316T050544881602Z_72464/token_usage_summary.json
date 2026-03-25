@@ -1,0 +1,18 @@
+{
+  "by_role": {
+    "formalizer": {
+      "calls": 1,
+      "estimated_calls": 1,
+      "input_tokens": 4019,
+      "model": "codex-session-bridge-smoke",
+      "output_tokens": 26,
+      "provider": "external_agent",
+      "total_tokens": 4045
+    }
+  },
+  "calls": 1,
+  "estimated_calls": 1,
+  "input_tokens": 4019,
+  "output_tokens": 26,
+  "total_tokens": 4045
+}
