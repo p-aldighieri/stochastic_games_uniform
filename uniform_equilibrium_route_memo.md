@@ -1,74 +1,54 @@
 # Uniform Equilibrium Route Memo
 
-This memo compresses the stable conclusions from autonomous run
-`run_20260323T011640279176Z_39785` into durable context that is safe to
-promote into the ChatGPT project. It is intentionally shorter and more stable
-than the raw run artifacts.
+Updated after 23 Extended Pro passes (2026-03-26 to 2026-03-27). Starting Route D'.
 
-## Global Status
+## Exhausted Routes
 
-- The target theorem remains open.
-- The run did not produce a certifiable proof.
-- The useful output is structural: it identified one cleaner bootstrap route and
-  one route whose continuation object appears fundamentally mismatched to the
-  cited source.
+### Route B: Stationary Lexicographic — DEAD
+- Conditional theorem (H1+H2+H3) is correct but H3 is provably false
+- The stationary limit x* of discounted Nash equilibria fails bias-level optimality on gain-neutral off-support actions
+- Concrete counterexample: 2-player absorbing game, unique analytic branch, kappa_1 = 1/4 > 0
 
-## Route A: Hybrid Modified-Game Plus Continuation-Orbit Construction
+### Route C: History-Dependent Punishment — DEAD
+- Gain-level control works automatically (supermartingale)
+- Bias-level punishment requires self-enforcing coalition with private signals
+- Public actions/history/randomization cannot simulate private role assignments
+- 4+ player absorbing Nash is the smallest open subclass
+- Cheap-talk embedding in public actions insufficient (Barany needs private messages)
 
-### Status
+### Route D: Raw Strategy-Space Fixed-Point — DEAD
+- Strategy space not compact in the right topology
+- Payoff functionals not continuous
+- Periodic orbit structure can blow up
 
-- Not preferred.
-- Reviewer verdict after three cycles: `PATCH_BIG`.
+## Active Route: D' — Compact Asymptotic State Space
 
-### What survived review
+### The Core Idea
+Don't do topology on raw strategies. Do topology on a **compactified asymptotic object** where payoff and deviation functionals become continuous. Then apply Kakutani/viability on that space.
 
-- L1 is acceptable after the coalition-controller repair using product mixed
-  actions and a zero-sum uniform-value assumption.
-- L3 compactness work is acceptable once a legitimate continuation family exists.
-- L5-L7 are conditionally fine once L4 actually supplies the required block map.
-- L10-L11 bookkeeping is acceptable only after the endpoint normalization repair.
+### What works in solved subclasses
+| Subclass | Compact Object | Reference |
+|----------|---------------|-----------|
+| Quitting games | Absorption paths | Ashkenazi-Golan et al. |
+| Positive recursive absorbing | Continuation-value orbits | Solan-Vieille 2025 |
+| 2-player zero-sum | Algebraic value structure | Mertens-Neyman, Bewley-Kohlberg |
 
-### Main blocker
+### What the general object might look like
+A compact space A encoding, for each communicating set of states:
+- **Occupation measures**: how long play stays in each state
+- **Exit intensities**: how and when play leaves each communicating set
+- **Continuation values**: what payoffs are expected after exit
+- **Gain-bias structure**: the lexicographic decomposition from our conditional theorem
 
-- The route tries to upgrade modified-game facts from a fixed initial state to a
-  single equilibrium table that works for all states simultaneously.
-- The cited modified-game source does not justify that upgrade.
-- That means the continuation object feeding L4 is not currently supported.
+Plus an **implementability map** A → Σ showing each point of A can be realized by an actual strategy profile, and a **deviation map** checking that no player can improve by deviating.
 
-## Route B: Martin-Function Bootstrap To A Global Nash Selector
+### Key challenges
+1. Define A precisely for general finite stochastic games
+2. Prove A is compact (or can be compactified) with continuous payoff
+3. Prove the self-map (best response on A) has a fixed point
+4. Prove the fixed point yields a uniform epsilon-equilibrium
 
-### Status
-
-- Preferred current bootstrap route.
-- Reviewer verdict after three cycles: `PATCH_BIG`, but with a cleaner repair
-  path than Route A.
-
-### Stable positive takeaways
-
-- L5 can be proved by recursion on the full rooted public-history tree once the
-  root-bias nonemptiness input from L2 is cited explicitly.
-- L7' can be proved by telescoping once the selector exists and the bias bounds
-  are available.
-- L8' is bookkeeping once `eta_t >= 0` is made explicit.
-- The route keeps the theorem-side scope aligned with the durable claim source:
-  one public-history behavioral profile, all sufficiently large finite horizons,
-  every initial state, no silent downgrade to payoff-set existence.
-
-### Remaining blockers
-
-- L4 is still the theorem-sized unresolved step.
-- The route needs an explicit global assembly step from the family `sigma^s`
-  into a single whole-game profile.
-- L6 as currently written is logically valid but too weak if punishment mode is
-  meant to do real work rather than remain vacuous.
-
-## Prompting Guidance For The Next Run
-
-- Keep the theorem labeled as open/bootstrap throughout.
-- Ask the model to preserve the exact theorem-side quantifiers and not switch to
-  payoff-set wording.
-- Push the next run to work with the alternate selector route first.
-- Ask for explicit statement repair whenever a lemma proof needs stronger
-  dependencies than the current breakdown claims.
-- Treat L4 as the central research bottleneck and avoid pretending that later
-  bookkeeping closes the theorem without it.
+### What we bring from prior routes
+- The gain-bias decomposition (Route B) gives the right payoff structure on A
+- The deviation taxonomy (Route C) tells us which deviations the fixed point must handle
+- The block structure gives the right granularity for the implementability map

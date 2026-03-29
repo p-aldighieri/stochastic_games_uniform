@@ -1,0 +1,7944 @@
+# Section 5.1: Ergodic Occupation Realization — Full Proof (Pass 41)
+**Source**: ChatGPT Extended Pro, "Ergodic Occupation Realization Proof" chat
+**Date**: 2026-03-28
+**Length**: 36,941 characters
+
+Below is the insert-ready text. I am making two literal repairs to the draft theorem so that the proof is actually correct: the recurrent classes in the Carathéodory decomposition live in the phase space 
+Ξ
+𝐶
+Ξ
+C
+	​
+
+, not in 
+𝑆
+𝐶
+S
+C
+	​
+
+, and 
+𝑟
+(
+𝐵
+)
+=
+𝐾
+⌈
+log
+⁡
+𝐵
+⌉
+r(B)=K⌈logB⌉ is the total reset budget across the constant number of macrosegments. That is exactly the sort of statement repair the project notes ask for when a proof would otherwise hide a dependency. 
+
+prover_section5_1
+
+ 
+
+uniform_equilibrium_route_memo
+
+\subsection{Ergodic Occupation Realization}
+
+Throughout this subsection, 
+𝐶
+C is a fixed communicating phase class. We write
+
+Ξ
+𝐶
+=
+⨆
+𝑘
+∈
+𝑍
+/
+𝑑
+𝐶
+𝑍
+{
+𝑘
+}
+×
+𝑆
+𝐶
+𝑘
+,
+Ω
+𝐶
+=
+{
+(
+𝜉
+,
+𝑎
+)
+:
+𝜉
+∈
+Ξ
+𝐶
+,
+ 
+𝑎
+∈
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+}
+.
+Ξ
+C
+	​
+
+=
+k∈Z/d
+C
+	​
+
+Z
+⨆
+	​
+
+{k}×S
+C
+k
+	​
+
+,Ω
+C
+	​
+
+={(ξ,a):ξ∈Ξ
+C
+	​
+
+, a∈A(s(ξ))}.
+
+For 
+𝜇
+∈
+Δ
+(
+Ω
+𝐶
+)
+μ∈Δ(Ω
+C
+	​
+
+), define its phase-state marginal
+
+𝜋
+𝜇
+(
+𝜉
+)
+:
+=
+∑
+𝑎
+∈
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+𝜇
+(
+𝜉
+,
+𝑎
+)
+,
+π
+μ
+	​
+
+(ξ):=
+a∈A(s(ξ))
+∑
+	​
+
+μ(ξ,a),
+
+and, whenever 
+𝜋
+𝜇
+(
+𝜉
+)
+>
+0
+π
+μ
+	​
+
+(ξ)>0, its local mixed-action kernel
+
+𝑚
+𝜇
+(
+𝑎
+∣
+𝜉
+)
+:
+=
+𝜇
+(
+𝜉
+,
+𝑎
+)
+𝜋
+𝜇
+(
+𝜉
+)
+.
+m
+μ
+	​
+
+(a∣ξ):=
+π
+μ
+	​
+
+(ξ)
+μ(ξ,a)
+	​
+
+.
+The flow-balance equations are
+\begin{equation}\label{eq:flow-balance}
+\pi_\mu(\xi')
+
+\sum_{\xi\in \Xi_C}\sum_{a\in A(s(\xi))}
+\mu(\xi,a),P_C^0(\xi'\mid \xi,a)
+\qquad\forall \xi'\in \Xi_C.
+\end{equation}
+We therefore consider the occupation polytope
+\begin{equation}\label{eq:occupation-polytope}
+\mathcal F_C
+:=
+\Bigl{
+\mu\in \Delta(\Omega_C): \mu \text{ satisfies \eqref{eq:flow-balance}}
+\Bigr}.
+\end{equation}
+
+For a deterministic stationary joint policy
+
+𝑓
+:
+Ξ
+𝐶
+→
+⨆
+𝜉
+∈
+Ξ
+𝐶
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+,
+𝑓
+(
+𝜉
+)
+∈
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+,
+f:Ξ
+C
+	​
+
+→
+ξ∈Ξ
+C
+	​
+
+⨆
+	​
+
+A(s(ξ)),f(ξ)∈A(s(ξ)),
+
+let
+\begin{equation}\label{eq:Qf}
+Q_f(\xi'\mid \xi):=P_C^0(\xi'\mid \xi,f(\xi))
+\end{equation}
+be the induced Markov kernel on 
+Ξ
+𝐶
+Ξ
+C
+	​
+
+. If 
+𝑅
+⊆
+Ξ
+𝐶
+R⊆Ξ
+C
+	​
+
+ is a recurrent class of 
+𝑄
+𝑓
+Q
+f
+	​
+
+, then 
+𝑄
+𝑓
+∣
+𝑅
+Q
+f
+	​
+
+∣
+R
+	​
+
+ is irreducible on the finite set 
+𝑅
+R, hence has a unique invariant distribution 
+𝜋
+𝑓
+𝑅
+π
+f
+R
+	​
+
+. We define the associated ergodic occupation measure 
+𝜇
+𝑓
+𝑅
+∈
+Δ
+(
+Ω
+𝐶
+)
+μ
+f
+R
+	​
+
+∈Δ(Ω
+C
+	​
+
+) by
+\begin{equation}\label{eq:ergodic-occupation}
+\mu_f^R(\xi,a)
+:=
+\begin{cases}
+\pi_f^R(\xi), & \xi\in R \text{ and } a=f(\xi),\
+0, & \text{otherwise}.
+\end{cases}
+\end{equation}
+
+We also make explicit the communicating-class hypothesis in graph form. Let 
+𝐺
+𝐶
+G
+C
+	​
+
+ be the directed graph on 
+Ξ
+𝐶
+Ξ
+C
+	​
+
+ with an edge 
+𝜉
+→
+𝜉
+′
+ξ→ξ
+′
+ if and only if there exists 
+𝑎
+∈
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+a∈A(s(ξ)) such that 
+𝑃
+𝐶
+0
+(
+𝜉
+′
+∣
+𝜉
+,
+𝑎
+)
+>
+0
+P
+C
+0
+	​
+
+(ξ
+′
+∣ξ,a)>0. The hypothesis that 
+𝐶
+C is communicating means that 
+𝐺
+𝐶
+G
+C
+	​
+
+ is strongly connected.
+
+We can now state the corrected form of the realization theorem.
+
+\begin{theorem}[Ergodic Occupation Realization]\label{thm:ergodic-occupation-realization}
+Assume that 
+𝐺
+𝐶
+G
+C
+	​
+
+ is strongly connected, and fix 
+𝜇
+𝐶
+∈
+𝐹
+𝐶
+μ
+C
+	​
+
+∈F
+C
+	​
+
+. Then for every 
+𝜂
+>
+0
+η>0 there exist constants 
+𝐾
+<
+∞
+K<∞ and 
+𝐵
+0
+<
+∞
+B
+0
+	​
+
+<∞ such that for every integer 
+𝐵
+≥
+𝐵
+0
+B≥B
+0
+	​
+
+ there exists a public block controller 
+𝜅
+𝐶
+,
+𝐵
+κ
+C,B
+	​
+
+ with the following properties, from every entry phase-state 
+𝜉
+0
+∈
+Ξ
+𝐶
+ξ
+0
+	​
+
+∈Ξ
+C
+	​
+
+.
+
+\begin{enumerate}
+\item There exist an integer 
+𝑀
+≤
+dim
+⁡
+(
+𝐹
+𝐶
+)
++
+1
+M≤dim(F
+C
+	​
+
+)+1, recurrent phase classes 
+𝑅
+1
+,
+…
+,
+𝑅
+𝑀
+⊆
+Ξ
+𝐶
+R
+1
+	​
+
+,…,R
+M
+	​
+
+⊆Ξ
+C
+	​
+
+, deterministic stationary joint policies 
+𝑓
+1
+,
+…
+,
+𝑓
+𝑀
+f
+1
+	​
+
+,…,f
+M
+	​
+
+, and a reset-window length 
+ℎ
+𝐵
+≤
+𝐾
+0
+⌈
+log
+⁡
+𝐵
+⌉
+h
+B
+	​
+
+≤K
+0
+	​
+
+⌈logB⌉, with 
+𝐾
+0
+K
+0
+	​
+
+ depending only on 
+𝐶
+C, such that the block is partitioned into 
+𝑀
+M macrosegments, each macrosegment begins with a reset window of length 
+ℎ
+𝐵
+h
+B
+	​
+
+, and the total reset time
+
+𝑟
+(
+𝐵
+)
+:
+=
+𝑀
+ℎ
+𝐵
+r(B):=Mh
+B
+	​
+
+
+satisfies
+
+𝑟
+(
+𝐵
+)
+≤
+𝐾
+⌈
+log
+⁡
+𝐵
+⌉
+.
+r(B)≤K⌈logB⌉.
+
+On the high-probability event constructed below, by the end of the 
+𝑚
+m-th reset window play has been synchronized into the prescribed recurrent phase class 
+𝑅
+𝑚
+R
+m
+	​
+
+.
+
+\item If
+
+𝜇
+^
+𝐵
+:
+=
+1
+𝐵
+∑
+𝑡
+=
+1
+𝐵
+𝛿
+(
+𝜉
+𝑡
+,
+𝑎
+𝑡
+)
+μ
+^
+	​
+
+B
+	​
+
+:=
+B
+1
+	​
+
+t=1
+∑
+B
+	​
+
+δ
+(ξ
+t
+	​
+
+,a
+t
+	​
+
+)
+	​
+
+
+denotes the empirical occupation measure of the block generated by 
+𝜅
+𝐶
+,
+𝐵
+κ
+C,B
+	​
+
+, then
+
+𝑃
+𝜉
+0
+𝜅
+𝐶
+,
+𝐵
+(
+∥
+𝜇
+^
+𝐵
+−
+𝜇
+𝐶
+∥
+1
+≤
+𝜂
+)
+≥
+1
+−
+𝐵
+−
+2
+.
+P
+ξ
+0
+	​
+
+κ
+C,B
+	​
+
+	​
+
+(∥
+μ
+^
+	​
+
+B
+	​
+
+−μ
+C
+	​
+
+∥
+1
+	​
+
+≤η)≥1−B
+−2
+.
+
+\item The controller 
+𝜅
+𝐶
+,
+𝐵
+κ
+C,B
+	​
+
+ uses only publicly observed information, namely the current phase-state, the public action profile, the macrosegment index, and the within-segment clock.
+
+\item The reset overhead is negligible:
+
+𝑟
+(
+𝐵
+)
+𝐵
+→
+0
+as 
+𝐵
+→
+∞
+.
+B
+r(B)
+	​
+
+→0as B→∞.
+
+\end{enumerate}
+\end{theorem}
+
+The proof is divided into three parts. First we characterize 
+𝐹
+𝐶
+F
+C
+	​
+
+. Then we prove a uniform logarithmic reset lemma. Finally we combine that reset lemma with an explicit exponential concentration bound for finite irreducible chains.
+
+\begin{lemma}\label{lem:polytope}
+
+𝐹
+𝐶
+F
+C
+	​
+
+ is a nonempty compact convex polytope.
+\end{lemma}
+
+\begin{proof}
+The simplex 
+Δ
+(
+Ω
+𝐶
+)
+Δ(Ω
+C
+	​
+
+) is compact and convex in the finite-dimensional space 
+𝑅
+Ω
+𝐶
+R
+Ω
+C
+	​
+
+. The defining relations \eqref{eq:flow-balance} are finitely many linear equalities. Hence 
+𝐹
+𝐶
+F
+C
+	​
+
+ is the intersection of a compact convex polytope with an affine subspace, so it is again a compact convex polytope. Nonemptiness holds because 
+𝜇
+𝐶
+∈
+𝐹
+𝐶
+μ
+C
+	​
+
+∈F
+C
+	​
+
+ by hypothesis.
+\end{proof}
+
+\begin{lemma}\label{lem:support-closed}
+Let 
+𝜇
+∈
+𝐹
+𝐶
+μ∈F
+C
+	​
+
+, and let
+
+𝑅
+(
+𝜇
+)
+:
+=
+{
+𝜉
+∈
+Ξ
+𝐶
+:
+𝜋
+𝜇
+(
+𝜉
+)
+>
+0
+}
+.
+R(μ):={ξ∈Ξ
+C
+	​
+
+:π
+μ
+	​
+
+(ξ)>0}.
+
+If 
+𝜉
+′
+∉
+𝑅
+(
+𝜇
+)
+ξ
+′
+∈
+/
+R(μ) and 
+𝜇
+(
+𝜉
+,
+𝑎
+)
+>
+0
+μ(ξ,a)>0, then
+
+𝑃
+𝐶
+0
+(
+𝜉
+′
+∣
+𝜉
+,
+𝑎
+)
+=
+0.
+P
+C
+0
+	​
+
+(ξ
+′
+∣ξ,a)=0.
+
+Equivalently, every phase-action pair in the support of 
+𝜇
+μ sends zero probability outside 
+𝑅
+(
+𝜇
+)
+R(μ).
+\end{lemma}
+
+\begin{proof}
+Fix 
+𝜉
+′
+∉
+𝑅
+(
+𝜇
+)
+ξ
+′
+∈
+/
+R(μ). Then 
+𝜋
+𝜇
+(
+𝜉
+′
+)
+=
+0
+π
+μ
+	​
+
+(ξ
+′
+)=0. By \eqref{eq:flow-balance},
+
+0
+=
+𝜋
+𝜇
+(
+𝜉
+′
+)
+=
+∑
+𝜉
+∈
+Ξ
+𝐶
+∑
+𝑎
+∈
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+𝜇
+(
+𝜉
+,
+𝑎
+)
+ 
+𝑃
+𝐶
+0
+(
+𝜉
+′
+∣
+𝜉
+,
+𝑎
+)
+.
+0=π
+μ
+	​
+
+(ξ
+′
+)=
+ξ∈Ξ
+C
+	​
+
+∑
+	​
+
+a∈A(s(ξ))
+∑
+	​
+
+μ(ξ,a)P
+C
+0
+	​
+
+(ξ
+′
+∣ξ,a).
+
+Every summand on the right-hand side is nonnegative. Hence each summand with 
+𝜇
+(
+𝜉
+,
+𝑎
+)
+>
+0
+μ(ξ,a)>0 must itself be zero. That is exactly the claimed conclusion.
+\end{proof}
+
+\begin{lemma}\label{lem:extreme-deterministic}
+If 
+𝜇
+∈
+𝐹
+𝐶
+μ∈F
+C
+	​
+
+ is an extreme point of 
+𝐹
+𝐶
+F
+C
+	​
+
+, then for every 
+𝜉
+∈
+𝑅
+(
+𝜇
+)
+ξ∈R(μ) there exists a unique action 
+𝑎
+𝜇
+(
+𝜉
+)
+∈
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+a
+μ
+	​
+
+(ξ)∈A(s(ξ)) such that
+
+𝜇
+(
+𝜉
+,
+𝑎
+𝜇
+(
+𝜉
+)
+)
+=
+𝜋
+𝜇
+(
+𝜉
+)
+,
+𝜇
+(
+𝜉
+,
+𝑎
+)
+=
+0
+  for 
+𝑎
+≠
+𝑎
+𝜇
+(
+𝜉
+)
+.
+μ(ξ,a
+μ
+	​
+
+(ξ))=π
+μ
+	​
+
+(ξ),μ(ξ,a)=0  for a
+
+=a
+μ
+	​
+
+(ξ).
+
+Equivalently, 
+𝑚
+𝜇
+(
+⋅
+∣
+𝜉
+)
+m
+μ
+	​
+
+(⋅∣ξ) is a Dirac mass for every 
+𝜉
+∈
+𝑅
+(
+𝜇
+)
+ξ∈R(μ).
+\end{lemma}
+
+\begin{proof}
+Set
+
+𝑅
+:
+=
+𝑅
+(
+𝜇
+)
+=
+{
+𝜉
+:
+𝜋
+𝜇
+(
+𝜉
+)
+>
+0
+}
+,
+𝑆
+:
+=
+{
+(
+𝜉
+,
+𝑎
+)
+∈
+Ω
+𝐶
+:
+𝜇
+(
+𝜉
+,
+𝑎
+)
+>
+0
+}
+.
+R:=R(μ)={ξ:π
+μ
+	​
+
+(ξ)>0},S:={(ξ,a)∈Ω
+C
+	​
+
+:μ(ξ,a)>0}.
+
+Because every 
+𝜉
+∈
+𝑅
+ξ∈R has positive marginal mass, there is at least one action 
+𝑎
+a with 
+(
+𝜉
+,
+𝑎
+)
+∈
+𝑆
+(ξ,a)∈S. Therefore
+\begin{equation}\label{eq:support-lower-bound}
+|S|\ge |R|.
+\end{equation}
+
+We next estimate the number of independent affine constraints on vectors supported on 
+𝑆
+S. By Lemma \ref{lem:support-closed}, for every 
+(
+𝜉
+,
+𝑎
+)
+∈
+𝑆
+(ξ,a)∈S and every 
+𝜉
+′
+∉
+𝑅
+ξ
+′
+∈
+/
+R,
+
+𝑃
+𝐶
+0
+(
+𝜉
+′
+∣
+𝜉
+,
+𝑎
+)
+=
+0.
+P
+C
+0
+	​
+
+(ξ
+′
+∣ξ,a)=0.
+Hence, when a vector 
+𝑥
+∈
+𝑅
+𝑆
+x∈R
+S
+ is viewed as a measure supported on 
+𝑆
+S, the flow equations outside 
+𝑅
+R are identically satisfied. The only nontrivial balance equations are those indexed by 
+𝜉
+′
+∈
+𝑅
+ξ
+′
+∈R:
+\begin{equation}\label{eq:restricted-balance}
+\sum_{a:(\xi',a)\in S} x(\xi',a)
+
+\sum_{(\xi,a)\in S} x(\xi,a),P_C^0(\xi'\mid \xi,a)
+\qquad
+(\xi'\in R).
+\end{equation}
+Summing \eqref{eq:restricted-balance} over 
+𝜉
+′
+∈
+𝑅
+ξ
+′
+∈R gives an identity, because for 
+(
+𝜉
+,
+𝑎
+)
+∈
+𝑆
+(ξ,a)∈S,
+
+∑
+𝜉
+′
+∈
+𝑅
+𝑃
+𝐶
+0
+(
+𝜉
+′
+∣
+𝜉
+,
+𝑎
+)
+=
+1
+ξ
+′
+∈R
+∑
+	​
+
+P
+C
+0
+	​
+
+(ξ
+′
+∣ξ,a)=1
+
+by Lemma \ref{lem:support-closed}. Therefore the family \eqref{eq:restricted-balance} contains at most 
+∣
+𝑅
+∣
+−
+1
+∣R∣−1 independent linear equations. Adding the normalization condition
+
+∑
+(
+𝜉
+,
+𝑎
+)
+∈
+𝑆
+𝑥
+(
+𝜉
+,
+𝑎
+)
+=
+1
+,
+(ξ,a)∈S
+∑
+	​
+
+x(ξ,a)=1,
+
+we obtain at most 
+∣
+𝑅
+∣
+∣R∣ independent affine constraints on 
+𝑅
+𝑆
+R
+S
+.
+
+Suppose, for contradiction, that 
+∣
+𝑆
+∣
+>
+∣
+𝑅
+∣
+∣S∣>∣R∣. Then the affine subspace of 
+𝑥
+∈
+𝑅
+𝑆
+x∈R
+S
+ satisfying \eqref{eq:restricted-balance} and normalization has dimension at least 
+∣
+𝑆
+∣
+−
+∣
+𝑅
+∣
+>
+0
+∣S∣−∣R∣>0. Hence there exists a nonzero vector 
+𝑑
+∈
+𝑅
+𝑆
+d∈R
+S
+ such that
+
+∑
+(
+𝜉
+,
+𝑎
+)
+∈
+𝑆
+𝑑
+(
+𝜉
+,
+𝑎
+)
+=
+0
+(ξ,a)∈S
+∑
+	​
+
+d(ξ,a)=0
+
+and
+
+∑
+𝑎
+:
+(
+𝜉
+′
+,
+𝑎
+)
+∈
+𝑆
+𝑑
+(
+𝜉
+′
+,
+𝑎
+)
+=
+∑
+(
+𝜉
+,
+𝑎
+)
+∈
+𝑆
+𝑑
+(
+𝜉
+,
+𝑎
+)
+ 
+𝑃
+𝐶
+0
+(
+𝜉
+′
+∣
+𝜉
+,
+𝑎
+)
+(
+𝜉
+′
+∈
+𝑅
+)
+.
+a:(ξ
+′
+,a)∈S
+∑
+	​
+
+d(ξ
+′
+,a)=
+(ξ,a)∈S
+∑
+	​
+
+d(ξ,a)P
+C
+0
+	​
+
+(ξ
+′
+∣ξ,a)(ξ
+′
+∈R).
+
+Because 
+𝜇
+(
+𝜉
+,
+𝑎
+)
+>
+0
+μ(ξ,a)>0 for every 
+(
+𝜉
+,
+𝑎
+)
+∈
+𝑆
+(ξ,a)∈S, there exists 
+𝜀
+>
+0
+ε>0 so small that
+
+𝜇
+±
+(
+𝜉
+,
+𝑎
+)
+:
+=
+𝜇
+(
+𝜉
+,
+𝑎
+)
+±
+𝜀
+𝑑
+(
+𝜉
+,
+𝑎
+)
+≥
+0
+∀
+(
+𝜉
+,
+𝑎
+)
+∈
+𝑆
+.
+μ
+±
+(ξ,a):=μ(ξ,a)±εd(ξ,a)≥0∀(ξ,a)∈S.
+
+Extending by zero outside 
+𝑆
+S, both 
+𝜇
++
+μ
++
+ and 
+𝜇
+−
+μ
+−
+ belong to 
+𝐹
+𝐶
+F
+C
+	​
+
+, and
+
+𝜇
+=
+1
+2
+𝜇
++
++
+1
+2
+𝜇
+−
+,
+𝜇
++
+≠
+𝜇
+−
+,
+μ=
+2
+1
+	​
+
+μ
++
++
+2
+1
+	​
+
+μ
+−
+,μ
++
+
+=μ
+−
+,
+
+contradicting the extremality of 
+𝜇
+μ. Therefore 
+∣
+𝑆
+∣
+≤
+∣
+𝑅
+∣
+∣S∣≤∣R∣.
+
+Combining this with \eqref{eq:support-lower-bound} yields 
+∣
+𝑆
+∣
+=
+∣
+𝑅
+∣
+∣S∣=∣R∣. Since every state in 
+𝑅
+R contributes at least one supported action, equality forces exactly one supported action at each 
+𝜉
+∈
+𝑅
+ξ∈R. The lemma follows.
+\end{proof}
+
+\begin{lemma}\label{lem:extreme-iff-ergodic}
+The extreme points of 
+𝐹
+𝐶
+F
+C
+	​
+
+ are exactly the ergodic occupation measures 
+𝜇
+𝑓
+𝑅
+μ
+f
+R
+	​
+
+ arising from deterministic stationary joint policies 
+𝑓
+f and recurrent phase classes 
+𝑅
+R of 
+𝑄
+𝑓
+Q
+f
+	​
+
+.
+\end{lemma}
+
+\begin{proof}
+We prove the two implications separately.
+
+\smallskip
+
+\noindent\emph{Step 1: every extreme point is of the form 
+𝜇
+𝑓
+𝑅
+μ
+f
+R
+	​
+
+.}
+Let 
+𝜇
+∈
+𝐹
+𝐶
+μ∈F
+C
+	​
+
+ be extreme. By Lemma \ref{lem:extreme-deterministic}, there exists a deterministic map
+
+𝑓
+𝜇
+:
+𝑅
+(
+𝜇
+)
+→
+⨆
+𝜉
+∈
+𝑅
+(
+𝜇
+)
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+f
+μ
+	​
+
+:R(μ)→
+ξ∈R(μ)
+⨆
+	​
+
+A(s(ξ))
+
+such that
+
+𝜇
+(
+𝜉
+,
+𝑎
+)
+=
+𝜋
+𝜇
+(
+𝜉
+)
+1
+{
+𝑎
+=
+𝑓
+𝜇
+(
+𝜉
+)
+}
+∀
+𝜉
+∈
+𝑅
+(
+𝜇
+)
+.
+μ(ξ,a)=π
+μ
+	​
+
+(ξ)1
+{a=f
+μ
+	​
+
+(ξ)}
+	​
+
+∀ξ∈R(μ).
+
+By Lemma \ref{lem:support-closed}, all support transitions remain inside 
+𝑅
+(
+𝜇
+)
+R(μ). Hence the flow-balance equation becomes
+
+𝜋
+𝜇
+(
+𝜉
+′
+)
+=
+∑
+𝜉
+∈
+𝑅
+(
+𝜇
+)
+𝜋
+𝜇
+(
+𝜉
+)
+ 
+𝑄
+𝑓
+𝜇
+(
+𝜉
+′
+∣
+𝜉
+)
+∀
+𝜉
+′
+∈
+𝑅
+(
+𝜇
+)
+,
+π
+μ
+	​
+
+(ξ
+′
+)=
+ξ∈R(μ)
+∑
+	​
+
+π
+μ
+	​
+
+(ξ)Q
+f
+μ
+	​
+
+	​
+
+(ξ
+′
+∣ξ)∀ξ
+′
+∈R(μ),
+
+that is,
+
+𝜋
+𝜇
+=
+𝜋
+𝜇
+𝑄
+𝑓
+𝜇
+on 
+𝑅
+(
+𝜇
+)
+.
+π
+μ
+	​
+
+=π
+μ
+	​
+
+Q
+f
+μ
+	​
+
+	​
+
+on R(μ).
+
+Thus 
+𝜋
+𝜇
+π
+μ
+	​
+
+ is an invariant distribution for the finite Markov chain 
+𝑄
+𝑓
+𝜇
+Q
+f
+μ
+	​
+
+	​
+
+ on 
+𝑅
+(
+𝜇
+)
+R(μ).
+
+We claim that every state of 
+𝑅
+(
+𝜇
+)
+R(μ) is recurrent for 
+𝑄
+𝑓
+𝜇
+Q
+f
+μ
+	​
+
+	​
+
+. Indeed, in a finite Markov chain every invariant distribution assigns zero mass to transient states. Since 
+𝜋
+𝜇
+(
+𝜉
+)
+>
+0
+π
+μ
+	​
+
+(ξ)>0 for every 
+𝜉
+∈
+𝑅
+(
+𝜇
+)
+ξ∈R(μ), no state in 
+𝑅
+(
+𝜇
+)
+R(μ) can be transient.
+
+Now let 
+𝑅
+1
+,
+…
+,
+𝑅
+𝑞
+R
+1
+	​
+
+,…,R
+q
+	​
+
+ be the recurrent classes of 
+𝑄
+𝑓
+𝜇
+Q
+f
+μ
+	​
+
+	​
+
+ on 
+𝑅
+(
+𝜇
+)
+R(μ). Since there are no transient states in 
+𝑅
+(
+𝜇
+)
+R(μ), these classes partition 
+𝑅
+(
+𝜇
+)
+R(μ). For each 
+𝑗
+j, set
+
+𝛼
+𝑗
+:
+=
+𝜋
+𝜇
+(
+𝑅
+𝑗
+)
+=
+∑
+𝜉
+∈
+𝑅
+𝑗
+𝜋
+𝜇
+(
+𝜉
+)
+.
+α
+j
+	​
+
+:=π
+μ
+	​
+
+(R
+j
+	​
+
+)=
+ξ∈R
+j
+	​
+
+∑
+	​
+
+π
+μ
+	​
+
+(ξ).
+
+Because 
+𝜋
+𝜇
+(
+𝜉
+)
+>
+0
+π
+μ
+	​
+
+(ξ)>0 on all of 
+𝑅
+(
+𝜇
+)
+R(μ), each 
+𝛼
+𝑗
+α
+j
+	​
+
+ is strictly positive. Define
+
+𝜋
+𝑗
+(
+𝜉
+)
+:
+=
+{
+𝛼
+𝑗
+−
+1
+𝜋
+𝜇
+(
+𝜉
+)
+,
+	
+𝜉
+∈
+𝑅
+𝑗
+,
+
+
+0
+,
+	
+𝜉
+∉
+𝑅
+𝑗
+,
+π
+j
+	​
+
+(ξ):={
+α
+j
+−1
+	​
+
+π
+μ
+	​
+
+(ξ),
+0,
+	​
+
+ξ∈R
+j
+	​
+
+,
+ξ∈
+/
+R
+j
+	​
+
+,
+	​
+
+
+and
+
+𝜇
+𝑗
+(
+𝜉
+,
+𝑎
+)
+:
+=
+{
+𝜋
+𝑗
+(
+𝜉
+)
+,
+	
+𝜉
+∈
+𝑅
+𝑗
+ and 
+𝑎
+=
+𝑓
+𝜇
+(
+𝜉
+)
+,
+
+
+0
+,
+	
+otherwise
+.
+μ
+j
+	​
+
+(ξ,a):={
+π
+j
+	​
+
+(ξ),
+0,
+	​
+
+ξ∈R
+j
+	​
+
+ and a=f
+μ
+	​
+
+(ξ),
+otherwise.
+	​
+
+
+Then each 
+𝜇
+𝑗
+∈
+𝐹
+𝐶
+μ
+j
+	​
+
+∈F
+C
+	​
+
+, and
+
+𝜇
+=
+∑
+𝑗
+=
+1
+𝑞
+𝛼
+𝑗
+𝜇
+𝑗
+.
+μ=
+j=1
+∑
+q
+	​
+
+α
+j
+	​
+
+μ
+j
+	​
+
+.
+
+If 
+𝑞
+≥
+2
+q≥2, this is a nontrivial convex decomposition of 
+𝜇
+μ, contrary to extremality. Hence 
+𝑞
+=
+1
+q=1. Therefore 
+𝑅
+(
+𝜇
+)
+R(μ) is a single recurrent class 
+𝑅
+R of the deterministic kernel 
+𝑄
+𝑓
+𝜇
+Q
+f
+μ
+	​
+
+	​
+
+, and
+
+𝜇
+=
+𝜇
+𝑓
+𝜇
+𝑅
+.
+μ=μ
+f
+μ
+	​
+
+R
+	​
+
+.
+
+\smallskip
+
+\noindent\emph{Step 2: every 
+𝜇
+𝑓
+𝑅
+μ
+f
+R
+	​
+
+ is extreme.}
+Fix a deterministic stationary joint policy 
+𝑓
+f and a recurrent class 
+𝑅
+R of 
+𝑄
+𝑓
+Q
+f
+	​
+
+, and let 
+𝜇
+𝑓
+𝑅
+μ
+f
+R
+	​
+
+ be given by \eqref{eq:ergodic-occupation}. Suppose
+
+𝜇
+𝑓
+𝑅
+=
+𝜃
+𝜈
+1
++
+(
+1
+−
+𝜃
+)
+𝜈
+2
+,
+0
+<
+𝜃
+<
+1
+,
+𝜈
+1
+,
+𝜈
+2
+∈
+𝐹
+𝐶
+.
+μ
+f
+R
+	​
+
+=θν
+1
++(1−θ)ν
+2
+,0<θ<1,ν
+1
+,ν
+2
+∈F
+C
+	​
+
+.
+
+If 
+(
+𝜉
+,
+𝑎
+)
+∉
+supp
+⁡
+(
+𝜇
+𝑓
+𝑅
+)
+(ξ,a)∈
+/
+supp(μ
+f
+R
+	​
+
+), then 
+𝜇
+𝑓
+𝑅
+(
+𝜉
+,
+𝑎
+)
+=
+0
+μ
+f
+R
+	​
+
+(ξ,a)=0. Since 
+𝜈
+1
+,
+𝜈
+2
+ν
+1
+,ν
+2
+ are nonnegative and 
+𝜃
+∈
+(
+0
+,
+1
+)
+θ∈(0,1), it follows that 
+𝜈
+1
+(
+𝜉
+,
+𝑎
+)
+=
+𝜈
+2
+(
+𝜉
+,
+𝑎
+)
+=
+0
+ν
+1
+(ξ,a)=ν
+2
+(ξ,a)=0. Hence both 
+𝜈
+1
+ν
+1
+ and 
+𝜈
+2
+ν
+2
+ are supported on
+
+𝑆
+𝑓
+𝑅
+:
+=
+{
+(
+𝜉
+,
+𝑓
+(
+𝜉
+)
+)
+:
+𝜉
+∈
+𝑅
+}
+.
+S
+f
+R
+	​
+
+:={(ξ,f(ξ)):ξ∈R}.
+
+Write
+
+𝜌
+𝑗
+(
+𝜉
+)
+:
+=
+𝜈
+𝑗
+(
+𝜉
+,
+𝑓
+(
+𝜉
+)
+)
+(
+𝜉
+∈
+𝑅
+,
+ 
+𝑗
+=
+1
+,
+2
+)
+.
+ρ
+j
+(ξ):=ν
+j
+(ξ,f(ξ))(ξ∈R, j=1,2).
+
+Since 
+𝜈
+𝑗
+∈
+𝐹
+𝐶
+ν
+j
+∈F
+C
+	​
+
+, each 
+𝜌
+𝑗
+ρ
+j
+ is an invariant distribution for 
+𝑄
+𝑓
+∣
+𝑅
+Q
+f
+	​
+
+∣
+R
+	​
+
+. But 
+𝑄
+𝑓
+∣
+𝑅
+Q
+f
+	​
+
+∣
+R
+	​
+
+ is irreducible on the finite set 
+𝑅
+R, so its invariant distribution is unique, namely 
+𝜋
+𝑓
+𝑅
+π
+f
+R
+	​
+
+. Therefore 
+𝜌
+1
+=
+𝜌
+2
+=
+𝜋
+𝑓
+𝑅
+ρ
+1
+=ρ
+2
+=π
+f
+R
+	​
+
+, and thus 
+𝜈
+1
+=
+𝜈
+2
+=
+𝜇
+𝑓
+𝑅
+ν
+1
+=ν
+2
+=μ
+f
+R
+	​
+
+. Hence 
+𝜇
+𝑓
+𝑅
+μ
+f
+R
+	​
+
+ is extreme.
+
+The two steps prove the lemma.
+\end{proof}
+
+\begin{corollary}\label{cor:convhull}
+Let
+
+𝐸
+𝐶
+:
+=
+{
+𝜇
+𝑓
+𝑅
+:
+ 
+𝑓
+ deterministic stationary, 
+𝑅
+ a recurrent class of 
+𝑄
+𝑓
+}
+.
+E
+C
+	​
+
+:={μ
+f
+R
+	​
+
+: f deterministic stationary, R a recurrent class of Q
+f
+	​
+
+}.
+
+Then
+
+𝐹
+𝐶
+=
+co
+⁡
+(
+𝐸
+𝐶
+)
+.
+F
+C
+	​
+
+=co(E
+C
+	​
+
+).
+
+In particular, if 
+dim
+⁡
+(
+𝐹
+𝐶
+)
+dim(F
+C
+	​
+
+) denotes the affine dimension of 
+𝐹
+𝐶
+F
+C
+	​
+
+, then for every 
+𝜇
+𝐶
+∈
+𝐹
+𝐶
+μ
+C
+	​
+
+∈F
+C
+	​
+
+ there exist
+
+𝑀
+≤
+dim
+⁡
+(
+𝐹
+𝐶
+)
++
+1
+,
+𝜆
+1
+,
+…
+,
+𝜆
+𝑀
+>
+0
+,
+∑
+𝑚
+=
+1
+𝑀
+𝜆
+𝑚
+=
+1
+,
+M≤dim(F
+C
+	​
+
+)+1,λ
+1
+	​
+
+,…,λ
+M
+	​
+
+>0,
+m=1
+∑
+M
+	​
+
+λ
+m
+	​
+
+=1,
+
+and ergodic deterministic occupation measures 
+𝜇
+1
+,
+…
+,
+𝜇
+𝑀
+∈
+𝐸
+𝐶
+μ
+1
+	​
+
+,…,μ
+M
+	​
+
+∈E
+C
+	​
+
+ such that
+\begin{equation}\label{eq:caratheodory}
+\mu_C=\sum_{m=1}^M \lambda_m \mu_m.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By Lemma \ref{lem:polytope}, 
+𝐹
+𝐶
+F
+C
+	​
+
+ is a compact convex polytope; by Lemma \ref{lem:extreme-iff-ergodic}, its extreme points are exactly the elements of 
+𝐸
+𝐶
+E
+C
+	​
+
+. A polytope is the convex hull of its extreme points, so 
+𝐹
+𝐶
+=
+co
+⁡
+(
+𝐸
+𝐶
+)
+F
+C
+	​
+
+=co(E
+C
+	​
+
+). The representation \eqref{eq:caratheodory} with 
+𝑀
+≤
+dim
+⁡
+(
+𝐹
+𝐶
+)
++
+1
+M≤dim(F
+C
+	​
+
+)+1 is then Carathéodory's theorem, after removing any zero coefficients.
+\end{proof}
+
+We now fix a representation \eqref{eq:caratheodory}. For each 
+𝑚
+m, choose a deterministic stationary policy 
+𝑓
+𝑚
+f
+m
+	​
+
+ and a recurrent phase class 
+𝑅
+𝑚
+⊆
+Ξ
+𝐶
+R
+m
+	​
+
+⊆Ξ
+C
+	​
+
+ such that 
+𝜇
+𝑚
+=
+𝜇
+𝑓
+𝑚
+𝑅
+𝑚
+μ
+m
+	​
+
+=μ
+f
+m
+	​
+
+R
+m
+	​
+
+	​
+
+. Set
+
+𝜆
+∗
+:
+=
+min
+⁡
+1
+≤
+𝑚
+≤
+𝑀
+𝜆
+𝑚
+>
+0.
+λ
+∗
+	​
+
+:=
+1≤m≤M
+min
+	​
+
+λ
+m
+	​
+
+>0.
+
+\begin{lemma}[Public reset kernel and logarithmic hitting]\label{lem:reset}
+There exists a public stationary reset kernel
+
+𝑔
+𝐶
+(
+⋅
+∣
+𝜉
+)
+∈
+Δ
+(
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+)
+(
+𝜉
+∈
+Ξ
+𝐶
+)
+,
+g
+C
+	​
+
+(⋅∣ξ)∈Δ(A(s(ξ)))(ξ∈Ξ
+C
+	​
+
+),
+
+and constants 
+𝐿
+∗
+∈
+𝑁
+L
+∗
+	​
+
+∈N, 
+𝑞
+∗
+∈
+(
+0
+,
+1
+)
+q
+∗
+	​
+
+∈(0,1), and 
+𝐾
+0
+<
+∞
+K
+0
+	​
+
+<∞, all depending only on 
+𝐶
+C, such that the following holds.
+
+Let 
+𝑅
+⊆
+Ξ
+𝐶
+R⊆Ξ
+C
+	​
+
+ be any nonempty subset. If 
+(
+𝜉
+𝑡
+)
+(ξ
+t
+	​
+
+) evolves according to the induced kernel
+
+𝑄
+𝑔
+(
+𝜉
+′
+∣
+𝜉
+)
+:
+=
+∑
+𝑎
+∈
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+𝑔
+𝐶
+(
+𝑎
+∣
+𝜉
+)
+ 
+𝑃
+𝐶
+0
+(
+𝜉
+′
+∣
+𝜉
+,
+𝑎
+)
+,
+Q
+g
+	​
+
+(ξ
+′
+∣ξ):=
+a∈A(s(ξ))
+∑
+	​
+
+g
+C
+	​
+
+(a∣ξ)P
+C
+0
+	​
+
+(ξ
+′
+∣ξ,a),
+
+and
+
+𝜏
+𝑅
+:
+=
+inf
+⁡
+{
+𝑡
+≥
+0
+:
+𝜉
+𝑡
+∈
+𝑅
+}
+,
+τ
+R
+	​
+
+:=inf{t≥0:ξ
+t
+	​
+
+∈R},
+
+then for every starting state 
+𝜉
+∈
+Ξ
+𝐶
+ξ∈Ξ
+C
+	​
+
+,
+\begin{equation}\label{eq:L-star-hit}
+\mathbb P_\xi^g(\tau_R\le L_)\ge q_.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:geometric-tail}
+\mathbb P_\xi^g(\tau_R> qL_)\le (1-q_)^q
+\qquad
+\forall q\in \mathbb N,
+\end{equation}
+and, if
+\begin{equation}\label{eq:hB}
+h_B:=L_\Bigl\lceil \frac{4\log B}{-\log(1-q_)}\Bigr\rceil,
+\end{equation}
+then
+\begin{equation}\label{eq:reset-tail}
+\mathbb P_\xi^g(\tau_R>h_B)\le B^{-4}
+\qquad
+\forall \xi\in \Xi_C,\ \forall B\ge 2.
+\end{equation}
+Moreover,
+
+ℎ
+𝐵
+≤
+𝐾
+0
+⌈
+log
+⁡
+𝐵
+⌉
+h
+B
+	​
+
+≤K
+0
+	​
+
+⌈logB⌉
+
+for some 
+𝐾
+0
+K
+0
+	​
+
+ depending only on 
+𝐶
+C.
+\end{lemma}
+
+\begin{proof}
+Because 
+𝐺
+𝐶
+G
+C
+	​
+
+ is strongly connected and finite, for every ordered pair 
+(
+𝜉
+,
+𝜁
+)
+∈
+Ξ
+𝐶
+×
+Ξ
+𝐶
+(ξ,ζ)∈Ξ
+C
+	​
+
+×Ξ
+C
+	​
+
+ there exists a simple directed path from 
+𝜉
+ξ to 
+𝜁
+ζ. Hence there exists such a path of length at most
+
+𝐿
+∗
+:
+=
+∣
+Ξ
+𝐶
+∣
+−
+1.
+L
+∗
+	​
+
+:=∣Ξ
+C
+	​
+
+∣−1.
+
+Choose once and for all a public stationary kernel 
+𝑔
+𝐶
+g
+C
+	​
+
+ with full support:
+
+𝑔
+𝐶
+(
+𝑎
+∣
+𝜉
+)
+>
+0
+∀
+𝜉
+∈
+Ξ
+𝐶
+,
+ 
+∀
+𝑎
+∈
+𝐴
+(
+𝑠
+(
+𝜉
+)
+)
+.
+g
+C
+	​
+
+(a∣ξ)>0∀ξ∈Ξ
+C
+	​
+
+, ∀a∈A(s(ξ)).
+
+For each ordered pair 
+(
+𝜉
+,
+𝜁
+)
+(ξ,ζ), fix one simple path
+
+𝜉
+=
+𝜁
+0
+→
+𝜁
+1
+→
+⋯
+→
+𝜁
+ℓ
+(
+𝜉
+,
+𝜁
+)
+=
+𝜁
+,
+ℓ
+(
+𝜉
+,
+𝜁
+)
+≤
+𝐿
+∗
+,
+ξ=ζ
+0
+	​
+
+→ζ
+1
+	​
+
+→⋯→ζ
+ℓ(ξ,ζ)
+	​
+
+=ζ,ℓ(ξ,ζ)≤L
+∗
+	​
+
+,
+
+and choose actions 
+𝑎
+𝑗
+∈
+𝐴
+(
+𝑠
+(
+𝜁
+𝑗
+)
+)
+a
+j
+	​
+
+∈A(s(ζ
+j
+	​
+
+)) certifying each edge:
+
+𝑃
+𝐶
+0
+(
+𝜁
+𝑗
++
+1
+∣
+𝜁
+𝑗
+,
+𝑎
+𝑗
+)
+>
+0
+(
+𝑗
+=
+0
+,
+…
+,
+ℓ
+(
+𝜉
+,
+𝜁
+)
+−
+1
+)
+.
+P
+C
+0
+	​
+
+(ζ
+j+1
+	​
+
+∣ζ
+j
+	​
+
+,a
+j
+	​
+
+)>0(j=0,…,ℓ(ξ,ζ)−1).
+
+The probability of following this exact path under 
+𝑔
+𝐶
+g
+C
+	​
+
+ is
+
+𝑞
+(
+𝜉
+,
+𝜁
+)
+:
+=
+∏
+𝑗
+=
+0
+ℓ
+(
+𝜉
+,
+𝜁
+)
+−
+1
+𝑔
+𝐶
+(
+𝑎
+𝑗
+∣
+𝜁
+𝑗
+)
+ 
+𝑃
+𝐶
+0
+(
+𝜁
+𝑗
++
+1
+∣
+𝜁
+𝑗
+,
+𝑎
+𝑗
+)
+,
+q(ξ,ζ):=
+j=0
+∏
+ℓ(ξ,ζ)−1
+	​
+
+g
+C
+	​
+
+(a
+j
+	​
+
+∣ζ
+j
+	​
+
+)P
+C
+0
+	​
+
+(ζ
+j+1
+	​
+
+∣ζ
+j
+	​
+
+,a
+j
+	​
+
+),
+
+which is strictly positive. Since 
+Ξ
+𝐶
+Ξ
+C
+	​
+
+ is finite, the minimum
+
+𝑞
+∗
+:
+=
+min
+⁡
+𝜉
+,
+𝜁
+∈
+Ξ
+𝐶
+𝑞
+(
+𝜉
+,
+𝜁
+)
+q
+∗
+	​
+
+:=
+ξ,ζ∈Ξ
+C
+	​
+
+min
+	​
+
+q(ξ,ζ)
+
+is well-defined and satisfies 
+𝑞
+∗
+>
+0
+q
+∗
+	​
+
+>0.
+
+Now let 
+𝑅
+⊆
+Ξ
+𝐶
+R⊆Ξ
+C
+	​
+
+ be nonempty. Fix 
+𝜉
+∈
+Ξ
+𝐶
+ξ∈Ξ
+C
+	​
+
+ and choose any 
+𝜁
+∈
+𝑅
+ζ∈R. The path chosen for 
+(
+𝜉
+,
+𝜁
+)
+(ξ,ζ) has length at most 
+𝐿
+∗
+L
+∗
+	​
+
+ and, if followed, reaches 
+𝑅
+R. Therefore
+
+𝑃
+𝜉
+𝑔
+(
+𝜏
+𝑅
+≤
+𝐿
+∗
+)
+≥
+𝑞
+(
+𝜉
+,
+𝜁
+)
+≥
+𝑞
+∗
+,
+P
+ξ
+g
+	​
+
+(τ
+R
+	​
+
+≤L
+∗
+	​
+
+)≥q(ξ,ζ)≥q
+∗
+	​
+
+,
+
+proving \eqref{eq:L-star-hit}.
+
+To obtain the tail bound, write
+
+𝐸
+𝑞
+:
+=
+{
+𝜏
+𝑅
+>
+𝑞
+𝐿
+∗
+}
+.
+E
+q
+	​
+
+:={τ
+R
+	​
+
+>qL
+∗
+	​
+
+}.
+
+Then 
+𝐸
+𝑞
++
+1
+⊆
+𝐸
+𝑞
+E
+q+1
+	​
+
+⊆E
+q
+	​
+
+, and by the strong Markov property applied at time 
+𝑞
+𝐿
+∗
+qL
+∗
+	​
+
+,
+
+𝑃
+𝜉
+𝑔
+(
+𝐸
+𝑞
++
+1
+∣
+𝐸
+𝑞
+)
+≤
+1
+−
+𝑞
+∗
+.
+P
+ξ
+g
+	​
+
+(E
+q+1
+	​
+
+∣E
+q
+	​
+
+)≤1−q
+∗
+	​
+
+.
+
+Induction gives \eqref{eq:geometric-tail}:
+
+𝑃
+𝜉
+𝑔
+(
+𝜏
+𝑅
+>
+𝑞
+𝐿
+∗
+)
+≤
+(
+1
+−
+𝑞
+∗
+)
+𝑞
+.
+P
+ξ
+g
+	​
+
+(τ
+R
+	​
+
+>qL
+∗
+	​
+
+)≤(1−q
+∗
+	​
+
+)
+q
+.
+
+Now choose 
+ℎ
+𝐵
+h
+B
+	​
+
+ as in \eqref{eq:hB}. Then 
+ℎ
+𝐵
+h
+B
+	​
+
+ is an integer multiple of 
+𝐿
+∗
+L
+∗
+	​
+
+, and
+
+𝑃
+𝜉
+𝑔
+(
+𝜏
+𝑅
+>
+ℎ
+𝐵
+)
+≤
+(
+1
+−
+𝑞
+∗
+)
+⌈
+4
+log
+⁡
+𝐵
+/
+(
+−
+log
+⁡
+(
+1
+−
+𝑞
+∗
+)
+)
+⌉
+≤
+𝑒
+−
+4
+log
+⁡
+𝐵
+=
+𝐵
+−
+4
+,
+P
+ξ
+g
+	​
+
+(τ
+R
+	​
+
+>h
+B
+	​
+
+)≤(1−q
+∗
+	​
+
+)
+⌈4logB/(−log(1−q
+∗
+	​
+
+))⌉
+≤e
+−4logB
+=B
+−4
+,
+
+which is \eqref{eq:reset-tail}. Finally,
+
+ℎ
+𝐵
+=
+𝐿
+∗
+⌈
+4
+log
+⁡
+𝐵
+−
+log
+⁡
+(
+1
+−
+𝑞
+∗
+)
+⌉
+≤
+𝐿
+∗
+(
+4
+−
+log
+⁡
+(
+1
+−
+𝑞
+∗
+)
++
+1
+)
+⌈
+log
+⁡
+𝐵
+⌉
+,
+h
+B
+	​
+
+=L
+∗
+	​
+
+⌈
+−log(1−q
+∗
+	​
+
+)
+4logB
+	​
+
+⌉≤L
+∗
+	​
+
+(
+−log(1−q
+∗
+	​
+
+)
+4
+	​
+
++1)⌈logB⌉,
+
+so we may take
+
+𝐾
+0
+:
+=
+𝐿
+∗
+(
+4
+−
+log
+⁡
+(
+1
+−
+𝑞
+∗
+)
++
+1
+)
+.
+K
+0
+	​
+
+:=L
+∗
+	​
+
+(
+−log(1−q
+∗
+	​
+
+)
+4
+	​
+
++1).
+
+All constants depend only on 
+𝐶
+C.
+\end{proof}
+
+The next lemma is the concentration estimate that will be used in each productive segment. The proof is self-contained and does not assume aperiodicity.
+
+\begin{lemma}[Poisson equation and martingale decomposition]\label{lem:poisson}
+Let 
+𝑄
+Q be an irreducible Markov kernel on a finite state space 
+𝑅
+R, let 
+𝜋
+π be its unique invariant distribution, and let 
+ℎ
+:
+𝑅
+→
+𝑅
+h:R→R satisfy
+
+∑
+𝑥
+∈
+𝑅
+𝜋
+(
+𝑥
+)
+ℎ
+(
+𝑥
+)
+=
+0.
+x∈R
+∑
+	​
+
+π(x)h(x)=0.
+
+Then there exists a unique function 
+𝑢
+:
+𝑅
+→
+𝑅
+u:R→R satisfying
+\begin{equation}\label{eq:poisson}
+u-Qu=h,
+\qquad
+\sum_{x\in R}\pi(x)u(x)=0.
+\end{equation}
+If 
+(
+𝑋
+𝑡
+)
+𝑡
+≥
+0
+(X
+t
+	​
+
+)
+t≥0
+	​
+
+ is the Markov chain with kernel 
+𝑄
+Q, and
+
+𝐹
+𝑡
+:
+=
+𝜎
+(
+𝑋
+0
+,
+…
+,
+𝑋
+𝑡
+)
+,
+F
+t
+	​
+
+:=σ(X
+0
+	​
+
+,…,X
+t
+	​
+
+),
+
+then
+
+𝑀
+𝑛
+:
+=
+∑
+𝑡
+=
+0
+𝑛
+−
+1
+(
+𝑢
+(
+𝑋
+𝑡
++
+1
+)
+−
+𝑄
+𝑢
+(
+𝑋
+𝑡
+)
+)
+M
+n
+	​
+
+:=
+t=0
+∑
+n−1
+	​
+
+(u(X
+t+1
+	​
+
+)−Qu(X
+t
+	​
+
+))
+is an 
+(
+𝐹
+𝑛
+)
+(F
+n
+	​
+
+)-martingale, and
+\begin{equation}\label{eq:martingale-telescope}
+\sum_{t=0}^{n-1} h(X_t)
+
+u(X_0)-u(X_n)+M_n.
+\end{equation}
+If 
+𝑈
+:
+=
+∥
+𝑢
+∥
+∞
+U:=∥u∥
+∞
+	​
+
+, then for every 
+𝑥
+∈
+𝑅
+x∈R, every 
+𝑛
+≥
+1
+n≥1, and every 
+𝜀
+>
+0
+ε>0,
+\begin{equation}\label{eq:azuma-sharp}
+\mathbb P_x!\left(
+\left|
+\frac1n\sum_{t=0}^{n-1}h(X_t)
+\right|
+\ge \varepsilon
+\right)
+\le
+2\exp!\left(
+-\frac{(n\varepsilon-2U)+^2}{8U^2 n}
+\right).
+\end{equation}
+In particular, if 
+𝑛
+≥
+4
+𝑈
+/
+𝜀
+n≥4U/ε, then
+\begin{equation}\label{eq:azuma-simple}
+\mathbb P_x!\left(
+\left|
+\frac1n\sum{t=0}^{n-1}h(X_t)
+\right|
+\ge \varepsilon
+\right)
+\le
+2\exp!\left(
+-\frac{n\varepsilon^2}{32U^2}
+\right).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let
+
+𝐻
+:
+=
+{
+𝑣
+∈
+𝑅
+𝑅
+:
+∑
+𝑥
+∈
+𝑅
+𝜋
+(
+𝑥
+)
+𝑣
+(
+𝑥
+)
+=
+0
+}
+.
+H:={v∈R
+R
+:
+x∈R
+∑
+	​
+
+π(x)v(x)=0}.
+
+This is a vector space of dimension 
+∣
+𝑅
+∣
+−
+1
+∣R∣−1. Since 
+𝜋
+𝑄
+=
+𝜋
+πQ=π, the linear map 
+𝐼
+−
+𝑄
+I−Q preserves 
+𝐻
+H. We claim that 
+(
+𝐼
+−
+𝑄
+)
+∣
+𝐻
+(I−Q)∣
+H
+	​
+
+ is injective. Indeed, if 
+𝑣
+∈
+𝐻
+v∈H and 
+(
+𝐼
+−
+𝑄
+)
+𝑣
+=
+0
+(I−Q)v=0, then 
+𝑄
+𝑣
+=
+𝑣
+Qv=v. Thus 
+𝑣
+v is a harmonic function for the irreducible finite chain 
+𝑄
+Q, so 
+𝑣
+v is constant on 
+𝑅
+R. Because 
+𝑣
+∈
+𝐻
+v∈H, that constant must be zero. Hence 
+𝑣
+=
+0
+v=0. Since 
+𝐻
+H is finite-dimensional, injectivity implies bijectivity. Therefore, for every zero-mean 
+ℎ
+∈
+𝐻
+h∈H, there exists a unique 
+𝑢
+∈
+𝐻
+u∈H satisfying \eqref{eq:poisson}.
+
+Now define
+
+Δ
+𝑡
+:
+=
+𝑢
+(
+𝑋
+𝑡
++
+1
+)
+−
+𝑄
+𝑢
+(
+𝑋
+𝑡
+)
+.
+Δ
+t
+	​
+
+:=u(X
+t+1
+	​
+
+)−Qu(X
+t
+	​
+
+).
+
+Because
+
+𝐸
+[
+Δ
+𝑡
+∣
+𝐹
+𝑡
+]
+=
+𝐸
+[
+𝑢
+(
+𝑋
+𝑡
++
+1
+)
+∣
+𝐹
+𝑡
+]
+−
+𝑄
+𝑢
+(
+𝑋
+𝑡
+)
+=
+𝑄
+𝑢
+(
+𝑋
+𝑡
+)
+−
+𝑄
+𝑢
+(
+𝑋
+𝑡
+)
+=
+0
+,
+E[Δ
+t
+	​
+
+∣F
+t
+	​
+
+]=E[u(X
+t+1
+	​
+
+)∣F
+t
+	​
+
+]−Qu(X
+t
+	​
+
+)=Qu(X
+t
+	​
+
+)−Qu(X
+t
+	​
+
+)=0,
+
+the process 
+𝑀
+𝑛
+:
+=
+∑
+𝑡
+=
+0
+𝑛
+−
+1
+Δ
+𝑡
+M
+n
+	​
+
+:=∑
+t=0
+n−1
+	​
+
+Δ
+t
+	​
+
+ is a martingale.
+
+Using \eqref{eq:poisson},
+
+ℎ
+(
+𝑋
+𝑡
+)
+=
+𝑢
+(
+𝑋
+𝑡
+)
+−
+𝑄
+𝑢
+(
+𝑋
+𝑡
+)
+.
+h(X
+t
+	​
+
+)=u(X
+t
+	​
+
+)−Qu(X
+t
+	​
+
+).
+
+Hence
+
+Δ
+𝑡
+=
+𝑢
+(
+𝑋
+𝑡
++
+1
+)
+−
+𝑄
+𝑢
+(
+𝑋
+𝑡
+)
+=
+𝑢
+(
+𝑋
+𝑡
++
+1
+)
+−
+𝑢
+(
+𝑋
+𝑡
+)
++
+ℎ
+(
+𝑋
+𝑡
+)
+.
+Δ
+t
+	​
+
+=u(X
+t+1
+	​
+
+)−Qu(X
+t
+	​
+
+)=u(X
+t+1
+	​
+
+)−u(X
+t
+	​
+
+)+h(X
+t
+	​
+
+).
+
+Summing over 
+𝑡
+=
+0
+,
+…
+,
+𝑛
+−
+1
+t=0,…,n−1 yields \eqref{eq:martingale-telescope}.
+
+Next, 
+∣
+𝑢
+(
+𝑋
+𝑡
++
+1
+)
+∣
+≤
+𝑈
+∣u(X
+t+1
+	​
+
+)∣≤U and 
+∣
+𝑄
+𝑢
+(
+𝑋
+𝑡
+)
+∣
+≤
+𝑈
+∣Qu(X
+t
+	​
+
+)∣≤U, so
+
+∣
+Δ
+𝑡
+∣
+≤
+2
+𝑈
+∀
+𝑡
+.
+∣Δ
+t
+	​
+
+∣≤2U∀t.
+
+Applying Azuma-Hoeffding to the martingale 
+𝑀
+𝑛
+M
+n
+	​
+
+, we obtain
+
+𝑃
+𝑥
+(
+∣
+𝑀
+𝑛
+∣
+≥
+𝑠
+)
+≤
+2
+exp
+⁡
+ ⁣
+(
+−
+𝑠
+2
+8
+𝑈
+2
+𝑛
+)
+(
+𝑠
+>
+0
+)
+.
+P
+x
+	​
+
+(∣M
+n
+	​
+
+∣≥s)≤2exp(−
+8U
+2
+n
+s
+2
+	​
+
+)(s>0).
+
+By \eqref{eq:martingale-telescope},
+
+∣
+∑
+𝑡
+=
+0
+𝑛
+−
+1
+ℎ
+(
+𝑋
+𝑡
+)
+∣
+≤
+∣
+𝑀
+𝑛
+∣
++
+∣
+𝑢
+(
+𝑋
+0
+)
+−
+𝑢
+(
+𝑋
+𝑛
+)
+∣
+≤
+∣
+𝑀
+𝑛
+∣
++
+2
+𝑈
+.
+	​
+
+t=0
+∑
+n−1
+	​
+
+h(X
+t
+	​
+
+)
+	​
+
+≤∣M
+n
+	​
+
+∣+∣u(X
+0
+	​
+
+)−u(X
+n
+	​
+
+)∣≤∣M
+n
+	​
+
+∣+2U.
+
+Therefore,
+
+{
+∣
+1
+𝑛
+∑
+𝑡
+=
+0
+𝑛
+−
+1
+ℎ
+(
+𝑋
+𝑡
+)
+∣
+≥
+𝜀
+}
+⊆
+{
+∣
+𝑀
+𝑛
+∣
+≥
+𝑛
+𝜀
+−
+2
+𝑈
+}
+,
+{
+	​
+
+n
+1
+	​
+
+t=0
+∑
+n−1
+	​
+
+h(X
+t
+	​
+
+)
+	​
+
+≥ε}⊆{∣M
+n
+	​
+
+∣≥nε−2U},
+
+which gives \eqref{eq:azuma-sharp}. If 
+𝑛
+≥
+4
+𝑈
+/
+𝜀
+n≥4U/ε, then 
+𝑛
+𝜀
+−
+2
+𝑈
+≥
+𝑛
+𝜀
+/
+2
+nε−2U≥nε/2, and \eqref{eq:azuma-simple} follows.
+\end{proof}
+
+\begin{corollary}[Occupation concentration on a recurrent phase class]\label{cor:occupation-concentration}
+Fix 
+𝑚
+∈
+{
+1
+,
+…
+,
+𝑀
+}
+m∈{1,…,M}. Let 
+𝑄
+𝑚
+:
+=
+𝑄
+𝑓
+𝑚
+∣
+𝑅
+𝑚
+Q
+m
+	​
+
+:=Q
+f
+m
+	​
+
+	​
+
+∣
+R
+m
+	​
+
+	​
+
+, let 
+𝜋
+𝑚
+π
+m
+	​
+
+ be its invariant distribution, and let 
+𝜇
+𝑚
+=
+𝜇
+𝑓
+𝑚
+𝑅
+𝑚
+μ
+m
+	​
+
+=μ
+f
+m
+	​
+
+R
+m
+	​
+
+	​
+
+. For each 
+𝑦
+∈
+𝑅
+𝑚
+y∈R
+m
+	​
+
+, define
+
+ℎ
+𝑦
+(
+𝑥
+)
+:
+=
+1
+{
+𝑥
+=
+𝑦
+}
+−
+𝜋
+𝑚
+(
+𝑦
+)
+(
+𝑥
+∈
+𝑅
+𝑚
+)
+,
+h
+y
+	​
+
+(x):=1
+{x=y}
+	​
+
+−π
+m
+	​
+
+(y)(x∈R
+m
+	​
+
+),
+
+and let 
+𝑢
+𝑦
+u
+y
+	​
+
+ be the corresponding solution of the Poisson equation \eqref{eq:poisson} for 
+𝑄
+𝑚
+Q
+m
+	​
+
+. Set
+
+𝑈
+𝑚
+:
+=
+max
+⁡
+𝑦
+∈
+𝑅
+𝑚
+∥
+𝑢
+𝑦
+∥
+∞
+.
+U
+m
+	​
+
+:=
+y∈R
+m
+	​
+
+max
+	​
+
+∥u
+y
+	​
+
+∥
+∞
+	​
+
+.
+
+Then for every 
+𝜀
+>
+0
+ε>0, every 
+𝑥
+∈
+𝑅
+𝑚
+x∈R
+m
+	​
+
+, and every 
+𝑛
+≥
+4
+∣
+𝑅
+𝑚
+∣
+𝑈
+𝑚
+/
+𝜀
+n≥4∣R
+m
+	​
+
+∣U
+m
+	​
+
+/ε,
+\begin{equation}\label{eq:state-concentration}
+\mathbb P_x^{f_m}!\left(
+\left|
+\frac1n\sum_{t=0}^{n-1}\delta_{\xi_t}-\pi_m
+\right|_1
+
+\varepsilon
+\right)
+\le
+2|R_m|
+\exp!\left(
+-\frac{n\varepsilon^2}{32|R_m|^2U_m^2}
+\right).
+\end{equation}
+Consequently, if
+
+𝜇
+^
+𝑛
+(
+𝑚
+)
+:
+=
+1
+𝑛
+∑
+𝑡
+=
+0
+𝑛
+−
+1
+𝛿
+(
+𝜉
+𝑡
+,
+𝑓
+𝑚
+(
+𝜉
+𝑡
+)
+)
+μ
+^
+	​
+
+n
+(m)
+	​
+
+:=
+n
+1
+	​
+
+t=0
+∑
+n−1
+	​
+
+δ
+(ξ
+t
+	​
+
+,f
+m
+	​
+
+(ξ
+t
+	​
+
+))
+	​
+
+
+is the empirical occupation measure of the phase-action chain under 
+𝑓
+𝑚
+f
+m
+	​
+
+, then for the same 
+𝑥
+,
+𝑛
+,
+𝜀
+x,n,ε,
+\begin{equation}\label{eq:occupation-concentration}
+\mathbb P_x^{f_m}!\left(
+|\hat\mu_n^{(m)}-\mu_m|_1>\varepsilon
+\right)
+\le
+2|R_m|
+\exp!\left(
+-\frac{n\varepsilon^2}{32|R_m|^2U_m^2}
+\right).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Fix 
+𝑦
+∈
+𝑅
+𝑚
+y∈R
+m
+	​
+
+. Applying Lemma \ref{lem:poisson} to 
+ℎ
+𝑦
+h
+y
+	​
+
+, and choosing
+
+𝜀
+𝑦
+:
+=
+𝜀
+∣
+𝑅
+𝑚
+∣
+,
+ε
+y
+	​
+
+:=
+∣R
+m
+	​
+
+∣
+ε
+	​
+
+,
+
+we obtain for 
+𝑛
+≥
+4
+𝑈
+𝑚
+/
+𝜀
+𝑦
+=
+4
+∣
+𝑅
+𝑚
+∣
+𝑈
+𝑚
+/
+𝜀
+n≥4U
+m
+	​
+
+/ε
+y
+	​
+
+=4∣R
+m
+	​
+
+∣U
+m
+	​
+
+/ε,
+
+𝑃
+𝑥
+𝑓
+𝑚
+ ⁣
+(
+∣
+1
+𝑛
+∑
+𝑡
+=
+0
+𝑛
+−
+1
+(
+1
+{
+𝜉
+𝑡
+=
+𝑦
+}
+−
+𝜋
+𝑚
+(
+𝑦
+)
+)
+∣
+>
+𝜀
+∣
+𝑅
+𝑚
+∣
+)
+≤
+2
+exp
+⁡
+ ⁣
+(
+−
+𝑛
+𝜀
+2
+32
+∣
+𝑅
+𝑚
+∣
+2
+𝑈
+𝑚
+2
+)
+.
+P
+x
+f
+m
+	​
+
+	​
+
+(
+	​
+
+n
+1
+	​
+
+t=0
+∑
+n−1
+	​
+
+(1
+{ξ
+t
+	​
+
+=y}
+	​
+
+−π
+m
+	​
+
+(y))
+	​
+
+>
+∣R
+m
+	​
+
+∣
+ε
+	​
+
+)≤2exp(−
+32∣R
+m
+	​
+
+∣
+2
+U
+m
+2
+	​
+
+nε
+2
+	​
+
+).
+
+If the empirical state measure
+
+𝜋
+^
+𝑛
+:
+=
+1
+𝑛
+∑
+𝑡
+=
+0
+𝑛
+−
+1
+𝛿
+𝜉
+𝑡
+π
+^
+n
+	​
+
+:=
+n
+1
+	​
+
+t=0
+∑
+n−1
+	​
+
+δ
+ξ
+t
+	​
+
+	​
+
+
+satisfies 
+∥
+𝜋
+^
+𝑛
+−
+𝜋
+𝑚
+∥
+1
+>
+𝜀
+∥
+π
+^
+n
+	​
+
+−π
+m
+	​
+
+∥
+1
+	​
+
+>ε, then some coordinate must satisfy
+
+∣
+𝜋
+^
+𝑛
+(
+𝑦
+)
+−
+𝜋
+𝑚
+(
+𝑦
+)
+∣
+>
+𝜀
+∣
+𝑅
+𝑚
+∣
+.
+∣
+π
+^
+n
+	​
+
+(y)−π
+m
+	​
+
+(y)∣>
+∣R
+m
+	​
+
+∣
+ε
+	​
+
+.
+
+A union bound over 
+𝑦
+∈
+𝑅
+𝑚
+y∈R
+m
+	​
+
+ gives \eqref{eq:state-concentration}.
+
+Under 
+𝑓
+𝑚
+f
+m
+	​
+
+, the action played at phase-state 
+𝜉
+∈
+𝑅
+𝑚
+ξ∈R
+m
+	​
+
+ is always 
+𝑓
+𝑚
+(
+𝜉
+)
+f
+m
+	​
+
+(ξ). Hence
+
+𝜇
+^
+𝑛
+(
+𝑚
+)
+(
+𝜉
+,
+𝑎
+)
+=
+𝜋
+^
+𝑛
+(
+𝜉
+)
+1
+{
+𝑎
+=
+𝑓
+𝑚
+(
+𝜉
+)
+}
+,
+𝜇
+𝑚
+(
+𝜉
+,
+𝑎
+)
+=
+𝜋
+𝑚
+(
+𝜉
+)
+1
+{
+𝑎
+=
+𝑓
+𝑚
+(
+𝜉
+)
+}
+,
+μ
+^
+	​
+
+n
+(m)
+	​
+
+(ξ,a)=
+π
+^
+n
+	​
+
+(ξ)1
+{a=f
+m
+	​
+
+(ξ)}
+	​
+
+,μ
+m
+	​
+
+(ξ,a)=π
+m
+	​
+
+(ξ)1
+{a=f
+m
+	​
+
+(ξ)}
+	​
+
+,
+
+and therefore
+
+∥
+𝜇
+^
+𝑛
+(
+𝑚
+)
+−
+𝜇
+𝑚
+∥
+1
+=
+∥
+𝜋
+^
+𝑛
+−
+𝜋
+𝑚
+∥
+1
+.
+∥
+μ
+^
+	​
+
+n
+(m)
+	​
+
+−μ
+m
+	​
+
+∥
+1
+	​
+
+=∥
+π
+^
+n
+	​
+
+−π
+m
+	​
+
+∥
+1
+	​
+
+.
+
+This yields \eqref{eq:occupation-concentration}.
+\end{proof}
+
+\begin{remark}[Periodic classes]\label{rem:periodic}
+No aperiodicity assumption has been used anywhere above. The phase lift 
+Ξ
+𝐶
+=
+⨆
+𝑘
+∈
+𝑍
+/
+𝑑
+𝐶
+𝑍
+{
+𝑘
+}
+×
+𝑆
+𝐶
+𝑘
+Ξ
+C
+	​
+
+=⨆
+k∈Z/d
+C
+	​
+
+Z
+	​
+
+{k}×S
+C
+k
+	​
+
+ is already the periodic extension requested in the theorem statement: the public phase coordinate is part of the observed phase-state, and the deterministic kernels 
+𝑄
+𝑓
+𝑚
+Q
+f
+m
+	​
+
+	​
+
+ are irreducible on their recurrent phase classes 
+𝑅
+𝑚
+⊆
+Ξ
+𝐶
+R
+m
+	​
+
+⊆Ξ
+C
+	​
+
+, even when the original unlifted dynamics on 
+𝑆
+𝐶
+S
+C
+	​
+
+ are 
+𝑑
+𝐶
+d
+C
+	​
+
+-periodic. If one prefers to suppress the phase coordinate and work on the original state space, the same argument can be read on the 
+𝑑
+𝐶
+d
+C
+	​
+
+-step skeleton. The Poisson-equation concentration estimate itself does not require aperiodicity.
+\end{remark}
+
+\begin{proof}[Proof of Theorem \ref{thm:ergodic-occupation-realization}]
+Fix 
+𝜂
+>
+0
+η>0. By Corollary \ref{cor:convhull}, choose a decomposition
+
+𝜇
+𝐶
+=
+∑
+𝑚
+=
+1
+𝑀
+𝜆
+𝑚
+𝜇
+𝑚
+,
+𝑀
+≤
+dim
+⁡
+(
+𝐹
+𝐶
+)
++
+1
+,
+𝜆
+𝑚
+>
+0
+,
+∑
+𝑚
+=
+1
+𝑀
+𝜆
+𝑚
+=
+1
+,
+μ
+C
+	​
+
+=
+m=1
+∑
+M
+	​
+
+λ
+m
+	​
+
+μ
+m
+	​
+
+,M≤dim(F
+C
+	​
+
+)+1,λ
+m
+	​
+
+>0,
+m=1
+∑
+M
+	​
+
+λ
+m
+	​
+
+=1,
+
+with 
+𝜇
+𝑚
+=
+𝜇
+𝑓
+𝑚
+𝑅
+𝑚
+μ
+m
+	​
+
+=μ
+f
+m
+	​
+
+R
+m
+	​
+
+	​
+
+ as above.
+
+Let 
+ℎ
+𝐵
+h
+B
+	​
+
+ be given by Lemma \ref{lem:reset}, and set
+
+𝑟
+(
+𝐵
+)
+:
+=
+𝑀
+ℎ
+𝐵
+.
+r(B):=Mh
+B
+	​
+
+.
+
+Because 
+𝑀
+≤
+dim
+⁡
+(
+𝐹
+𝐶
+)
++
+1
+M≤dim(F
+C
+	​
+
+)+1 and 
+ℎ
+𝐵
+≤
+𝐾
+0
+⌈
+log
+⁡
+𝐵
+⌉
+h
+B
+	​
+
+≤K
+0
+	​
+
+⌈logB⌉, there is a constant 
+𝐾
+K, depending only on 
+𝐶
+C, such that
+
+𝑟
+(
+𝐵
+)
+≤
+𝐾
+⌈
+log
+⁡
+𝐵
+⌉
+.
+r(B)≤K⌈logB⌉.
+
+This already proves the claimed overhead estimate 
+𝑟
+(
+𝐵
+)
+=
+𝑂
+(
+log
+⁡
+𝐵
+)
+r(B)=O(logB); in particular,
+
+𝑟
+(
+𝐵
+)
+𝐵
+→
+0.
+B
+r(B)
+	​
+
+→0.
+
+We next choose the productive lengths. Set
+
+𝑁
+:
+=
+𝐵
+−
+𝑟
+(
+𝐵
+)
+,
+N:=B−r(B),
+
+and, for 
+𝑚
+=
+1
+,
+…
+,
+𝑀
+−
+1
+m=1,…,M−1,
+
+𝐿
+𝑚
+:
+=
+⌊
+𝜆
+𝑚
+𝑁
+⌋
+,
+𝐿
+𝑀
+:
+=
+𝑁
+−
+∑
+𝑚
+=
+1
+𝑀
+−
+1
+𝐿
+𝑚
+.
+L
+m
+	​
+
+:=⌊λ
+m
+	​
+
+N⌋,L
+M
+	​
+
+:=N−
+m=1
+∑
+M−1
+	​
+
+L
+m
+	​
+
+.
+
+Then 
+∑
+𝑚
+=
+1
+𝑀
+𝐿
+𝑚
+=
+𝑁
+∑
+m=1
+M
+	​
+
+L
+m
+	​
+
+=N. Write
+
+𝑑
+𝑚
+:
+=
+𝐿
+𝑚
+−
+𝜆
+𝑚
+𝑁
+(
+𝑚
+=
+1
+,
+…
+,
+𝑀
+)
+.
+d
+m
+	​
+
+:=L
+m
+	​
+
+−λ
+m
+	​
+
+N(m=1,…,M).
+
+For 
+𝑚
+<
+𝑀
+m<M, one has 
+−
+1
+≤
+𝑑
+𝑚
+≤
+0
+−1≤d
+m
+	​
+
+≤0. Therefore
+
+𝑑
+𝑀
+=
+−
+∑
+𝑚
+=
+1
+𝑀
+−
+1
+𝑑
+𝑚
+and
+0
+≤
+𝑑
+𝑀
+≤
+𝑀
+−
+1.
+d
+M
+	​
+
+=−
+m=1
+∑
+M−1
+	​
+
+d
+m
+	​
+
+and0≤d
+M
+	​
+
+≤M−1.
+Hence
+\begin{equation}\label{eq:rounding-N}
+\sum_{m=1}^M \left|\frac{L_m}{N}-\lambda_m\right|
+
+\frac1N\sum_{m=1}^M |d_m|
+\le
+\frac{2(M-1)}{N}
+\le
+\frac{2M}{N}.
+\end{equation}
+
+We now define the public block controller 
+𝜅
+𝐶
+,
+𝐵
+κ
+C,B
+	​
+
+.
+
+\smallskip
+
+\noindent\emph{Macrosegment 
+𝑚
+m.}
+The 
+𝑚
+m-th macrosegment has total length 
+ℎ
+𝐵
++
+𝐿
+𝑚
+h
+B
+	​
+
++L
+m
+	​
+
+. During its first 
+ℎ
+𝐵
+h
+B
+	​
+
+ stages, the controller runs a reset protocol aimed at the target class 
+𝑅
+𝑚
+R
+m
+	​
+
+: until the first visit of 
+𝑅
+𝑚
+R
+m
+	​
+
+, it plays the public reset kernel 
+𝑔
+𝐶
+g
+C
+	​
+
+; once 
+𝑅
+𝑚
+R
+m
+	​
+
+ is reached, it switches immediately to the deterministic policy 
+𝑓
+𝑚
+f
+m
+	​
+
+ and keeps playing 
+𝑓
+𝑚
+f
+m
+	​
+
+ for the remainder of the reset window. After the reset window has ended, it plays 
+𝑓
+𝑚
+f
+m
+	​
+
+ for an additional 
+𝐿
+𝑚
+L
+m
+	​
+
+ stages. Then it moves to macrosegment 
+𝑚
++
+1
+m+1.
+
+\smallskip
+
+This controller is public. The current phase-state 
+𝜉
+𝑡
+ξ
+t
+	​
+
+ is public, whether 
+𝑅
+𝑚
+R
+m
+	​
+
+ has been hit is public, the macrosegment index and within-segment clock are public, the reset kernel 
+𝑔
+𝐶
+g
+C
+	​
+
+ is public, and the deterministic policies 
+𝑓
+𝑚
+f
+m
+	​
+
+ are public.
+
+For each 
+𝑚
+m, let 
+𝐹
+𝑚
+F
+m
+	​
+
+ be the event that the 
+𝑚
+m-th reset window hits 
+𝑅
+𝑚
+R
+m
+	​
+
+ within its allotted 
+ℎ
+𝐵
+h
+B
+	​
+
+ stages. By Lemma \ref{lem:reset},
+\begin{equation}\label{eq:Fm-tail}
+\mathbb P_{\xi_0}^{\kappa_{C,B}}(F_m^c)\le B^{-4}
+\qquad
+\forall m,\ \forall \xi_0\in \Xi_C.
+\end{equation}
+On 
+𝐹
+𝑚
+F
+m
+	​
+
+, the state at the end of the reset window belongs to 
+𝑅
+𝑚
+R
+m
+	​
+
+, because once 
+𝑅
+𝑚
+R
+m
+	​
+
+ is first entered the controller immediately switches to 
+𝑓
+𝑚
+f
+m
+	​
+
+, and 
+𝑅
+𝑚
+R
+m
+	​
+
+ is closed under 
+𝑓
+𝑚
+f
+m
+	​
+
+.
+
+Fix
+
+𝛽
+:
+=
+𝜂
+2
+.
+β:=
+2
+η
+	​
+
+.
+
+For the productive part of macrosegment 
+𝑚
+m, denote by 
+𝜇
+^
+𝐿
+𝑚
+(
+𝑚
+)
+μ
+^
+	​
+
+L
+m
+	​
+
+(m)
+	​
+
+ the empirical occupation measure over those 
+𝐿
+𝑚
+L
+m
+	​
+
+ stages. Let 
+𝐺
+𝑚
+G
+m
+	​
+
+ be the event
+
+𝐺
+𝑚
+:
+=
+{
+∥
+𝜇
+^
+𝐿
+𝑚
+(
+𝑚
+)
+−
+𝜇
+𝑚
+∥
+1
+≤
+𝛽
+}
+.
+G
+m
+	​
+
+:={∥
+μ
+^
+	​
+
+L
+m
+	​
+
+(m)
+	​
+
+−μ
+m
+	​
+
+∥
+1
+	​
+
+≤β}.
+
+By Corollary \ref{cor:occupation-concentration}, conditional on the state at the beginning of the productive part and on the event 
+𝐹
+𝑚
+F
+m
+	​
+
+, the probability of 
+𝐺
+𝑚
+𝑐
+G
+m
+c
+	​
+
+ is bounded uniformly over all starting states in 
+𝑅
+𝑚
+R
+m
+	​
+
+ by
+
+2
+∣
+𝑅
+𝑚
+∣
+exp
+⁡
+ ⁣
+(
+−
+𝐿
+𝑚
+𝛽
+2
+32
+∣
+𝑅
+𝑚
+∣
+2
+𝑈
+𝑚
+2
+)
+2∣R
+m
+	​
+
+∣exp(−
+32∣R
+m
+	​
+
+∣
+2
+U
+m
+2
+	​
+
+L
+m
+	​
+
+β
+2
+	​
+
+)
+
+provided 
+𝐿
+𝑚
+≥
+4
+∣
+𝑅
+𝑚
+∣
+𝑈
+𝑚
+/
+𝛽
+L
+m
+	​
+
+≥4∣R
+m
+	​
+
+∣U
+m
+	​
+
+/β. Since each 
+𝜆
+𝑚
+>
+0
+λ
+m
+	​
+
+>0, we have
+
+𝐿
+𝑚
+≥
+𝜆
+∗
+𝑁
+2
+L
+m
+	​
+
+≥
+2
+λ
+∗
+	​
+
+N
+	​
+
+
+for all sufficiently large 
+𝐵
+B. Exponential decay in 
+𝐿
+𝑚
+L
+m
+	​
+
+ therefore implies that there exists 
+𝐵
+1
+(
+𝜂
+,
+𝜇
+𝐶
+)
+B
+1
+	​
+
+(η,μ
+C
+	​
+
+) such that for every 
+𝐵
+≥
+𝐵
+1
+(
+𝜂
+,
+𝜇
+𝐶
+)
+B≥B
+1
+	​
+
+(η,μ
+C
+	​
+
+),
+\begin{equation}\label{eq:Gm-tail}
+\mathbb P_{\xi_0}^{\kappa_{C,B}}(F_m\cap G_m^c)\le B^{-4}
+\qquad
+\forall m,\ \forall \xi_0\in \Xi_C.
+\end{equation}
+
+Define the good event
+
+𝐸
+𝐵
+:
+=
+⋂
+𝑚
+=
+1
+𝑀
+(
+𝐹
+𝑚
+∩
+𝐺
+𝑚
+)
+.
+E
+B
+	​
+
+:=
+m=1
+⋂
+M
+	​
+
+(F
+m
+	​
+
+∩G
+m
+	​
+
+).
+
+By \eqref{eq:Fm-tail} and \eqref{eq:Gm-tail},
+
+𝑃
+𝜉
+0
+𝜅
+𝐶
+,
+𝐵
+(
+𝐸
+𝐵
+𝑐
+)
+≤
+∑
+𝑚
+=
+1
+𝑀
+𝑃
+(
+𝐹
+𝑚
+𝑐
+)
++
+∑
+𝑚
+=
+1
+𝑀
+𝑃
+(
+𝐹
+𝑚
+∩
+𝐺
+𝑚
+𝑐
+)
+≤
+2
+𝑀
+𝐵
+−
+4
+.
+P
+ξ
+0
+	​
+
+κ
+C,B
+	​
+
+	​
+
+(E
+B
+c
+	​
+
+)≤
+m=1
+∑
+M
+	​
+
+P(F
+m
+c
+	​
+
+)+
+m=1
+∑
+M
+	​
+
+P(F
+m
+	​
+
+∩G
+m
+c
+	​
+
+)≤2MB
+−4
+.
+
+Because 
+𝑀
+M depends only on 
+𝐶
+C, there exists 
+𝐵
+2
+(
+𝐶
+)
+B
+2
+	​
+
+(C) such that for every 
+𝐵
+≥
+𝐵
+2
+(
+𝐶
+)
+B≥B
+2
+	​
+
+(C),
+\begin{equation}\label{eq:good-event-prob}
+\mathbb P_{\xi_0}^{\kappa_{C,B}}(E_B)\ge 1-B^{-2}.
+\end{equation}
+
+It remains to estimate the occupation error on 
+𝐸
+𝐵
+E
+B
+	​
+
+. Let 
+𝜈
+𝐵
+r
+e
+s
+ν
+B
+res
+	​
+
+ be the subprobability measure on 
+Ω
+𝐶
+Ω
+C
+	​
+
+ that records the contribution of the 
+𝑟
+(
+𝐵
+)
+=
+𝑀
+ℎ
+𝐵
+r(B)=Mh
+B
+	​
+
+ reset stages:
+
+𝜈
+𝐵
+r
+e
+s
+:
+=
+1
+𝐵
+∑
+𝑡
+∈
+reset windows
+𝛿
+(
+𝜉
+𝑡
+,
+𝑎
+𝑡
+)
+.
+ν
+B
+res
+	​
+
+:=
+B
+1
+	​
+
+t∈reset windows
+∑
+	​
+
+δ
+(ξ
+t
+	​
+
+,a
+t
+	​
+
+)
+	​
+
+.
+
+Then 
+∥
+𝜈
+𝐵
+r
+e
+s
+∥
+1
+=
+𝑟
+(
+𝐵
+)
+/
+𝐵
+∥ν
+B
+res
+	​
+
+∥
+1
+	​
+
+=r(B)/B, and
+
+𝜇
+^
+𝐵
+=
+𝜈
+𝐵
+r
+e
+s
++
+∑
+𝑚
+=
+1
+𝑀
+𝐿
+𝑚
+𝐵
+𝜇
+^
+𝐿
+𝑚
+(
+𝑚
+)
+.
+μ
+^
+	​
+
+B
+	​
+
+=ν
+B
+res
+	​
+
++
+m=1
+∑
+M
+	​
+
+B
+L
+m
+	​
+
+	​
+
+μ
+^
+	​
+
+L
+m
+	​
+
+(m)
+	​
+
+.
+
+Subtracting 
+𝜇
+𝐶
+=
+∑
+𝑚
+=
+1
+𝑀
+𝜆
+𝑚
+𝜇
+𝑚
+μ
+C
+	​
+
+=∑
+m=1
+M
+	​
+
+λ
+m
+	​
+
+μ
+m
+	​
+
+, we obtain
+
+𝜇
+^
+𝐵
+−
+𝜇
+𝐶
+=
+𝜈
+𝐵
+r
+e
+s
++
+∑
+𝑚
+=
+1
+𝑀
+𝐿
+𝑚
+𝐵
+(
+𝜇
+^
+𝐿
+𝑚
+(
+𝑚
+)
+−
+𝜇
+𝑚
+)
++
+∑
+𝑚
+=
+1
+𝑀
+(
+𝐿
+𝑚
+𝐵
+−
+𝜆
+𝑚
+)
+𝜇
+𝑚
+.
+μ
+^
+	​
+
+B
+	​
+
+−μ
+C
+	​
+
+=ν
+B
+res
+	​
+
++
+m=1
+∑
+M
+	​
+
+B
+L
+m
+	​
+
+	​
+
+(
+μ
+^
+	​
+
+L
+m
+	​
+
+(m)
+	​
+
+−μ
+m
+	​
+
+)+
+m=1
+∑
+M
+	​
+
+(
+B
+L
+m
+	​
+
+	​
+
+−λ
+m
+	​
+
+)μ
+m
+	​
+
+.
+
+Taking 
+ℓ
+1
+ℓ
+1
+-norms and using 
+∥
+𝜇
+𝑚
+∥
+1
+=
+1
+∥μ
+m
+	​
+
+∥
+1
+	​
+
+=1,
+\begin{equation}\label{eq:error-decomp}
+|\hat\mu_B-\mu_C|1
+\le
+\frac{r(B)}{B}
++
+\sum{m=1}^M \frac{L_m}{B},|\hat\mu_{L_m}^{(m)}-\mu_m|1
++
+\sum{m=1}^M\left|\frac{L_m}{B}-\lambda_m\right|.
+\end{equation}
+On the event 
+𝐸
+𝐵
+E
+B
+	​
+
+, each productive segment satisfies 
+∥
+𝜇
+^
+𝐿
+𝑚
+(
+𝑚
+)
+−
+𝜇
+𝑚
+∥
+1
+≤
+𝛽
+∥
+μ
+^
+	​
+
+L
+m
+	​
+
+(m)
+	​
+
+−μ
+m
+	​
+
+∥
+1
+	​
+
+≤β. Since 
+∑
+𝑚
+𝐿
+𝑚
+/
+𝐵
+=
+𝑁
+/
+𝐵
+≤
+1
+∑
+m
+	​
+
+L
+m
+	​
+
+/B=N/B≤1,
+
+∑
+𝑚
+=
+1
+𝑀
+𝐿
+𝑚
+𝐵
+ 
+∥
+𝜇
+^
+𝐿
+𝑚
+(
+𝑚
+)
+−
+𝜇
+𝑚
+∥
+1
+≤
+𝛽
+=
+𝜂
+2
+.
+m=1
+∑
+M
+	​
+
+B
+L
+m
+	​
+
+	​
+
+∥
+μ
+^
+	​
+
+L
+m
+	​
+
+(m)
+	​
+
+−μ
+m
+	​
+
+∥
+1
+	​
+
+≤β=
+2
+η
+	​
+
+.
+
+Also,
+
+∑
+𝑚
+=
+1
+𝑀
+∣
+𝐿
+𝑚
+𝐵
+−
+𝜆
+𝑚
+∣
+≤
+∑
+𝑚
+=
+1
+𝑀
+∣
+𝐿
+𝑚
+𝐵
+−
+𝐿
+𝑚
+𝑁
+∣
++
+∑
+𝑚
+=
+1
+𝑀
+∣
+𝐿
+𝑚
+𝑁
+−
+𝜆
+𝑚
+∣
+.
+m=1
+∑
+M
+	​
+
+	​
+
+B
+L
+m
+	​
+
+	​
+
+−λ
+m
+	​
+
+	​
+
+≤
+m=1
+∑
+M
+	​
+
+	​
+
+B
+L
+m
+	​
+
+	​
+
+−
+N
+L
+m
+	​
+
+	​
+
+	​
+
++
+m=1
+∑
+M
+	​
+
+	​
+
+N
+L
+m
+	​
+
+	​
+
+−λ
+m
+	​
+
+	​
+
+.
+
+Because 
+∑
+𝑚
+𝐿
+𝑚
+=
+𝑁
+∑
+m
+	​
+
+L
+m
+	​
+
+=N,
+
+∑
+𝑚
+=
+1
+𝑀
+∣
+𝐿
+𝑚
+𝐵
+−
+𝐿
+𝑚
+𝑁
+∣
+=
+∑
+𝑚
+=
+1
+𝑀
+𝐿
+𝑚
+𝐵
+𝑟
+(
+𝐵
+)
+𝑁
+=
+𝑟
+(
+𝐵
+)
+𝐵
+.
+m=1
+∑
+M
+	​
+
+	​
+
+B
+L
+m
+	​
+
+	​
+
+−
+N
+L
+m
+	​
+
+	​
+
+	​
+
+=
+m=1
+∑
+M
+	​
+
+B
+L
+m
+	​
+
+	​
+
+N
+r(B)
+	​
+
+=
+B
+r(B)
+	​
+
+.
+
+Combining this with \eqref{eq:rounding-N} gives
+\begin{equation}\label{eq:rounding-B}
+\sum_{m=1}^M\left|\frac{L_m}{B}-\lambda_m\right|
+\le
+\frac{r(B)}{B}
++
+\frac{2M}{N}.
+\end{equation}
+Plugging this into \eqref{eq:error-decomp}, on 
+𝐸
+𝐵
+E
+B
+	​
+
+ we obtain
+\begin{equation}\label{eq:final-bound-pre}
+|\hat\mu_B-\mu_C|_1
+\le
+2\frac{r(B)}{B}
++
+\frac{2M}{N}
++
+\frac{\eta}{2}.
+\end{equation}
+Since 
+𝑟
+(
+𝐵
+)
+=
+𝑂
+(
+log
+⁡
+𝐵
+)
+r(B)=O(logB) and 
+𝑁
+=
+𝐵
+−
+𝑟
+(
+𝐵
+)
+∼
+𝐵
+N=B−r(B)∼B, there exists 
+𝐵
+3
+(
+𝜂
+,
+𝐶
+)
+B
+3
+	​
+
+(η,C) such that for every 
+𝐵
+≥
+𝐵
+3
+(
+𝜂
+,
+𝐶
+)
+B≥B
+3
+	​
+
+(η,C),
+
+2
+𝑟
+(
+𝐵
+)
+𝐵
++
+2
+𝑀
+𝑁
+≤
+𝜂
+2
+.
+2
+B
+r(B)
+	​
+
++
+N
+2M
+	​
+
+≤
+2
+η
+	​
+
+.
+
+Therefore, for all 
+𝐵
+≥
+max
+⁡
+{
+𝐵
+1
+(
+𝜂
+,
+𝜇
+𝐶
+)
+,
+𝐵
+2
+(
+𝐶
+)
+,
+𝐵
+3
+(
+𝜂
+,
+𝐶
+)
+}
+B≥max{B
+1
+	​
+
+(η,μ
+C
+	​
+
+),B
+2
+	​
+
+(C),B
+3
+	​
+
+(η,C)}, equation \eqref{eq:final-bound-pre} implies
+
+∥
+𝜇
+^
+𝐵
+−
+𝜇
+𝐶
+∥
+1
+≤
+𝜂
+on 
+𝐸
+𝐵
+.
+∥
+μ
+^
+	​
+
+B
+	​
+
+−μ
+C
+	​
+
+∥
+1
+	​
+
+≤ηon E
+B
+	​
+
+.
+
+Together with \eqref{eq:good-event-prob}, this proves
+
+𝑃
+𝜉
+0
+𝜅
+𝐶
+,
+𝐵
+(
+∥
+𝜇
+^
+𝐵
+−
+𝜇
+𝐶
+∥
+1
+≤
+𝜂
+)
+≥
+1
+−
+𝐵
+−
+2
+.
+P
+ξ
+0
+	​
+
+κ
+C,B
+	​
+
+	​
+
+(∥
+μ
+^
+	​
+
+B
+	​
+
+−μ
+C
+	​
+
+∥
+1
+	​
+
+≤η)≥1−B
+−2
+.
+
+Finally, Items (1), (3), and (4) were already verified in the construction: the controller has 
+𝑀
+M macrosegments with reset windows of length 
+ℎ
+𝐵
+≤
+𝐾
+0
+⌈
+log
+⁡
+𝐵
+⌉
+h
+B
+	​
+
+≤K
+0
+	​
+
+⌈logB⌉, total reset time 
+𝑟
+(
+𝐵
+)
+=
+𝑀
+ℎ
+𝐵
+≤
+𝐾
+⌈
+log
+⁡
+𝐵
+⌉
+r(B)=Mh
+B
+	​
+
+≤K⌈logB⌉, uses only public information, and satisfies 
+𝑟
+(
+𝐵
+)
+/
+𝐵
+→
+0
+r(B)/B→0. This completes the proof.
+\end{proof}
+
+\medskip
+
+The conclusion can be summarized in the form used later in the paper: every feasible phase-action occupation measure in 
+𝐹
+𝐶
+F
+C
+	​
+
+ is realized, up to arbitrarily small 
+ℓ
+1
+ℓ
+1
+-error and with probability 
+1
+−
+𝐵
+−
+2
+1−B
+−2
+, by a public mosaic controller with only logarithmic reset overhead. The periodic case requires no extra argument beyond the phase lift to 
+Ξ
+𝐶
+Ξ
+C
+	​
+
+.

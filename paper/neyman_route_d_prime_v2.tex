@@ -1,0 +1,318 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{booktabs}
+
+% ── Theorem environments ──
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{condition}[theorem]{Condition}
+
+% ── Notation (cleaned per reviewer) ──
+%
+% CONVENTION: We reserve specific letters for specific roles throughout.
+%   N = player set,  S = state set,  A_i(s) = actions
+%   \xi = phase-state (NOT x, which caused collisions)
+%   \sigma = strategy profile,  \tau_i = deviation
+%   C, D = tree nodes,  e = exit label
+%   \mu = occupation measure,  \pi = marginal
+%   \alpha = exit rate,  \beta = unnormalized flux = \alpha \cdot q
+%   g = gain,  w = bias (NOT b, which collides with boundary states)
+%   J = exit jet,  \Lambda = susceptibility tensor
+%
+\newcommand{\eps}{\varepsilon}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Out}{Out}
+\DeclareMathOperator{\rk}{rk}
+
+\title{\textbf{A Compact Asymptotic-State-Space Framework\\for Uniform Equilibrium in Finite Stochastic Games}}
+
+\author{Pedro Aldighieri\thanks{Department of Economics, Cornell University. Email: \texttt{dep89@cornell.edu}.}}
+
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We propose a new approach to Neyman's open problem on the existence of uniform $\eps$-equilibria in finite stochastic games.
+We introduce the \emph{Metastable Occupation-Flux Tree}, a compact finite-dimensional asymptotic object encoding occupation measures, exit intensities in unnormalized flux coordinates, continuation values, and gain-bias data for each communicating-class node.
+We prove three structural results about this object:
+(i)~internal occupation measures can be realized by public block controllers from any entry state via a Carath\'eodory mosaic of ergodic germs;
+(ii)~exit configurations in flux coordinates admit finite witnesses via occupation-polytope projections, resolving a zero-exit-rate discontinuity in normalized coordinates;
+(iii)~the relaxed tree space is compact and convex, with a best-response correspondence that has closed graph in flux coordinates.
+We show that these results, combined with a single finite-dimensional compatibility condition---which we call \emph{joint-germ compatibility}---suffice to establish the conjecture via Kakutani's fixed-point theorem.
+The compatibility condition asks whether internal occupation germs and exit-flux witness germs can be drawn from the same joint policy polytope.
+We characterize this condition precisely and discuss its relation to solved subclasses.
+\end{abstract}
+
+\tableofcontents
+
+%% ====================================================================
+\section{Introduction}
+\label{sec:intro}
+%% ====================================================================
+
+\subsection{The Problem}
+
+A \emph{finite stochastic game} $G = (N, S, (A_i)_{i \in N}, u, P)$ consists of:
+\begin{itemize}
+\item a finite player set $N = \{1, \ldots, n\}$;
+\item a finite state space $S$;
+\item for each player $i \in N$ and state $s \in S$, a finite action set $A_i(s)$;
+\item a joint action set $A(s) := \prod_{i \in N} A_i(s)$ at each state $s$;
+\item stage payoff functions $u_i \colon \{(s, a) : s \in S, \, a \in A(s)\} \to [0,1]$;
+\item a transition kernel $P(\cdot \mid s, a) \in \Delta(S)$ for each $(s, a)$ with $a \in A(s)$.
+\end{itemize}
+
+A \emph{behavioral strategy} for player $i$ maps each finite history $(s_0, a_0, \ldots, s_t)$ to a distribution over $A_i(s_t)$.  A \emph{strategy profile} $\sigma = (\sigma_i)_{i \in N}$ specifies a behavioral strategy for each player.  For horizon $T$, initial state $s$, and profile $\sigma$, let $\gamma_i^T(s, \sigma)$ denote the expected $T$-stage average payoff to player~$i$.
+
+\begin{conjecture}[Neyman]
+\label{conj:neyman}
+For every finite stochastic game $G$ and every $\eps > 0$, there exist a strategy profile $\sigma$ and a threshold $T_0 \in \N$ such that for all $T \geq T_0$, all $s \in S$, all $i \in N$, and all unilateral deviations $\tau_i$,
+\begin{equation}
+\label{eq:uniform-eps-eq}
+\gamma_i^T(s, \sigma) \geq \gamma_i^T(s, (\tau_i, \sigma_{-i})) - \eps.
+\end{equation}
+\end{conjecture}
+
+The conjecture is known to hold for two-player zero-sum games \cite{MertensNeyman1981}, two-player nonzero-sum games \cite{Vieille2000a, Vieille2000b}, three-player absorbing games \cite{Solan1999}, and certain quitting and recursive absorbing subclasses \cite{AshkenaziGolan2024, SolanVieille2025}.  For general multiplayer finite stochastic games, the conjecture remains open.  The smallest open class is four-or-more-player absorbing games.
+
+\subsection{Our Contribution}
+
+We introduce a new compact asymptotic object---the \emph{Metastable Occupation-Flux Tree}---and prove three unconditional structural theorems about it (\Cref{thm:ergodic-realization,thm:flux-witness,thm:compact-convex}).  We then show that \Cref{conj:neyman} follows from these theorems together with a single compatibility condition (\Cref{cond:vp3}).  Our main result is:
+
+\begin{theorem}[Conditional Main Theorem]
+\label{thm:main-conditional}
+If \Cref{cond:vp3} (Joint-Germ Compatibility) holds, then \Cref{conj:neyman} is true.
+\end{theorem}
+
+\noindent \textbf{What is proved unconditionally.}
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Ergodic realization} (\Cref{thm:ergodic-realization}): Every feasible occupation measure on a finite communicating class can be realized within $\eta$ by a public block controller from any entry state.
+\item \emph{Flux witness} (\Cref{thm:flux-witness}): Every feasible exit configuration in unnormalized flux coordinates is a finite convex combination of deterministic germ images.
+\item \emph{Compactness and convexity} (\Cref{thm:compact-convex}): The relaxed tree space $\mathcal{A}_\eta$ is a compact convex subset of a finite-dimensional Euclidean space, and the best-response correspondence has closed graph in flux coordinates.
+\end{enumerate}
+
+\noindent \textbf{What remains open.}  \Cref{cond:vp3} asks whether the internal occupation germs and exit-flux witness germs can be drawn from a \emph{common} joint policy polytope.  We discuss this condition in \Cref{sec:vp3-discussion}.
+
+\subsection{Related Work}
+
+The compact objects underlying proofs in solved subclasses inspire our approach:
+\begin{itemize}
+\item \textbf{Quitting games}: Ashkenazi-Golan, Krasikov, Rainer, and Solan \cite{AshkenaziGolan2024} use \emph{absorption paths} as the compact space, with continuous payoff-path maps.
+\item \textbf{Positive recursive absorbing games}: Solan and Vieille \cite{SolanVieille2025} use \emph{continuation-value orbits} with self-maps on a value domain.  Their result holds under a non-rectangular absorption restriction.
+\item \textbf{Two-player zero-sum}: Mertens and Neyman \cite{MertensNeyman1981} and Bewley and Kohlberg \cite{BewleyKohlberg1976} exploit \emph{algebraic value structure} via Puiseux expansions and operator theory.
+\end{itemize}
+
+Our framework generalizes the ``compact object'' philosophy to general finite stochastic games, at the cost of the compatibility condition \Cref{cond:vp3}.
+
+%% ====================================================================
+\section{Notation and Conventions}
+\label{sec:notation}
+%% ====================================================================
+
+We collect notation used throughout the paper.  All objects are finite unless stated otherwise.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Domain} \\
+\midrule
+$N, S$ & Player set, state set & Finite sets \\
+$A_i(s), A(s)$ & Player $i$'s actions, joint actions at $s$ & $A(s) = \prod_i A_i(s)$ \\
+$u_i(s,a)$ & Stage payoff & $[0,1]$ \\
+$P(\cdot \mid s,a)$ & Transition kernel & $\Delta(S)$ \\
+$\sigma, \tau_i$ & Profile, deviation & Behavioral strategies \\
+$\gamma_i^T(s, \sigma)$ & $T$-stage average payoff & $[0,1]$ \\
+\midrule
+$(V, E, r^\star)$ & Tree chart (rooted DAG) & Finite \\
+$C, D$ & Nodes (communicating classes) & $V$ \\
+$d_C$ & Period of node $C$ & $\N_{\geq 1}$ \\
+$\Xi_C$ & Phase-state space of node $C$ & $\bigsqcup_k \{k\} \times S_C^k$ \\
+$\Omega_C$ & Phase-action space & $\{(\xi, a) : \xi \in \Xi_C, a \in A(s(\xi))\}$ \\
+$s(\xi)$ & State underlying phase-state $\xi$ & $S$ \\
+\midrule
+$\mu_C$ & Occupation measure & $\Delta(\Omega_C)$ \\
+$\pi_C$ & Phase-state marginal & $\Delta(\Xi_C)$ \\
+$m_C(a \mid \xi)$ & Local mixed action kernel & $\Delta(A(s(\xi)))$ \\
+$P_C^0$ & Principal internal kernel & $\Delta(\Xi_C)$ \\
+\midrule
+$J_C$ & Finite exit jet & $((r_1, \Lambda^{(1)}), \ldots, (r_M, \Lambda^{(M)}))$ \\
+$\alpha_C$ & Projective exit-rate vector & $\bar\Delta(\Out(C))$ \\
+$\beta_C(e, b)$ & Unnormalized boundary flux & $\alpha_C(e) \cdot q_C(e, b) \geq 0$ \\
+$g_C$ & Gain vector & $[0,1]^N$ \\
+$v_C(e)$ & Continuation gain at exit $e$ & $[0,1]^N$ \\
+$w_C$ & Normalized bias & $w_{C,i} \colon \Xi_C \to \R$, $\sum_\xi \pi_C(\xi) w_{C,i}(\xi) = 0$ \\
+\midrule
+$\mathcal{A}_\eta$ & Relaxed tree space & Compact convex $\subset \R^d$ \\
+$\Phi_\eta$ & Best-response correspondence & $\mathcal{A}_\eta \rightrightarrows \mathcal{A}_\eta$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Key notation choices]
+\label{rem:notation}
+We write $\xi$ (not $x$) for phase-states to avoid collision with mixed action kernels.  We write $w$ (not $b$) for bias to avoid collision with boundary states.  Exit jets use exponents $r_1 < \cdots < r_M$ (not $q_1, \ldots, q_m$) to avoid collision with exit laws $q_C(e, \cdot)$.  The unnormalized flux $\beta_C = \alpha_C \cdot q_C$ replaces the pair $(\alpha_C, q_C)$ wherever continuity at zero exit rate is needed (\Cref{sec:flux}).
+\end{remark}
+
+%% ====================================================================
+\section{The Metastable Occupation-Flux Tree}
+\label{sec:tree}
+%% ====================================================================
+
+\textit{[To be completed: full formal definitions of tree chart, node coordinates in flux form, and consistency equations (C1)--(C9).  The v1 draft contains the core definitions; this section requires formalization of the ambient space, explicit treatment of the chart/DAG issue, and proof that (C1)--(C9) define a convex feasible set in flux coordinates.]}
+
+%% ====================================================================
+\section{The Flux Coordinate Repair}
+\label{sec:flux}
+%% ====================================================================
+
+\textit{[To be completed: the zero-exit-rate discontinuity example, the flux coordinate resolution $\beta = \alpha \cdot q$, and proof that all downstream functionals are continuous in $\beta$-coordinates.  This section is self-contained and ready for formalization from the Pass 35 materials.]}
+
+%% ====================================================================
+\section{Realization Theorems}
+\label{sec:realization}
+%% ====================================================================
+
+This section contains our two main unconditional results.
+
+\subsection{Ergodic Occupation Realization}
+
+\textit{[To be completed: full proof of the Carath\'eodory mosaic construction.  The argument: decompose $\mu_C$ into ergodic measures of deterministic stationary joint policies via occupation-polytope extreme points; split blocks into macrosegments; use reset-then-lock controllers with geometric tail bounds.  Periodic extension via $d_C$-step skeleton.  This is the strongest unconditional result and should be proved in complete detail.]}
+
+\subsection{Boundary-Flux Witness}
+
+\textit{[To be completed: full proof of the LP/polytope argument.  The feasible flux set $\mathcal{F}_C^{\mathrm{lin}} = \mathcal{L}_C(\mathcal{P}_C) = \conv\{\mathcal{L}_C(m_\theta) : \theta \in \Theta_C^{\det}\}$.  Self-contained and ready for formalization from Pass 35 materials.]}
+
+%% ====================================================================
+\section{The Conditional Assembly}
+\label{sec:assembly}
+%% ====================================================================
+
+\subsection{Compactness and Convexity}
+
+\textit{[To be completed: prove $\mathcal{A}_\eta$ is compact convex in the global raw-flux embedding.  The key insight (from Pass 38): the relaxed consistency equations are affine constraints with $\eta$-slack on a product of simplices and bounded boxes.]}
+
+\subsection{Best-Response Correspondence}
+
+\textit{[To be completed: define $\Phi_\eta$ precisely, prove nonempty convex values and closed graph.  The closed-graph argument uses jet-enriched D2 data and flux coordinates to ensure no hidden discontinuity at zero-flux faces.]}
+
+\subsection{The Joint-Germ Compatibility Condition}
+
+\begin{condition}[Joint-Germ Compatibility (VP3)]
+\label{cond:vp3}
+For every node $C$ in the metastable tree and every feasible target $(\mu_C, \beta_C, J_C)$ satisfying the consistency equations, there exists a single convex combination of deterministic stationary joint policies that simultaneously realizes the target occupation $\mu_C$ and the target boundary flux $\beta_C$.
+\end{condition}
+
+\begin{remark}
+Both the internal occupation polytope (\Cref{sec:realization}) and the exit-flux witness polytope (\Cref{sec:realization}) arise from deterministic stationary joint policies on the same finite state-action space.  \Cref{cond:vp3} asks for a point in the intersection of coupled fibers---not merely that separate projections are nonempty.
+\end{remark}
+
+\subsection{Proof of the Conditional Main Theorem}
+
+\begin{proof}[Proof of \Cref{thm:main-conditional}]
+Fix $\eps > 0$.
+
+\textbf{Step 1} (Compactness).  Choose $\eta > 0$ small.  By \Cref{thm:compact-convex}, $\mathcal{A}_\eta$ is compact and convex in $\R^d$.
+
+\textbf{Step 2} (Fixed point).  The best-response correspondence $\Phi_\eta$ has nonempty convex values and closed graph (\Cref{thm:compact-convex}).  By the Kakutani--Fan--Glicksberg theorem, there exists $T_\eta \in \mathcal{A}_\eta$ with $T_\eta \in \Phi_\eta(T_\eta)$.
+
+\textbf{Step 3} (Implementation).  Under \Cref{cond:vp3}, the joint-germ decomposition produces a single set of policy germs realizing both internal occupation and exit flux at each node.  Apply the Carath\'eodory mosaic controller (\Cref{thm:ergodic-realization}) with a superexponential block schedule $L_{k+1} = L_k^2$.  Public memory stores: current node, block index, phase label.  Exits are detected from the publicly observed state-action history.
+
+\textbf{Step 4} (Transfer).  The regret decomposes as
+\[
+\sup_{\tau_i} \bigl[\gamma_i^T(s, (\tau_i, \sigma_{-i}^\eta)) - \gamma_i^T(s, \sigma^\eta)\bigr] \leq c_1 \eta + c_2 \, e_{\mathrm{impl}}(\eta, T) + c_3 \, e_{\mathrm{tail}}(T),
+\]
+where $c_1, c_2, c_3$ depend only on $G$, $e_{\mathrm{impl}}(\eta, T) \to 0$ as $T \to \infty$ (summable leakage under the superexponential schedule), and $e_{\mathrm{tail}}(T) \to 0$ (terminal partial block).  Choose $\eta$ so that $c_1 \eta < \eps/3$, then $T_0(\eta)$ so that $c_2 e_{\mathrm{impl}} + c_3 e_{\mathrm{tail}} < 2\eps/3$ for $T \geq T_0$.
+\end{proof}
+
+%% ====================================================================
+\section{Discussion}
+\label{sec:vp3-discussion}
+%% ====================================================================
+
+\subsection{The Nature of VP3}
+
+\Cref{cond:vp3} is a finite-dimensional semialgebraic selection problem: it asks whether two projections of the same ambient occupation polytope can be jointly realized.  In solved subclasses, this compatibility is automatic:
+\begin{itemize}
+\item In quitting games, nodes are trivially single-state, so occupation and exit data collapse.
+\item In positive recursive absorbing games, the multi-node stitching problem largely vanishes.
+\item In two-player zero-sum, saddle-point structure bypasses the need for joint-germ compatibility entirely.
+\end{itemize}
+
+The general multiplayer case genuinely requires new structure.  The condition could fail if the internal occupation decomposition and the exit-flux decomposition require incompatible support patterns or singular scalings.
+
+\subsection{Future Directions}
+
+The most immediate direction is to resolve \Cref{cond:vp3}.  Beyond this:
+\begin{itemize}
+\item The Metastable Occupation-Flux Tree framework may extend to infinite-state compact stochastic games.
+\item The occupation-polytope structure suggests LP-based computation of approximate equilibria.
+\item The flux-coordinate repair may be useful in other asymptotic game-theory settings with vanishing transition rates.
+\end{itemize}
+
+%% ====================================================================
+\section*{Acknowledgments}
+%% ====================================================================
+
+This work was developed using an AI-assisted proof orchestration pipeline combining Claude Code (Anthropic) with ChatGPT Extended Pro (OpenAI) via the MathPipeProver framework.  The author takes full responsibility for the correctness of the results.
+
+%% ====================================================================
+\begin{thebibliography}{99}
+%% ====================================================================
+
+\bibitem{AshkenaziGolan2024}
+I.~Ashkenazi-Golan, A.~Krasikov, C.~Rainer, and E.~Solan.
+\newblock Absorption paths and equilibria in quitting games.
+\newblock \emph{Mathematical Programming}, 2024.
+
+\bibitem{BewleyKohlberg1976}
+T.~Bewley and E.~Kohlberg.
+\newblock The asymptotic theory of stochastic games.
+\newblock \emph{Mathematics of Operations Research}, 1(3):197--208, 1976.
+
+\bibitem{MertensNeyman1981}
+J.-F.~Mertens and A.~Neyman.
+\newblock Stochastic games.
+\newblock \emph{International Journal of Game Theory}, 10(2):53--66, 1981.
+
+\bibitem{Solan1999}
+E.~Solan.
+\newblock Three-player absorbing games.
+\newblock \emph{Mathematics of Operations Research}, 24(3):669--698, 1999.
+
+\bibitem{SolanVieille2025}
+E.~Solan and N.~Vieille.
+\newblock Equilibrium payoffs in positive recursive absorbing games under a non-rectangular absorption restriction.
+\newblock \emph{arXiv preprint}, 2025.
+
+\bibitem{Vieille2000a}
+N.~Vieille.
+\newblock Equilibrium in 2-person stochastic games I: A reduction.
+\newblock \emph{Israel Journal of Mathematics}, 119:55--91, 2000.
+
+\bibitem{Vieille2000b}
+N.~Vieille.
+\newblock Equilibrium in 2-person stochastic games II: The case of recursive games.
+\newblock \emph{Israel Journal of Mathematics}, 119:93--126, 2000.
+
+\end{thebibliography}
+
+\end{document}
