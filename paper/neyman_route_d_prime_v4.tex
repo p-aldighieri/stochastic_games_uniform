@@ -601,6 +601,9 @@ It follows that \(\cA_\eta\) is precisely the collection of nodewise packages sa
 \]
 and it is compact and convex as an intersection of compact convex sets within \(\cA_\eta\).
 
+\paragraph{Inter-node consistency.}
+A subtlety remains: the tree package \(\cA_\eta\) also imposes inter-node flow constraints relating the exit fluxes of parent nodes to the entry rates of child nodes. We must verify that local Nash selections are compatible with these constraints. The key observation is that the local Nash set \(\cN_C(x)\) is defined relative to the \emph{environment} \(x\), which fixes the continuation values at each exit. The environment \(x\) is itself a member of \(\cA_\eta\), so it already satisfies all inter-node flow constraints. When we select \(y_C\in \cN_C(x)\), the selected occupation measure \(\mu_C\) determines the exit flux \(\beta_C=L_C(\mu_C)\) uniquely. The inter-node flow constraints are \emph{linear} conditions on the collection \((\beta_C)_C\). Since \(\cA_\eta\) is defined as the set of tree packages satisfying these linear constraints, and since the local Nash selection at each node produces a pair \((\mu_C,L_C\mu_C)\) that lies in the feasible region of node \(C\), the assembled package \(y\) satisfies the same linear flow constraints automatically---the constraints do not couple the \emph{optimization} across nodes, only the \emph{fluxes}, which are linear functions of the occupations. Therefore \(y\in \cA_\eta\), confirming nonemptiness.
+
 Now let \(x^m\to x\), let \(y^m\to y\), and assume \(y^m\in \operatorname{BR}_\eta(x^m)\)
 for all \(m\).  Then for each node \(C\), \(y_C^m\in \cN_C(x^m)\).  By the closed-graph
 property in \Cref{prop:localNash}, the limit satisfies \(y_C\in \cN_C(x)\).  Since
@@ -1566,14 +1569,26 @@ r_{i,C}^*(\xi,a_i)+\sum_{\xi'}Q_{C,i}^*(\xi' \mid \xi,a_i)\,h_{i,C}^*(\xi')
 g_{i,C}^*+h_{i,C}^*(\xi)+\eta.
 \]
 Here \(r_{i,C}^*\) and \(Q_{C,i}^*\) are the reward and transition coefficients induced by
-the fixed-point package \(x_C^*\).  Because the realized block occupation is within
-\(\delta\) of \(\bar\mu_C^*\) in the sense of \eqref{eq:block-aug}, \Cref{lem:dev-value-lipschitz} gives
+the fixed-point package \(x_C^*\).  Because the realized block occupation \(\widehat\mu\) is within
+\(\delta\) of \(\bar\mu_C^*\) in the sense of \eqref{eq:block-aug}, we transfer the certificate \(h_{i,C}^*\) to the realized block as follows. The reward and transition data depend \emph{affinely} on the occupation vector: for each state-action pair \((\xi,a_i)\),
 \[
-\bigl|V^{\mathrm{dev}}_{i,C}(\widehat\mu)-V^{\mathrm{dev}}_{i,C}(\mu_C^*)\bigr|
-\le H_\eta\,\delta,
+\|r_{\widehat\mu}(\xi,a_i)-r_{\mu_C^*}(\xi,a_i)\|\le \|\widehat\mu-\mu_C^*\|_1\le\delta,
 \]
-so the actual blockwise deviation value differs from the target by at most \(H_\eta\delta\).
-In particular, the reward and transition coefficients along the deviating play differ from the target ones by at most \(C_\eta\delta\) with \(C_\eta=H_\eta\), which is finite and depends only on \(\eta\) and the game parameters.  Therefore, along the deviating play inside the block,
+and
+\[
+\|Q_{\widehat\mu}(\cdot\mid\xi,a_i)-Q_{\mu_C^*}(\cdot\mid\xi,a_i)\|_{\mathrm{TV}}\le \|\widehat\mu-\mu_C^*\|_1\le\delta.
+\]
+These are the \emph{coefficient-level} perturbation bounds (not merely value-level), following from the affine dependence of the block dynamics on the occupation measure. Combined with \(\operatorname{sp}(h_{i,C}^*)\le H_\eta\) from \Cref{lem:dev-value-lipschitz}, we get for every \((\xi,a_i)\):
+\[
+\bigl|r_{\widehat\mu}(\xi,a_i)+Q_{\widehat\mu}(\xi,a_i)h_{i,C}^* - r_{\mu_C^*}(\xi,a_i)-Q_{\mu_C^*}(\xi,a_i)h_{i,C}^*\bigr|
+\le \delta+H_\eta\,\delta = (1+H_\eta)\delta.
+\]
+Set \(C_\eta:=1+H_\eta\). The exact Bellman inequality at the fixed point therefore transfers to the realized block: for every action \(a_i\),
+\[
+r_{\widehat\mu}(\xi,a_i)+Q_{\widehat\mu}(\xi,a_i)h_{i,C}^*
+\le g_{i,C}^*+h_{i,C}^*(\xi)+\eta+C_\eta\delta.
+\]
+Therefore, along the deviating play inside the block,
 \[
 \E\!\left[
 u_i^t(\tau_i,\sigma_{-i})
