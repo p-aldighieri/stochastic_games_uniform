@@ -76,7 +76,7 @@ augmented feasible polytope is the affine image of the internal one.  Finally, u
 condition~(a) we obtain a quantitative irreducibility constant $\kappa_\eta>0$ and the
 bias-span estimate
 \[
-\spn(h)\le \frac{|S|-1}{\kappa_\eta}.
+\spn(h)\le \frac{\max_D|\Xi_D|-1}{\kappa_\eta}.
 \]
 Combined with a frozen superexponential block schedule and the Bellman certificate carried
 by the fixed point, this yields for every unilateral deviation the regret bound
@@ -211,7 +211,7 @@ schedule.
 Finally, Section~\ref{sec:proofA} introduces condition~(a), extracts a uniform
 irreducibility constant $\kappa_\eta>0$, proves the bias-span bound
 \[
-\spn(h)\le \frac{|S|-1}{\kappa_\eta},
+\spn(h)\le \frac{\max_D|\Xi_D|-1}{\kappa_\eta},
 \]
 and transfers the local Bellman inequalities to the realized profile.  The resulting
 regret bound is
@@ -330,7 +330,7 @@ Symbol & Meaning \\
 \(\cA_\eta\) & Compact asymptotic state space of relaxed tree packages \\
 \(\operatorname{BR}_\eta\) & Relaxed best-response correspondence on \(\cA_\eta\) \\
 \(\kappa_\eta\) & Uniform unilateral communication constant from condition~(a) \\
-\(H_\eta\) & Bias-span bound \( (|S|-1)/\kappa_\eta \) \\
+\(H_\eta\) & Bias-span bound \( (\max_D|\Xi_D|-1)/\kappa_\eta \) \\
 \bottomrule
 \end{tabular}
 \caption{Persistent notation.}
@@ -581,10 +581,25 @@ values and closed graph.  Consequently it has a fixed point \(x^*\in \cA_\eta\).
 \end{theorem}
 
 \begin{proof}
-By \Cref{prop:Aeta-compact}, \(\cA_\eta\) is compact and convex.  For fixed \(x\),
-\(\operatorname{BR}_\eta(x)\) is the intersection of \(\cA_\eta\) with the product
-\(\prod_C \cN_C(x)\).  Each factor \(\cN_C(x)\) is nonempty compact convex by
-\Cref{prop:localNash}, so \(\operatorname{BR}_\eta(x)\) is nonempty compact and convex.
+By \Cref{prop:Aeta-compact}, \(\cA_\eta\) is compact and convex.
+
+\paragraph{Nonemptiness of the global correspondence.}
+Fix \(x\in \cA_\eta\). For each node \(C\), let \(\cN_C(x)\subseteq \cA_\eta(C)\) denote the local Nash set defined relative to the environment encoded by \(x\). Since the local action sets are finite and the local feasible set \(\cA_\eta(C)\) is compact and nonempty, the induced finite normal-form game at node \(C\) has a mixed Nash equilibrium. Therefore \(\cN_C(x)\neq\varnothing\) for every \(C\), and each \(\cN_C(x)\) is compact and convex by \Cref{prop:localNash}.
+
+The point that requires justification is that these local choices can be assembled into a \emph{globally} feasible package \(y\in \cA_\eta\). This is exactly where the graph formulation of VP3 enters. In the present formulation, for each node \(C\) the admissible pair consisting of the internal occupation coordinate and the exit-flux coordinate lies in the graph
+\[
+J_C=\{(\mu_C,L_C\mu_C):\mu_C\in \mathcal P_C\},
+\]
+where \(L_C\) is the affine linear flux map of \Cref{sec:flux}. Thus, once \(\mu_C\) is chosen, the corresponding flux component is automatically and uniquely determined as \(L_C\mu_C\). In particular, there is no separate ``joint feasibility'' constraint between occupation and flux coordinates.
+
+It follows that \(\cA_\eta\) is precisely the collection of nodewise packages satisfying the linear tree-consistency equations together with the graph conditions \(\beta_C=L_C(\mu_C)\). These are linear closed constraints. Hence, if for each node \(C\) we choose an element \(y_C\in \cN_C(x)\), the only possible compatibility issue would be a mismatch between occupation and flux coordinates; but the graph property rules this out automatically, because each local Nash package already carries its flux coordinate equal to \(L_C(\mu_C)\). Therefore
+\[
+\operatorname{BR}_\eta(x)
+=
+\Bigl\{y\in \cA_\eta:\ y_C\in \cN_C(x)\ \text{for all }C\Bigr\}
+\neq\varnothing,
+\]
+and it is compact and convex as an intersection of compact convex sets within \(\cA_\eta\).
 
 Now let \(x^m\to x\), let \(y^m\to y\), and assume \(y^m\in \operatorname{BR}_\eta(x^m)\)
 for all \(m\).  Then for each node \(C\), \(y_C^m\in \cN_C(x^m)\).  By the closed-graph
@@ -1431,7 +1446,7 @@ fixed point \(x^*\in \cA_\eta\), normalized by
 \le
 H_\eta
 :=
-\frac{|S|-1}{\kappa_\eta}.
+\frac{\max_D|\Xi_D|-1}{\kappa_\eta}.
 \]
 \end{proposition}
 
@@ -1455,14 +1470,64 @@ h_{i,C}^*(\xi)-h_{i,C}^*(\zeta)\le \E_\xi[\tau_\zeta].
 \]
 By \Cref{lem:hitting},
 \[
-\E_\xi[\tau_\zeta]\le \frac{|\Xi_C|-1}{\kappa(Q)}\le \frac{|S|-1}{\kappa_\eta},
+\E_\xi[\tau_\zeta]\le \frac{|\Xi_C|-1}{\kappa(Q)}\le \frac{\max_D|\Xi_D|-1}{\kappa_\eta},
 \]
 because \(|\Xi_C|\le |S|\) and \(\kappa(Q)\ge \kappa_\eta\) by definition of \(\kappa_\eta\).
 Since \(h_{i,C}^*(\zeta)=0\), this proves
 \[
-\max_{\xi} h_{i,C}^*(\xi)\le \frac{|S|-1}{\kappa_\eta}.
+\max_{\xi} h_{i,C}^*(\xi)\le \frac{\max_D|\Xi_D|-1}{\kappa_\eta}.
 \]
 The minimum is \(0\), so the span is at most the same quantity.
+\end{proof}
+
+\subsection{Deviation-value continuity under condition~(a)}
+
+The following lemma provides the key quantitative bridge from compliant occupation closeness to deviation-value control. It is the central ingredient that makes the blockwise Bellman certificate rigorous.
+
+\begin{lemma}[Deviation-value Lipschitz bound]\label{lem:dev-value-lipschitz}
+Fix a node \(C\) and a player \(i\). Assume condition~(a), and fix \(\eta>0\). Let \(\mu,\widehat\mu\in\mathcal P_C\) be two admissible occupation vectors for node \(C\). Denote by \(V^{\mathrm{dev}}_{i,C}(\mu)\) and \(V^{\mathrm{dev}}_{i,C}(\widehat\mu)\) the optimal average deviation values for player \(i\) in the unilateral deviation MDP induced at node \(C\) by the environments \(\mu\) and \(\widehat\mu\), respectively. Then
+\[
+\bigl|V^{\mathrm{dev}}_{i,C}(\widehat\mu)-V^{\mathrm{dev}}_{i,C}(\mu)\bigr|
+\le \operatorname{sp}(h_{i,C,\mu})\,\|\widehat\mu-\mu\|_1,
+\]
+where \(h_{i,C,\mu}\) is any bias function for the deviation MDP associated with \(\mu\). Moreover, under condition~(a),
+\[
+\operatorname{sp}(h_{i,C,\mu})\le \frac{|\Xi_C|-1}{\kappa_\eta},
+\]
+and therefore
+\[
+\bigl|V^{\mathrm{dev}}_{i,C}(\widehat\mu)-V^{\mathrm{dev}}_{i,C}(\mu)\bigr|
+\le \frac{\max_{D}|\Xi_D|-1}{\kappa_\eta}\,\|\widehat\mu-\mu\|_1
+=H_\eta\,\|\widehat\mu-\mu\|_1.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix \(C\) and \(i\). For each admissible occupation vector \(\nu\in\mathcal P_C\), the unilateral optimization problem of player \(i\) against the compliant environment determined by \(\nu\) is a finite average-reward Markov decision process on \(\Xi_C\). Let \(Q_\nu\) denote its transition kernel, \(r_\nu\) its one-stage reward vector, and \(g_\nu=V^{\mathrm{dev}}_{i,C}(\nu)\) its optimal average reward. Let \(h_\nu\) be a bias function satisfying the average-reward optimality equation
+\begin{equation}\label{eq:bellman-dev-lipschitz}
+g_\nu \mathbf 1 + h_\nu = T_\nu h_\nu,
+\end{equation}
+where \(T_\nu\) is the dynamic programming operator
+\[
+(T_\nu f)(\xi)=\max_{a_i\in A_i(\xi)}\Bigl\{r_\nu(\xi,a_i)+\sum_{\xi'}Q_\nu(\xi' \mid \xi,a_i)f(\xi')\Bigr\}.
+\]
+
+Apply \eqref{eq:bellman-dev-lipschitz} with \(\nu=\mu\). Evaluating the \(\widehat\mu\)-operator at \(h_\mu\) and using \(|\max_u \alpha_u-\max_u \beta_u|\le \max_u |\alpha_u-\beta_u|\), we get
+\[
+\|T_{\widehat\mu}h_\mu-T_\mu h_\mu\|_\infty
+\le
+\operatorname{sp}(h_\mu)\,\|\widehat\mu-\mu\|_1.
+\]
+The bound arises because the one-stage reward and transition data depend affinely on the occupation vector: the reward perturbation is at most \(\|\widehat\mu-\mu\|_1\), and the transition perturbation satisfies \(|(Q_{\widehat\mu}-Q_\mu)(\xi,a_i)h_\mu| \le \operatorname{sp}(h_\mu)\,\|Q_{\widehat\mu}(\xi,a_i)-Q_\mu(\xi,a_i)\|_{\mathrm{TV}} \le \operatorname{sp}(h_\mu)\,\|\widehat\mu-\mu\|_1\).
+
+Now let \(\pi\) be an optimal stationary deviation policy for the MDP associated with \(\widehat\mu\). Testing with \(h_\mu\) gives \(g_{\widehat\mu} \le g_\mu+\operatorname{sp}(h_\mu)\,\|\widehat\mu-\mu\|_1\). Interchanging roles yields the reverse inequality, so
+\[
+|g_{\widehat\mu}-g_\mu|
+\le
+\max\{\operatorname{sp}(h_\mu),\operatorname{sp}(h_{\widehat\mu})\}\,\|\widehat\mu-\mu\|_1.
+\]
+
+It remains to bound the bias span uniformly. Under condition~(a), every admissible unilateral deviation kernel on node \(C\) retains connector probabilities bounded below by \(\kappa_\eta>0\). Therefore the deviation MDP is communicating on \(\Xi_C\), with hitting times bounded by \(|\Xi_C|-1)/\kappa_\eta\). For communicating finite average-reward MDPs, the span of a bias function is bounded by the maximal hitting time, giving \(\operatorname{sp}(h_\nu)\le (|\Xi_C|-1)/\kappa_\eta\) for every admissible \(\nu\).
 \end{proof}
 
 \subsection{Blockwise Bellman certificate}
@@ -1470,7 +1535,7 @@ The minimum is \(0\), so the span is at most the same quantity.
 Fix \(\eta\in(0,1)\), choose a relaxed fixed point \(x^*\in \cA_\eta\), and let
 \(\sigma_{\eta,\delta,M_*}\) be the realized profile from \Cref{thm:realization}.  Write
 \[
-H_\eta:=\frac{|S|-1}{\kappa_\eta}.
+H_\eta:=\frac{\max_D|\Xi_D|-1}{\kappa_\eta}.
 \]
 By \Cref{prop:bias-span}, each local bias certificate \(h_{i,C}^*\) can be chosen with
 span at most \(H_\eta\).
@@ -1502,9 +1567,13 @@ g_{i,C}^*+h_{i,C}^*(\xi)+\eta.
 \]
 Here \(r_{i,C}^*\) and \(Q_{C,i}^*\) are the reward and transition coefficients induced by
 the fixed-point package \(x_C^*\).  Because the realized block occupation is within
-\(\delta\) of \(\bar\mu_C^*\) in the sense of \eqref{eq:block-aug}, the actual blockwise
-reward and transition coefficients differ from the target ones by at most \(C_\eta\delta\)
-on the compact set \(\cA_\eta\).  Therefore, along the deviating play inside the block,
+\(\delta\) of \(\bar\mu_C^*\) in the sense of \eqref{eq:block-aug}, \Cref{lem:dev-value-lipschitz} gives
+\[
+\bigl|V^{\mathrm{dev}}_{i,C}(\widehat\mu)-V^{\mathrm{dev}}_{i,C}(\mu_C^*)\bigr|
+\le H_\eta\,\delta,
+\]
+so the actual blockwise deviation value differs from the target by at most \(H_\eta\delta\).
+In particular, the reward and transition coefficients along the deviating play differ from the target ones by at most \(C_\eta\delta\) with \(C_\eta=H_\eta\), which is finite and depends only on \(\eta\) and the game parameters.  Therefore, along the deviating play inside the block,
 \[
 \E\!\left[
 u_i^t(\tau_i,\sigma_{-i})
@@ -1573,7 +1642,7 @@ a relaxed fixed point \(x^*\in \cA_\eta\).
 \noindent\textbf{Step 2: irreducibility and span.}
 Because condition~(a) holds, \Cref{lem:kappa} gives \(\kappa_\eta>0\).  Define
 \[
-H_\eta:=\frac{|S|-1}{\kappa_\eta}.
+H_\eta:=\frac{\max_D|\Xi_D|-1}{\kappa_\eta}.
 \]
 By \Cref{prop:bias-span}, each local bias certificate at \(x^*\) can be chosen with span
 at most \(H_\eta\).
@@ -1764,7 +1833,7 @@ selected bias vectors is bounded on \(\cA_\eta\).  We denote any such bound by
 \(B_\eta^0\).
 
 The much sharper bound used in the proof of Theorem~A is the quantitative estimate
-\(H_\eta=(|S|-1)/\kappa_\eta\).  That sharper estimate requires condition~(a); the present
+\(H_\eta=(\max_D|\Xi_D|-1)/\kappa_\eta\).  That sharper estimate requires condition~(a); the present
 appendix does not.
 
 
