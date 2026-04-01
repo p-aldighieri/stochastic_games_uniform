@@ -1,0 +1,837 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% Theorem environments (numbered within sections)
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+% Notation shortcuts (matching companion note)
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Rp}{\R_+}
+\newcommand{\Simplenat}{\mathrm{Simple}_{\mathrm{nat}}}
+\newcommand{\Simplebroad}{\mathrm{Simple}_{\mathrm{broad}}}
+\newcommand{\Simpleimm}{\mathrm{Simple}_{\mathrm{imm}}}
+\newcommand{\ind}{\mathbf{1}}
+
+\title{Beyond Convexity: Extensions and Limitations\\
+of the Simplicity Characterization}
+\author{Draft --- not for circulation}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\emph{Companion note to:}\\[2pt]
+\textsc{Higher-Dimensional Bootstrap for the Simplicity Conjecture: Finite Product Menus}
+\end{center}
+
+\bigskip
+
+\begin{abstract}
+The companion note proves that on a finite product menu
+$Y = \prod_{i=1}^k M_i \subseteq [0,1]^k$, a \emph{convex}
+coordinatewise nondecreasing canonical pricing function $p_0$ is
+simple (under natural-order immediate adjacency) if and only if it is
+additively separable.  Convexity enters the argument in three places:
+discrete concavity, pointwise pinning, and the two-good trap
+construction.  This note investigates what happens when
+convexity is dropped.
+
+We show:
+(i)~in two dimensions, the hard direction (simple $\Rightarrow$
+additive) holds \emph{without} convexity, requiring only
+coordinatewise monotonicity and immediate adjacency;
+(ii)~the easy direction (additive $\Rightarrow$ simple) can fail
+without convexity;
+(iii)~in higher dimensions, the non-convex hard direction extends to
+grids with at most two non-binary coordinates under immediate
+adjacency, but fails under broad neighbors already in the
+$3\times 3\times 3$ case.
+These results delineate the sharp boundary of the simplicity
+characterization.
+\end{abstract}
+
+%% ===================================================================
+\section{Introduction}\label{sec:intro}
+%% ===================================================================
+
+The companion note establishes the following equivalence.
+
+\begin{theorem}[Main Theorem, companion note]\label{thm:companion}
+Let $Y = \prod_{i=1}^k M_i$ be a finite product menu with
+$M_i \subseteq [0,1]$, and let $p_0 \colon Y \to \Rp$ be the
+restriction to~$Y$ of a convex, coordinatewise nondecreasing function
+with $p_0(0) = 0$.  Then
+\[
+  \Simplenat(Y, p_0) \quad\Longleftrightarrow\quad
+  p_0 \;\text{is additively separable on}\; Y.
+\]
+\end{theorem}
+
+Convexity of $p_0$ is used in three ways:
+\begin{enumerate}[label=(\roman*)]
+  \item \emph{Discrete concavity}: the buyer's utility along any
+    coordinate line is discretely concave, so every local maximum is
+    global.
+  \item \emph{Pointwise pinning}: for each frozen coordinate, a
+    supporting slope pins the anchor against all deviations.
+  \item \emph{Two-good trap}: a nonzero $2 \times 2$ mixed difference
+    creates a simplicity trap by choosing secant-slope endpoints as the
+    buyer's type.
+\end{enumerate}
+
+This note investigates which parts of the argument survive without
+convexity.
+
+%% ===================================================================
+\section{Model and Two Neighbor Notions}\label{sec:neighbors}
+%% ===================================================================
+
+Throughout, $Y = \prod_{i=1}^k M_i$ is a finite product menu with
+$M_i = \{m_{i,1} < \cdots < m_{i,n_i}\} \subseteq [0,1]$.  A pricing
+function $p \colon Y \to \R$ is \emph{coordinatewise nondecreasing};
+we do \emph{not} assume convexity unless stated.  For $y \in Y$,
+$i \in [k]$, and $t \in M_i$, write $y|_{i \to t}$ for the point
+differing from $y$ only in coordinate~$i$.  The buyer's utility at
+type $\theta \in \Rp^k$ is $u_\theta(y) = \theta \cdot y - p(y)$.
+
+\begin{definition}[Broad and immediate neighbors]\label{def:neighbors}
+Points $y, z \in Y$ are \emph{broad neighbors} if they differ in
+exactly one coordinate ($\exists\, i$: $z_{-i} = y_{-i}$,
+$z_i \neq y_i$), and \emph{immediate neighbors} if additionally
+$z_i$ is the predecessor or successor of $y_i$ in $M_i$.  Write
+$N_{\mathrm{broad}}(y)$ and $N_{\mathrm{nat}}(y)$.
+\end{definition}
+
+\begin{definition}[Simplicity]\label{def:simplicity}
+$(Y, p)$ is \emph{broadly simple} (resp.\ \emph{immediately simple},
+written $\Simplenat(Y, p)$) if for every $\theta \in \Rp^k$ and
+every non-optimal $y$, some broad (resp.\ immediate) neighbor
+$z$ satisfies $u_\theta(z) > u_\theta(y)$.
+\end{definition}
+
+\begin{remark}\label{rem:model-def}
+The original model's ``neighbor'' notion (any one-coordinate change in
+a total order on $M_i$) coincides with broad neighbors on finite
+totally ordered sets.
+\end{remark}
+
+The following one-dimensional fact is used throughout.
+
+\begin{lemma}[Discrete concavity and improvement]%
+\label{lem:concave-chain}
+Let $M = \{m_1 < \cdots < m_n\}$ and $f \colon M \to \R$ with
+nonincreasing secant slopes $\sigma_r = (f(m_{r+1}) - f(m_r)) /
+(m_{r+1} - m_r)$.  If $m_r$ is not a global maximizer, then some
+immediate neighbor has strictly higher $f$-value.
+\end{lemma}
+
+\begin{proof}
+Suppose $f(m_r) \geq f(m_{r \pm 1})$ (at each existing neighbor).
+If $1 < r < n$: $\sigma_{r-1} \geq 0 \geq \sigma_r$, and the
+nonincreasing-slope condition forces $\sigma_j \geq 0$ for $j < r$
+and $\sigma_j \leq 0$ for $j \geq r$.  Telescoping yields
+$f(m_r) \geq f(m_s)$ for all $s$.  The boundary cases $r = 1$ and
+$r = n$ are similar.
+\end{proof}
+
+\begin{proposition}[Equivalence under convexity]%
+\label{prop:equiv-convex}
+If $p$ is convex, then $\Simplebroad(Y, p) \Leftrightarrow
+\Simpleimm(Y, p)$.
+\end{proposition}
+
+\begin{proof}
+Immediate $\Rightarrow$ broad is trivial.  For the converse: given an
+improving broad move $y \to y|_{i \to t}$, the function
+$\phi(s) = \theta_i s - p(y|_{i \to s})$ is discretely concave
+(since $p$ convex $\Rightarrow$ nondecreasing secant slopes of
+$s \mapsto p(y|_{i \to s})$).  Since $\phi(t) > \phi(y_i)$ and $y_i$
+is not a global maximizer of $\phi$, Lemma~\ref{lem:concave-chain}
+gives an improving immediate neighbor.
+\end{proof}
+
+\begin{remark}\label{rem:model-applies}
+Since the companion note assumes convex $p$,
+Proposition~\ref{prop:equiv-convex} guarantees its theorems hold
+equally under the original model's broad-neighbor definition.
+\end{remark}
+
+%% ===================================================================
+\section{The Two-Dimensional Theorem Without Convexity}%
+\label{sec:2d}
+%% ===================================================================
+
+Throughout this section $M_1 = \{a_1 < \cdots < a_m\}$,
+$M_2 = \{b_1 < \cdots < b_n\}$, $Y = M_1 \times M_2$,
+$p_{rs} = p(a_r, b_s)$, and the adjacent minors are
+\[
+  \Delta_{r,s} \coloneqq p_{r+1,s+1} - p_{r+1,s} - p_{r,s+1} + p_{r,s}.
+\]
+
+\subsection{Preliminary lemmas}
+
+\begin{lemma}[1D non-convexity kills simplicity]%
+\label{lem:1d-convex}
+Let $M = \{m_1 < \cdots < m_n\}$ ($n \geq 3$) and
+$q \colon M \to \R$ nondecreasing.  If $q$ is not convex (secant
+slopes not nondecreasing), then $(M, q)$ is not immediately simple.
+\end{lemma}
+
+\begin{proof}
+Take $r$ with $s_r > s_{r+1}$ (where $s_j$ are secant slopes of $q$)
+and choose $\theta \in (s_{r+1}, s_r)$; since $s_{r+1} \geq 0$
+(monotonicity) we have $\theta \geq 0$.  Set
+$f(m_j) = \theta m_j - q(m_j)$ with utility slopes
+$\sigma_j = \theta - s_j$.  Then $\sigma_r < 0 < \sigma_{r+1}$, so
+$f(m_r) > f(m_{r+1}) < f(m_{r+2})$: the point $m_{r+1}$ is a strict
+local minimum.
+
+Let $L = \max_{j \leq r} f(m_j)$ and $R = \max_{j \geq r+2} f(m_j)$.
+The global max is $\max(L, R)$ (not at $m_{r+1}$).  If $R > L$, a
+maximizer of $f$ on $\{m_1, \dots, m_r\}$ is a non-global local max
+(it beats its neighbors in this set; its right neighbor $m_{r+1}$ or
+the next element satisfies $f(m_L) \geq f(m_r) > f(m_{r+1})$).
+If $L > R$, the symmetric argument works on
+$\{m_{r+2}, \dots, m_n\}$.  If $L = R$, perturb
+$\theta \to \theta + \varepsilon$ (small $\varepsilon > 0$) to tilt
+rightward: $f_{\theta+\varepsilon}(m_R) - f_{\theta+\varepsilon}(m_L)
+= \varepsilon(m_R - m_L) > 0$, reducing to the $R > L$ case (the
+local-minimum structure at $m_{r+1}$ persists for small $\varepsilon$
+since $\theta + \varepsilon$ remains in $(s_{r+1}, s_r)$).
+\end{proof}
+
+\begin{lemma}[Vanishing minors $\Leftrightarrow$ additivity]%
+\label{lem:minor-additive}
+$p$ is additively separable on $M_1 \times M_2$ iff
+$\Delta_{r,s} = 0$ for all $r, s$.
+\end{lemma}
+
+\begin{proof}
+($\Rightarrow$) Direct substitution.  ($\Leftarrow$) Vanishing minors
+imply coordinate-1 increments $p_{r+1,s} - p_{r,s}$ are independent
+of $s$.  Define $p_1(a_r) = p_{r,1} - p_{1,1}$ and $p_2(b_s) = p_{1,s}$.
+Telescoping gives $p_{r,s} = p_1(a_r) + p_2(b_s)$.
+\end{proof}
+
+\subsection{The main two-dimensional result}
+
+\begin{theorem}[2D simplicity without convexity]%
+\label{thm:2d-no-convex}
+Let $p \colon M_1 \times M_2 \to \R$ be coordinatewise nondecreasing.
+If $(M_1 \times M_2, p)$ is immediately simple, then $p$ is additively
+separable.  No convexity is needed.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:minor-additive}, it suffices to show
+$\Delta_{r,s} = 0$ for all $r, s$.  Suppose for contradiction that
+some minor is nonzero.  Choose $(r_0, s_0)$ \emph{lexicographically
+minimal} (minimize $r$, then $s$) with $\Delta_{r_0, s_0} \neq 0$.
+
+\medskip\noindent
+\textbf{Step 1.  Boundary convexity.}
+
+The bottom row $a \mapsto p(a, b_1)$ is convex on $M_1$.  Indeed, for
+type $(\theta_1, 0)$, the utility $u(a, b) = \theta_1 a - p(a, b)$ is
+nonincreasing in $b$ (since $p$ nondecreasing, $\theta_2 = 0$).  So
+$b = b_1$ is globally optimal in coordinate~2, and the problem reduces
+to maximizing $\theta_1 a - p(a, b_1)$ over $M_1$.  If the bottom row
+were non-convex, Lemma~\ref{lem:1d-convex} would give $\theta_1$ and
+a point $(a_{r'}, b_1)$ that is a non-global local maximizer on the
+full grid (pinned at $b_1$ since $b_1$ is the lowest element and
+$\theta_2 = 0$), contradicting simplicity.
+
+Symmetrically (using $\theta_1 = 0$), $b \mapsto p(a_1, b)$ is convex.
+
+\medskip\noindent
+\textbf{Step 2.  Convexity transport from the southwest.}
+
+By the minimality of $(r_0, s_0)$:
+\begin{enumerate}[label=(\alph*)]
+  \item $\Delta_{r',s'} = 0$ for all $r' < r_0$, all $s'$.
+  \item $\Delta_{r_0, s'} = 0$ for all $s' < s_0$.
+\end{enumerate}
+
+From (a): the sub-grid $\{a_1, \dots, a_{r_0}\} \times M_2$ has
+additively separable price (Lemma~\ref{lem:minor-additive}).  So every
+row $b \mapsto p(a_{r'}, b)$ for $r' \leq r_0$ shares the secant
+slopes of the convex row $b \mapsto p(a_1, b)$, hence is convex.
+
+From (b): the sub-grid $\{a_1, \dots, a_{r_0+1}\} \times
+\{b_1, \dots, b_{s_0}\}$ has additively separable price.  So every
+column $a \mapsto p(a, b_{s'})$ for $s' \leq s_0$ shares the secant
+slopes of $a \mapsto p(a, b_1)$ on $\{a_1, \dots, a_{r_0+1}\}$, hence
+is convex there.
+
+Additionally: the secant slopes of $b \mapsto p(a_{r_0+1}, b)$ on
+$\{b_1, \dots, b_{s_0}\}$ match those of $b \mapsto p(a_{r_0}, b)$,
+hence are nondecreasing.
+
+\medskip\noindent
+\textbf{Step 3.  Trap construction.}
+
+Write the four face vertices as $y_{00} = (a_{r_0}, b_{s_0})$,
+$y_{10} = (a_{r_0+1}, b_{s_0})$, $y_{01} = (a_{r_0}, b_{s_0+1})$,
+$y_{11} = (a_{r_0+1}, b_{s_0+1})$.
+
+\medskip
+\emph{Case $\Delta_{r_0, s_0} < 0$.}  Trap $y_{00}$.
+
+Set
+\[
+  \theta_1 = \frac{p_{r_0+1,s_0} - p_{r_0,s_0}}{a_{r_0+1} - a_{r_0}},
+  \qquad
+  \theta_2 = \frac{p_{r_0,s_0+1} - p_{r_0,s_0}}{b_{s_0+1} - b_{s_0}}.
+\]
+These are the right secant slopes at $y_{00}$ in each coordinate.
+
+\emph{Checking immediate neighbors of $y_{00}$:}
+\begin{itemize}
+  \item \emph{Right in coord.~1} ($\to y_{10}$):
+    change $= \theta_1(a_{r_0+1} - a_{r_0}) - (p_{r_0+1,s_0} -
+    p_{r_0,s_0}) = 0$.
+
+  \item \emph{Left in coord.~1} (if $r_0 > 1$):
+    By Step~2, $a \mapsto p(a, b_{s_0})$ is convex on
+    $\{a_1, \dots, a_{r_0+1}\}$, so the left secant slope $\leq$
+    right secant slope $= \theta_1$.  Change $\leq 0$.
+
+  \item \emph{Right in coord.~2} ($\to y_{01}$):
+    change $= 0$ (by definition of $\theta_2$).
+
+  \item \emph{Left in coord.~2} (if $s_0 > 1$):
+    By Step~2, $b \mapsto p(a_{r_0}, b)$ is convex (row $r_0 \leq r_0$),
+    so left slope $\leq$ right slope $= \theta_2$.  Change $\leq 0$.
+\end{itemize}
+
+All neighbors non-improving.  But $y_{00}$ is not globally optimal:
+\begin{align*}
+  u_\theta(y_{11}) - u_\theta(y_{00})
+  &= \theta_1(a_{r_0+1} - a_{r_0}) + \theta_2(b_{s_0+1} - b_{s_0})
+  - (p_{r_0+1,s_0+1} - p_{r_0,s_0}) \\
+  &= (p_{r_0+1,s_0} - p_{r_0,s_0}) + (p_{r_0,s_0+1} - p_{r_0,s_0})
+  - (p_{r_0+1,s_0+1} - p_{r_0,s_0}) \\
+  &= -\Delta_{r_0,s_0} > 0.
+\end{align*}
+Contradiction with simplicity.
+
+\medskip
+\emph{Case $\Delta_{r_0, s_0} > 0$.}  Trap $y_{01} = (a_{r_0}, b_{s_0+1})$.
+
+Set
+\begin{align*}
+  \theta_1 &= \frac{p_{r_0+1,s_0+1} - p_{r_0,s_0+1}}{a_{r_0+1} - a_{r_0}}
+  \eqqcolon R_1', \\
+  \theta_2 &= \frac{p_{r_0,s_0+1} - p_{r_0,s_0}}{b_{s_0+1} - b_{s_0}}
+  \eqqcolon L_2'.
+\end{align*}
+
+\emph{Checking immediate neighbors of $y_{01}$:}
+\begin{itemize}
+  \item \emph{Right in coord.~1} ($\to y_{11}$): change $= 0$
+    (definition of $R_1'$).
+
+  \item \emph{Left in coord.~1} (if $r_0 > 1$):
+    Since all $\Delta_{r',s_0}$ vanish for $r' < r_0$, the
+    column-$r_0$ secant slope at $b_{s_0+1}$ satisfies
+    $L_1' = s_{r_0-1}(b_{s_0+1}) = s_{r_0-1}(b_1)$ (transported from
+    bottom row).  Meanwhile
+    $R_1' = s_{r_0}(b_{s_0}) + \Delta_{r_0,s_0} / (a_{r_0+1} - a_{r_0})
+    > s_{r_0}(b_{s_0}) \geq s_{r_0-1}(b_1) = L_1'$
+    (the middle inequality uses convexity of the bottom row, and
+    $s_{r_0}(b_{s_0}) = s_{r_0}(b_1)$ from additivity on the sub-grid).
+    So $\theta_1 = R_1' > L_1'$, and the leftward move gives change $< 0$.
+
+  \item \emph{Left in coord.~2} ($\to y_{00}$): change $= 0$
+    (definition of $L_2'$).
+
+  \item \emph{Right in coord.~2} (if $s_0 + 1 < n$):
+    $b \mapsto p(a_{r_0}, b)$ is convex (row $r_0 \leq r_0$, Step~2),
+    so left slope $L_2' \leq$ right slope at $b_{s_0+1}$.
+    Change $\leq 0$.
+\end{itemize}
+
+All neighbors non-improving.  But $y_{01}$ is not globally optimal:
+\begin{align*}
+  u_\theta(y_{10}) - u_\theta(y_{01})
+  &= R_1'(a_{r_0+1} - a_{r_0}) + L_2'(b_{s_0} - b_{s_0+1})
+  - (p_{r_0+1,s_0} - p_{r_0,s_0+1}) \\
+  &= (p_{r_0+1,s_0+1} - p_{r_0,s_0+1})
+  - (p_{r_0,s_0+1} - p_{r_0,s_0})
+  - p_{r_0+1,s_0} + p_{r_0,s_0+1} \\
+  &= p_{r_0+1,s_0+1} + p_{r_0,s_0} - p_{r_0+1,s_0} - p_{r_0,s_0+1}
+  = \Delta_{r_0,s_0} > 0.
+\end{align*}
+Contradiction with simplicity.
+
+\medskip
+In both cases all minors vanish, so $p$ is additive.
+\end{proof}
+
+\begin{remark}\label{rem:2d-mechanism}
+The proof exploits the \emph{planar} structure: boundary convexity
+propagates inward through the vanishing-minor region south-west of
+$(r_0, s_0)$.  In higher dimensions there is no analogous propagation
+from a single boundary.
+\end{remark}
+
+%% ===================================================================
+\section{Failure of the Easy Direction Without Convexity}%
+\label{sec:easy-fail}
+%% ===================================================================
+
+\begin{proposition}[Easy direction fails without convexity]%
+\label{prop:easy-fail}
+There exist a finite product menu $Y = M_1 \times M_2$ and a
+coordinatewise nondecreasing, additively separable $p$ on $Y$ such
+that $(Y, p)$ is not immediately simple.
+\end{proposition}
+
+\begin{proof}
+Take $M_1 = \{0, 1, 2\}$, $M_2 = \{0, 1\}$,
+$p(i, j) = q(i)$ with $q(0) = 0$, $q(1) = 2$, $q(2) = 3$.
+This is additive ($p = q + 0$), nondecreasing, and non-convex
+($s_1 = 2 > 1 = s_2$).
+
+Type $\theta = (1.2, 0)$:
+\[
+  u(0,j) = 0, \quad u(1,j) = -0.8, \quad u(2,j) = -0.6.
+\]
+The global max is $0$ at $i = 0$.  At $y = (2,0)$: utility $-0.6 < 0$
+(not optimal), yet its immediate neighbors $(1,0)$ and $(2,1)$ have
+utilities $-0.8$ and $-0.6$---neither improves.
+\end{proof}
+
+\begin{remark}\label{rem:easy-fail-mechanism}
+The trap arises because $q$ is concave at $i = 1$: the utility
+$1.2\,i - q(i)$ has a local minimum at $i = 1$, making $i = 2$ a
+non-global local maximum.  Convexity of $q$ is exactly what
+Lemma~\ref{lem:concave-chain} uses to prevent such traps.  Without
+convexity, neither direction of the equivalence holds in general;
+the hard direction (Theorem~\ref{thm:2d-no-convex}) is the exception.
+\end{remark}
+
+%% ===================================================================
+\section{Higher Dimensions}\label{sec:higher}
+%% ===================================================================
+
+\subsection{Pinning binary coordinates}
+
+\begin{definition}\label{def:binary}
+Coordinate $i$ is \emph{binary} if $|M_i| = 2$.
+\end{definition}
+
+\begin{lemma}[Binary pinning]\label{lem:pin-binary}
+If $\ell$ is binary, then for every $y \in Y$ there exists
+$\hat\theta_\ell \geq 0$ such that
+$\hat\theta_\ell\, t - p(y|_{\ell \to t}) \leq
+\hat\theta_\ell\, y_\ell - p(y)$ for all $t \in M_\ell$.
+No convexity is required.
+\end{lemma}
+
+\begin{proof}
+Write $M_\ell = \{m_{\ell,1} < m_{\ell,2}\}$.
+If $y_\ell = m_{\ell,1}$: set $\hat\theta_\ell = 0$; the unique move
+(to $m_{\ell,2}$) changes utility by $-[p(y|_{\ell \to m_{\ell,2}}) - p(y)]
+\leq 0$.
+If $y_\ell = m_{\ell,2}$: set $\hat\theta_\ell = [p(y) -
+p(y|_{\ell \to m_{\ell,1}})] / (m_{\ell,2} - m_{\ell,1}) \geq 0$;
+the move gives change $= 0$.
+\end{proof}
+
+\subsection{Grids with at most two non-binary coordinates}
+
+\begin{theorem}[Hard direction with $\leq 2$ non-binary coordinates]%
+\label{thm:binary}
+Let $Y = \prod_{i=1}^k M_i$ with $p$ coordinatewise nondecreasing.
+Suppose at most two coordinates are non-binary.  If $(Y, p)$ is
+immediately simple, then $p$ is additively separable.
+\end{theorem}
+
+\begin{proof}
+Let $I = \{i : |M_i| \geq 3\}$ with $|I| \leq 2$.  By the
+higher-dimensional analogue of Lemma~\ref{lem:minor-additive}
+(Lemma~3.8 of the companion note), $p$ is additive iff all pairwise
+adjacent $2 \times 2$ minors vanish.  We show this by establishing
+that every two-coordinate slice is immediately simple, then applying
+Theorem~\ref{thm:2d-no-convex}.
+
+The proof proceeds in three rounds, ordered so that each round can
+invoke results from previous rounds.
+
+\medskip\noindent
+\textbf{Round 1.}  \emph{The pair $(\ell_1, \ell_2) = I$ (if $|I| = 2$),
+or any pair involving at most one non-binary coordinate (if $|I| \leq 1$),
+where all frozen coordinates are binary.}
+
+Fix such a pair $(i,j)$ and anchor $a$.  To show the slice $S_{ij}(a)$
+is immediately simple: fix $(\theta_i, \theta_j) \in \Rp^2$ and a
+non-optimal $y \in S_{ij}(a)$.  For each frozen $\ell \notin \{i,j\}$
+(all binary), Lemma~\ref{lem:pin-binary} gives $\hat\theta_\ell(y) \geq 0$
+pinning $y_\ell$.
+
+Extend to $\hat\theta \in \Rp^k$.  Since $y$ is not optimal on
+$S_{ij}(a)$, some $w \in S_{ij}(a)$ with $u_{\hat\theta}(w) > u_{\hat\theta}(y)$
+exists (the frozen coordinates agree, so the face-utility difference
+equals the full-utility difference).  By simplicity of $Y$, there is
+an improving immediate neighbor $z$ of $y$ in $Y$.  Since each frozen
+$\ell$ is pinned at $y$, the improving neighbor cannot lie in a frozen
+direction, so $z \in S_{ij}(a)$.
+
+Each slice is immediately simple, so Theorem~\ref{thm:2d-no-convex}
+forces all corresponding minors to vanish.
+
+\medskip\noindent
+\textbf{Round 2.}  \emph{Pairs $(\ell, j)$ with $\ell \in I$ and $j \notin I$
+(one active non-binary, one active binary), where the only non-binary
+frozen coordinate is $\ell' \in I \setminus \{\ell\}$ (if $|I| = 2$).}
+
+From Round~1, all $(\ell, \ell')$-minors vanish for every anchor.
+This means: the increment $p(y|_{\ell' \to m_{\ell',r+1}}) -
+p(y|_{\ell' \to m_{\ell',r}})$ is independent of $y_\ell$ (since
+the mixed $(\ell, \ell')$-differences vanish).
+
+Consequently, for any $y$, the secant slopes of
+$t \mapsto p(y|_{\ell' \to t})$ depend only on
+$y_{-\{\ell, \ell'\}}$ (not on $y_\ell$).  Setting $y_\ell = m_{\ell,1}$
+and all binary coordinates to their lower boundaries, the section
+in direction $\ell'$ at this ``corner'' point is
+$t \mapsto g(t) + \text{const}$, where $g$ is the $\ell'$-marginal of
+the additive decomposition on the $(\ell, \ell')$-face at the given
+binary-coordinate anchor.
+
+\emph{Claim:} $g$ is convex on $M_{\ell'}$.  If not, by
+Lemma~\ref{lem:1d-convex} there exist $\hat\theta_{\ell'}$ and a
+non-global local max $t_0$ of $\hat\theta_{\ell'}\, t - g(t)$ on
+$M_{\ell'}$.  The point $z = (m_{1,1}, \dots, m_{k,1})|_{\ell' \to t_0}$
+(all coordinates at lower boundaries except $\ell' = t_0$) can be
+fully trapped: set all type components to $0$ except
+$\hat\theta_{\ell'}$ and the binary-coordinate pinning values
+(Lemma~\ref{lem:pin-binary}).  With $\theta_\ell = \theta_j = 0$,
+both $\ell$ and $j$ are at their lower boundaries, pinned by
+monotonicity.  The 1D local max in $\ell'$ completes the trap.
+Since $t_0$ is not a global 1D max, $z$ is not globally optimal.
+Contradiction.
+
+So $g$ is convex.  Since the $\ell'$-slopes at any $y$ equal those
+of $g$, the section $t \mapsto p(y|_{\ell' \to t})$ is convex at
+every $y$.  In particular, $\ell'$ can be pinned at any anchor
+$a_{\ell'}$ from any $y$, using the supporting-slope interval
+(which is nonempty by convexity).
+
+With $\ell'$ pinnable and all other frozen coordinates binary
+(pinnable by Lemma~\ref{lem:pin-binary}), the slice-reduction
+argument of Round~1 applies.  All $(\ell, j)$-minors vanish.
+
+By symmetry, all $(\ell', j)$-minors vanish for binary $j$ as well.
+
+\medskip\noindent
+\textbf{Round 3.}  \emph{Pairs $(i, j)$ with both $i, j$ binary, where
+both $\ell_1, \ell_2 \in I$ are frozen (only relevant if $|I| = 2$).}
+
+From Rounds 1--2, all $(\ell, \ell')$-minors and all
+$(\ell, j)$-minors (for binary $j$) vanish.  This means the
+$\ell_1$-increments of $p$ are independent of every other coordinate
+except possibly $\ell_1$ itself, i.e., the secant slopes of
+$t \mapsto p(y|_{\ell_1 \to t})$ depend only on $t$ (not on $y_{-\ell_1}$).
+Similarly for $\ell_2$.
+
+In particular, both sections are convex (by Round~2's analysis), so
+both $\ell_1$ and $\ell_2$ can be pinned at any anchor.  Combined with
+binary pinning of the remaining frozen coordinates, the slice reduction
+goes through.  All $(i,j)$-minors vanish.
+
+\medskip
+Rounds 1--3 cover all pairs of coordinates.  All pairwise minors vanish,
+so $p$ is additive.
+\end{proof}
+
+\subsection{Failure under broad neighbors in three dimensions}
+
+\begin{proposition}[Broad simplicity fails in 3D]%
+\label{prop:broad-3d-fail}
+There exists a coordinatewise nondecreasing $p$ on $\{0,1,2\}^3$
+that is broadly simple but not additively separable.
+\end{proposition}
+
+\begin{proof}
+Define
+\[
+  p(i,j,k) = i + j + k + \ind_{\{(1,1,1)\}}(i,j,k),
+\]
+so $p = i + j + k$ everywhere except $p(1,1,1) = 4$.
+
+\emph{Monotonicity.}
+At the center: neighbors with smaller coordinates have prices
+$\leq 2 < 4$, neighbors with larger coordinates have prices
+$\geq 4 = p(1,1,1)$.  All other points lie on the additive surface
+$i + j + k$, which is nondecreasing.
+
+\emph{Non-additivity.}
+$p(1,1,1) = 4 \neq 3 = 1 + 1 + 1$.
+
+\emph{Broad simplicity.}
+Fix $\theta \in \Rp^3$ and a non-optimal $y$.
+
+\emph{Case $y = (1,1,1)$:}
+$u_\theta(1,1,1) = \sum_i \theta_i - 4$.  If $\theta_i > 0$ for some
+$i$: the broad neighbor $y|_{i \to 2}$ has utility
+$u_\theta(y|_{i \to 2}) = u_\theta(y) + \theta_i > u_\theta(y)$
+(since both $y|_{i \to 2}$ and $y$ are on or above the additive surface,
+the $+1$ penalty at $y$ gives the center a disadvantage of $\theta_i$
+relative to the move to $2$).
+
+Formally: $u_\theta(y|_{i \to 2}) - u_\theta(y) = \theta_i \cdot 1
+- [p(y|_{i \to 2}) - p(1,1,1)]$.  Now $p(y|_{i \to 2}) = 2 + 1 + 1 = 4$
+(a boundary point), and $p(1,1,1) = 4$, so the change is $\theta_i > 0$.
+
+If $\theta = 0$: $u_0(y) = -4$.  Neighbor $(0,1,1)$:
+$u_0(0,1,1) = -2 > -4$.
+
+\emph{Case $y \neq (1,1,1)$:}
+For non-center points, $p(y) = y_1 + y_2 + y_3$, so
+$u_\theta(y) = \sum_i (\theta_i - 1) y_i$.  This is linear on the
+non-center part of the grid.
+
+If there exists a non-center $y^*$ with $u_\theta(y^*) > u_\theta(y)$:
+$\sum_i (\theta_i - 1)(y^*_i - y_i) > 0$, so some coordinate $i$ has
+$(\theta_i - 1)(y^*_i - y_i) > 0$, and the broad move $y \to y|_{i \to y^*_i}$
+improves (if $y|_{i \to y^*_i} \neq (1,1,1)$) or else
+$y|_{i \to y^*_i} = (1,1,1)$ and we check directly.  In the latter case,
+$y$ differs from $(1,1,1)$ in exactly coordinate~$i$ (the others already
+equal~$1$).  Then $y^* \neq (1,1,1)$ yet improves over $y$, and the move
+$y \to y|_{i \to y^*_i}$ lands on the center.  But we can also try
+$y \to y|_{i \to v_i}$ where $v_i \in \{0,2\} \setminus \{y_i\}$ (a
+non-center move), which has change $(\theta_i - 1)(v_i - y_i)$.  If this
+is positive, done.  If not, the original improving move to the center
+suffices.
+
+The remaining case: the \emph{only} point improving over $y$ is
+$(1,1,1)$.  We show this is impossible.  The center's utility is
+$\sum_i \theta_i - 4$, while the non-center maximum is
+$\max_{z \in \{0,1,2\}^3 \setminus \{c\}} \sum_i (\theta_i - 1) z_i
+= \sum_i \max(0, 2(\theta_i - 1))
+= 2 \sum_{i: \theta_i > 1} (\theta_i - 1)$.
+The center beats this maximum iff
+$\sum_i \theta_i - 4 > 2\sum_{i: \theta_i > 1} (\theta_i - 1)$,
+which simplifies to
+$\sum_{i: \theta_i \leq 1} (\theta_i - 1) > 1 + \sum_{i: \theta_i > 1} (\theta_i - 1)$.
+The LHS is $\leq 0$ and the RHS is $\geq 1$, so this never holds.
+Hence the center never strictly beats the non-center maximum, and
+this case is vacuous.
+\end{proof}
+
+\begin{remark}\label{rem:sharp-3d}
+Under \emph{immediate} adjacency on $\{0,1,2\}^3$ (three non-binary
+coordinates), the question remains open: does immediate simplicity
+imply additivity without convexity?  The boundary faces are additive
+by Theorem~\ref{thm:2d-no-convex} (using the argument of
+Theorem~\ref{thm:binary}, Round~1, with no frozen non-binary
+coordinates), so the problem reduces to eliminating the single
+``center defect'' parameter.  The difficulty is pinning a non-binary
+frozen coordinate at an interior anchor without convexity.
+\end{remark}
+
+%% ===================================================================
+\section{Why the Continuous Extension Fails}\label{sec:continuous}
+%% ===================================================================
+
+A natural question is whether the equivalence extends from finite
+product menus to the full cube $Y = [0,1]^k$.  We show it does not:
+for smooth convex pricing, broad simplicity on $[0,1]^k$ is
+trivially satisfied regardless of additivity.
+
+\begin{proposition}[Smooth convex pricing is always broadly simple]%
+\label{prop:smooth-trivial}
+Let $p_0\colon [0,1]^k \to \R$ be $C^1$, convex, nondecreasing,
+with $p_0(\mathbf{0}) = 0$.
+Then $([0,1]^k, p_0)$ is broadly simple.
+\end{proposition}
+
+\begin{proof}
+Fix $\theta \in \Rp^k$ and suppose $y \in [0,1]^k$ is
+coordinatewise optimal: for each $i$, the concave function
+$t \mapsto \theta_i\, t - p_0(y|_{i \to t})$ is maximized at
+$t = y_i$ over $[0,1]$.
+Since $p_0$ is $C^1$, this gives the box-constraint first-order
+conditions:
+\[
+  \theta_i - \frac{\partial p_0}{\partial y_i}(y) \;\begin{cases}
+    \leq 0 & \text{if } y_i = 0, \\
+    = 0 & \text{if } 0 < y_i < 1, \\
+    \geq 0 & \text{if } y_i = 1.
+  \end{cases}
+\]
+These are precisely the KKT conditions for the global concave
+maximization problem $\max_{y \in [0,1]^k} u_\theta(y)$.
+Since $u_\theta$ is concave (as $p_0$ is convex), the KKT
+conditions are sufficient for global optimality.
+Hence every coordinatewise maximum is a global maximum, and
+broad simplicity holds.
+\end{proof}
+
+\begin{example}[Non-additive, broadly simple on $[0,1]^2$]%
+\label{ex:smooth-counter}
+$p_0(y_1, y_2) = \tfrac{1}{2}(y_1 + y_2)^2$ is $C^\infty$,
+convex, nondecreasing, $p_0(0,0) = 0$, and
+non-additive ($\partial^2 p_0 / \partial y_1 \partial y_2 = 1$).
+By Proposition~\ref{prop:smooth-trivial}, it is broadly simple
+on $[0,1]^2$.
+
+Yet on the finite grid $\{0, \tfrac{1}{2}, 1\}^2$, the same
+function is NOT broadly simple: the $2 \times 2$ minor at
+$\bigl\{(0,0), (\tfrac{1}{2},0), (0,\tfrac{1}{2}), (\tfrac{1}{2},\tfrac{1}{2})\bigr\}$
+is $\tfrac{1}{4} \neq 0$, and the finite-grid trap construction
+(Theorem~\ref{thm:2d-no-convex} of the main paper) produces a
+trapped point.
+\end{example}
+
+\begin{remark}[Non-smooth pricing CAN fail broad simplicity]%
+\label{rem:nonsmooth}
+The smoothness hypothesis is essential.
+Consider $p_0(y_1, y_2) = \max(y_1, y_2)$: convex, nondecreasing,
+$p_0(0,0) = 0$, non-additive, but \emph{not} $C^1$ (non-differentiable
+on the diagonal $y_1 = y_2$).
+
+At $\theta = (0.8, 0.8)$ and $y = (0.5, 0.5)$:
+$u_\theta(y) = 0.8 - 0.5 = 0.3$, while
+$u_\theta(1,1) = 1.6 - 1 = 0.6 > 0.3$.
+Moving coordinate~1 to~$t$:
+$u(t, 0.5) = 0.8t + 0.4 - \max(t, 0.5)$, which equals
+$0.8t - 0.1$ for $t < 0.5$ and $-0.2t + 0.4$ for $t \geq 0.5$.
+Both branches are maximized at $t = 0.5$, giving $u = 0.3$.
+By symmetry, coordinate~2 is also stuck.
+So $(0.5, 0.5)$ is a broad trap: non-optimal yet no
+single-coordinate move improves utility.
+
+The root cause is subdifferential decoupling: at the kink,
+coordinatewise optimality requires
+$\theta_i \in [\partial^-_{y_i} p_0, \partial^+_{y_i} p_0] = [0,1]$
+for each~$i$ independently, while global optimality requires
+$(\theta_1, \theta_2) \in \partial p_0 = \{(\lambda, 1-\lambda) :
+\lambda \in [0,1]\}$, i.e., $\theta_1 + \theta_2 = 1$.
+The point $\theta = (0.8, 0.8)$ satisfies the former but not the
+latter.
+\end{remark}
+
+The failure of the continuous extension highlights the role of
+discreteness: on a finite grid, the finite spacing between menu
+points creates traps that the continuum's intermediate values
+dissolve.
+
+Despite this, the finite-grid theorem yields a clean continuous
+corollary via universal quantification:
+
+\begin{corollary}[Universal finite-menu characterization]%
+\label{cor:universal}
+Let $p_0\colon [0,1]^k \to \R$ be convex, nondecreasing,
+$p_0(\mathbf{0}) = 0$.  Then $p_0$ is additively separable on
+$[0,1]^k$ if and only if, for every family of finite menus
+$M_i \subset [0,1]$ with $0 \in M_i$ and $|M_i| \geq 2$, the
+restriction $p_0|_{\prod M_i}$ is broadly simple.
+\end{corollary}
+
+\begin{proof}
+$(\Rightarrow)$:
+If $p_0 = \sum_i p_i(y_i)$ with each $p_i$ convex, then
+every finite subgrid inherits an additive, convex price, and
+the easy direction of the main theorem gives broad simplicity.
+
+$(\Leftarrow)$:
+If $p_0$ is not additive on $[0,1]^k$, some pair of coordinates
+$i,j$ and some four points $a < a'$ in $[0,1]$, $b < b'$ in
+$[0,1]$ (and appropriate anchors for the remaining coordinates)
+give a nonzero $2 \times 2$ mixed difference.
+The finite menu $M_i = \{0, a, a'\}$, $M_j = \{0, b, b'\}$
+(with singletons for the other coordinates) inherits this
+nonzero minor, so by the contrapositive of the main theorem's
+hard direction, this subgrid is not broadly simple.
+\end{proof}
+
+%% ===================================================================
+\section{Discussion}\label{sec:discussion}
+%% ===================================================================
+
+\paragraph{Summary.}
+Table~\ref{tab:summary} summarizes the landscape.
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lcc}
+\hline
+Setting & Imm.\ adjacency & Broad neighbors \\
+\hline
+2D, any finite grid & Simple $\Rightarrow$ Additive & Same \\
+Additive + non-convex & Not necessarily simple & Same \\
+$k$D, $\leq 2$ non-binary coords & Simple $\Rightarrow$ Additive & Open \\
+$3 \times 3 \times 3$ & Open & Counterexample \\
+General higher-dim & Open & Fails \\
+\hline
+\multicolumn{3}{l}{\emph{Convex pricing, continuous menus:}} \\
+\hline
+$[0,1]^k$, smooth $p_0$ & N/A & Trivially simple \\
+$[0,1]^k$, non-smooth $p_0$ & N/A & May fail \\
+Universal (all finite subgrids) & Equiv.\ to additive & Same \\
+\hline
+\end{tabular}
+\caption{Simplicity vs.\ additivity.  The top block is without
+convexity (finite menus); the bottom block is with convexity
+(continuous menus).}
+\label{tab:summary}
+\end{table}
+
+\paragraph{The sharp boundary at two dimensions.}
+Theorem~\ref{thm:2d-no-convex} is the strongest unconditional result:
+on any $m \times n$ grid, immediate simplicity of a nondecreasing
+price implies additivity.  The proof uses a southwest-most minor
+argument in which boundary convexity (forced by simplicity)
+propagates inward.  This planar mechanism has no known analogue in
+$k \geq 3$.
+
+\paragraph{What convexity buys.}
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Easy direction:} convexity ensures additive
+    $\Rightarrow$ simple (via discrete concavity).  Without it, the
+    easy direction fails (Proposition~\ref{prop:easy-fail}).
+
+  \item \textbf{Broad $=$ immediate:} convexity makes the two neighbor
+    notions equivalent (Proposition~\ref{prop:equiv-convex}).  Without
+    it, they diverge in 3D
+    (Proposition~\ref{prop:broad-3d-fail}).
+
+  \item \textbf{Face reduction:} convexity enables pointwise pinning
+    of frozen coordinates against all deviations, powering the
+    companion note's slice-reduction lemma.  Without convexity,
+    face reduction requires either binary coordinates
+    (Theorem~\ref{thm:binary}) or new ideas.
+\end{enumerate}
+
+\paragraph{Open questions.}
+\begin{enumerate}[label=(\roman*)]
+  \item Does immediate simplicity imply additivity on $\{0,1,2\}^3$
+    (or $\{0,1,2,3\}^3$) without convexity?
+
+  \item Is there a structural characterization of broadly-simple
+    non-additive pricings in higher dimensions?
+
+  \item Can the southwest-most-minor technique be generalized to
+    higher-dimensional grids (e.g., using a lexicographic induction on
+    the full $k$-dimensional index)?
+\end{enumerate}
+
+\end{document}

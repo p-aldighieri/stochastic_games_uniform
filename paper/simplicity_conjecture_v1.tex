@@ -1,0 +1,895 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+% Notation shortcuts
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Rp}{\R_+}
+\newcommand{\Simplenat}{\mathrm{Simple}_{\mathrm{nat}}}
+\newcommand{\Simpleord}{\mathrm{Simple}_{\preceq}}
+
+\title{Higher-Dimensional Bootstrap for the Simplicity Conjecture:\\
+Finite Product Menus}
+\author{Draft --- not for circulation}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We prove that on a finite product menu $Y = \prod_{i=1}^k M_i \subseteq [0,1]^k$,
+a canonical pricing function $p_0$ (convex, coordinatewise nondecreasing, $p_0(0)=0$)
+satisfies the simplicity property under the natural numerical order if and only if
+$p_0$ is additively separable on $Y$.  We further prove an existential
+order-normalization result: if simplicity holds for \emph{some} family of total
+orders on the coordinate sets, then it also holds under the natural order,
+and hence the price is additively separable.
+The argument reduces the $k$-good problem to the two-good
+characterization (Theorem~\ref{thm:k2}) via a slice-reduction lemma that uses
+pointwise supporting-slope pinning of frozen coordinates.
+\end{abstract}
+
+%% ===================================================================
+\section{Model and Definitions}\label{sec:model}
+%% ===================================================================
+
+\paragraph{Environment.}
+One seller offers $k \geq 1$ goods to a single buyer.
+The buyer has an additive valuation $\theta = (\theta_1,\dots,\theta_k) \in \Rp^k$
+and evaluates a bundle (allocation vector) $y \in [0,1]^k$ at $\theta \cdot y = \sum_{i=1}^k \theta_i y_i$.
+
+\paragraph{Mechanisms and canonical pricing.}
+A direct mechanism $(x,t)$ consists of an allocation rule $x\colon \Rp^k \to [0,1]^k$
+and a payment rule $t\colon \Rp^k \to \R$.
+We impose incentive compatibility (IC), individual rationality (IR), and
+no positive transfers (NPT): $t(\theta) \geq 0$ for all $\theta \in \Rp^k$.
+Under these conditions, the buyer's indirect utility $U(\theta) = \theta \cdot x(\theta) - t(\theta)$
+is convex and nondecreasing, and there exists a \emph{canonical pricing function}
+\[
+  p_0\colon [0,1]^k \to [0,\infty],
+\]
+which is the Fenchel conjugate of $U$, satisfying:
+\begin{enumerate}[label=(\roman*)]
+  \item $p_0$ is convex and lower semicontinuous (closed),
+  \item $p_0$ is coordinatewise nondecreasing,
+  \item $p_0(0) = 0$,
+  \item $U(\theta) = \max_{y \in [0,1]^k}\bigl[\theta \cdot y - p_0(y)\bigr]$.
+\end{enumerate}
+
+\paragraph{Finite product menu.}
+For each coordinate $i \in [k] \coloneqq \{1,\dots,k\}$, let
+\[
+  M_i = \{m_{i,1} < m_{i,2} < \cdots < m_{i,n_i}\} \subseteq [0,1], \qquad n_i \geq 2,
+\]
+and define the finite product menu
+\[
+  Y \coloneqq \prod_{i=1}^k M_i.
+\]
+We assume $p_0(y) < \infty$ for every $y \in Y$.
+
+\paragraph{Utility on $Y$.}
+For each type $\theta \in \Rp^k$ and bundle $y \in Y$,
+\[
+  u_\theta(y) \coloneqq \theta \cdot y - p_0(y) = \sum_{i=1}^k \theta_i y_i - p_0(y).
+\]
+
+\paragraph{Immediate-adjacency neighbors.}
+Given a family of total orders $\preceq = (\preceq_i)_{i=1}^k$ on the sets $M_i$,
+define the set of \emph{immediate $\preceq$-neighbors} of $y \in Y$ by
+\[
+  N_{\preceq}(y) \coloneqq \bigl\{z \in Y : \exists\, i \in [k] \;\text{such that}\;
+  z_{-i} = y_{-i} \;\text{and}\;
+  z_i \;\text{is the immediate predecessor or successor of}\; y_i \;\text{in}\; \preceq_i\bigr\}.
+\]
+When $\preceq_i$ is the natural numerical order $\leq$ on $M_i$ for every $i$,
+we write $N_{\mathrm{nat}}(y)$.
+
+\begin{definition}[Simplicity]\label{def:simplicity}
+The ordered menu $(Y, p_0|_Y, \preceq)$ is \emph{simple} if
+\[
+  \forall\, \theta \in \Rp^k\;\; \forall\, y \in Y, \quad
+  u_\theta(y) < \max_{w \in Y} u_\theta(w) \;\;\Longrightarrow\;\;
+  \exists\, z \in N_{\preceq}(y) \;\text{with}\; u_\theta(z) > u_\theta(y).
+\]
+We write $\Simpleord(Y, p_0)$ for this property and $\Simplenat(Y, p_0)$
+when the natural numerical orders are used.
+\end{definition}
+
+\begin{definition}[Broad simplicity]\label{def:broad-simplicity}
+Say that $(Y, p_0|_Y)$ is \emph{broadly simple} if, for every
+$\theta \in \Rp^k$ and every $y \in Y$ that is not a global maximizer
+of $u_\theta$, there exist a coordinate $i \in [k]$ and a value
+$t \in M_i$ such that $u_\theta(y_{-i}, t) > u_\theta(y)$.
+Equivalently, every non-maximizer can be improved by changing a single
+coordinate to \emph{some} value in that coordinate's menu (not
+necessarily an adjacent one).
+\end{definition}
+
+\begin{lemma}[Equivalence of neighbor notions under convexity]%
+\label{lem:broad-narrow}
+When $p_0$ is convex, $\Simplenat(Y, p_0)$ and broad simplicity
+of $(Y, p_0|_Y)$ are equivalent.
+\end{lemma}
+
+\begin{proof}
+$\Simplenat$ trivially implies broad simplicity, since every
+natural-adjacent neighbor is in particular a one-coordinate change.
+
+Conversely, suppose $(Y, p_0|_Y)$ is broadly simple and fix
+$\theta \in \Rp^k$, a non-maximizer $y$, and a coordinate~$i$ and
+value $t \in M_i$ with $u_\theta(y_{-i}, t) > u_\theta(y)$.
+Define $\phi(s) \coloneqq \theta_i\, s - p_0(y|_{i \to s})$ for
+$s \in M_i$.  Since $p_0$ is convex, $\phi$ is discretely concave
+on $M_i$ (Lemma~\ref{lem:concavity}).  We have
+$\phi(t) > \phi(y_i)$, so $y_i$ is not a global maximizer of~$\phi$.
+By Lemma~\ref{lem:concavity}, every local maximizer of a discretely
+concave function is global, so $y_i$ is not a local maximizer either.
+Hence some natural-adjacent $s' \in M_i$ satisfies
+$\phi(s') > \phi(y_i)$, which gives $u_\theta(y_{-i}, s') > u_\theta(y)$.
+Thus $y$ has an improving natural-adjacent neighbor, and $\Simplenat$
+holds.
+\end{proof}
+
+\begin{remark}\label{rem:model-pdf}
+The definition of ``neighbor'' in the original model
+allows any one-coordinate change in a total order, which on a finite
+set coincides with our broad-simplicity notion.
+Lemma~\ref{lem:broad-narrow} therefore shows that, in the convex
+canonical-pricing setting, our immediate-adjacency theorems
+(Theorems~\ref{thm:k2}--\ref{thm:order-norm}) also hold under the
+original model's neighbor definition.
+\end{remark}
+
+\paragraph{Two-coordinate slices and slice price matrices.}
+For distinct $i,j \in [k]$ and an anchor $a \in \prod_{\ell \neq i,j} M_\ell$,
+define the \emph{two-coordinate slice}
+\[
+  S_{ij}(a) \coloneqq \bigl\{y \in Y : y_{-\{i,j\}} = a \bigr\}.
+\]
+The associated \emph{slice price matrix} is
+\[
+  P^{ij,a}_{r,s} \coloneqq p_0(y) \quad \text{where } y_i = m_{i,r},\; y_j = m_{j,s},\; y_{-\{i,j\}} = a,
+\]
+for $r \in [n_i]$, $s \in [n_j]$.
+
+%% ===================================================================
+\section{Statement of Results}\label{sec:results}
+%% ===================================================================
+
+\begin{theorem}[Two-good characterization]\label{thm:k2}
+Let $Y = M_1 \times M_2$ where $M_1, M_2 \subseteq [0,1]$ are finite sets
+with their natural orders, and let $p_0|_Y$ be the restriction to $Y$ of a
+convex nondecreasing function on $[0,1]^2$ with $p_0(0,0) = 0$.  Then
+\[
+  \Simplenat(Y, p_0) \quad\Longleftrightarrow\quad
+  p_0 \;\text{is additively separable on}\; Y,
+\]
+i.e., there exist functions $p_1\colon M_1 \to \R$ and $p_2\colon M_2 \to \R$
+such that $p_0(y_1,y_2) = p_1(y_1) + p_2(y_2)$ for all $(y_1,y_2) \in Y$.
+\end{theorem}
+
+\begin{theorem}[Main theorem]\label{thm:main}
+Let $k \geq 2$ and $Y = \prod_{i=1}^k M_i \subseteq [0,1]^k$ with $p_0$ the
+canonical pricing function of an IC/IR/NPT mechanism, finite on $Y$.  Then
+\[
+  \Simplenat(Y, p_0) \quad\Longleftrightarrow\quad
+  \exists\, p_1,\dots,p_k \;(p_i\colon M_i \to \R) \;\;\text{such that}\;\;
+  p_0(y) = \sum_{i=1}^k p_i(y_i) \quad \forall\, y \in Y.
+\]
+\end{theorem}
+
+\begin{theorem}[Order-Normalization Lemma]\label{thm:order-norm}
+Under the same hypotheses,
+\[
+  \bigl(\exists\, \preceq = (\preceq_i)_{i=1}^k\;\; \Simpleord(Y, p_0)\bigr)
+  \;\;\Longleftrightarrow\;\;
+  \Simplenat(Y, p_0)
+  \;\;\Longleftrightarrow\;\;
+  p_0 \;\text{additively separable on}\; Y.
+\]
+\end{theorem}
+
+%% ===================================================================
+%% ===================================================================
+\section{Proof of Theorem~\ref{thm:k2} (Two-Good Characterization)}\label{sec:k2proof}
+%%  ===================================================================
+%% -------------------------------------------------------------------
+
+We prove Theorem~\ref{thm:k2} for $k=2$; write $M_1 = \{a_1 < \cdots < a_m\}$
+and $M_2 = \{b_1 < \cdots < b_n\}$, and set $p_{rs} \coloneqq p_0(a_r, b_s)$.
+For adjacent pairs $a_r < a_{r+1}$ and $b_s < b_{s+1}$, define the
+\emph{elementary $2\times 2$ face} $F = \{(a_r,b_s),(a_{r+1},b_s),(a_r,b_{s+1}),(a_{r+1},b_{s+1})\}$
+and the \emph{mixed difference}
+\[
+  \Delta_F \coloneqq p_{r+1,s+1} - p_{r+1,s} - p_{r,s+1} + p_{r,s}.
+\]
+
+\begin{lemma}[Slope interval pins one coordinate]\label{lem:slopepin}
+Fix a point $y = (a_r, b_s) \in Y$.  For each coordinate $i \in \{1,2\}$, define
+the left and right secant slopes of the one-dimensional section
+$t \mapsto p_0(y|_{i \to t})$ at $y_i$ (when they exist).
+Write $L_i(y)$ for the maximum left secant slope and $R_i(y)$ for the minimum
+right secant slope, with the convention $L_i(y) = 0$ at a left boundary and
+$R_i(y) = +\infty$ at a right boundary.  Then:
+\begin{enumerate}[label=(\alph*)]
+  \item $0 \leq L_i(y) \leq R_i(y)$, by convexity and monotonicity of $p_0$.
+  \item Any $\alpha \in [L_i(y), R_i(y)]$ makes $y_i$ a maximizer of
+    $t \mapsto \alpha\, t - p_0(y|_{i \to t})$ among all immediate neighbors
+    of $y_i$ in $M_i$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The one-dimensional section is convex (nondecreasing secant slopes) and
+nondecreasing, since $p_0$ is.  For any left neighbor $s < y_i$ and right
+neighbor $t > y_i$, convexity gives
+$\frac{p_0(y|_{i\to y_i}) - p_0(y|_{i\to s})}{y_i - s}
+\leq \frac{p_0(y|_{i\to t}) - p_0(y|_{i\to y_i})}{t - y_i}$,
+so $L_i(y) \leq R_i(y)$.
+If $\alpha \in [L_i(y), R_i(y)]$, then $\alpha \geq L_i(y)$ makes every
+leftward move non-improving:
+$\alpha(y_i - s) \geq p_0(y|_{i\to y_i}) - p_0(y|_{i\to s})$;
+and $\alpha \leq R_i(y)$ makes every rightward move non-improving:
+$\alpha(t - y_i) \leq p_0(y|_{i\to t}) - p_0(y|_{i\to y_i})$.
+\end{proof}
+
+\begin{lemma}[Nonzero face creates a simplicity trap]\label{lem:trap}
+If some elementary face $F$ has $\Delta_F \neq 0$, then there exist
+$\theta \in \Rp^2$ and a face vertex $y$ such that $y$ is not a global
+maximizer of $u_\theta$ on $Y$, yet every adjacent neighbor $z \in N_{\mathrm{nat}}(y)$
+satisfies $u_\theta(z) \leq u_\theta(y)$.
+\end{lemma}
+
+\begin{proof}
+Let $F$ involve the adjacent pair $a_r < a_{r+1}$ in coordinate~1 and
+$b_s < b_{s+1}$ in coordinate~2.  Write the four vertices as
+$y_{00} = (a_r, b_s)$, $y_{10} = (a_{r+1}, b_s)$,
+$y_{01} = (a_r, b_{s+1})$, $y_{11} = (a_{r+1}, b_{s+1})$.
+
+\smallskip
+\emph{Case $\Delta_F > 0$.}
+Set $y = y_{10} = (a_{r+1}, b_s)$ and choose
+\[
+  \theta_1 = \frac{p_{r+1,s} - p_{r,s}}{a_{r+1} - a_r} = L_1(y),
+  \qquad
+  \theta_2 = \frac{p_{r+1,s+1} - p_{r+1,s}}{b_{s+1} - b_s} = R_2(y).
+\]
+Both are nonneg\-ative by mono\-tonicity of $p_0$.
+Note that $\theta_1 = L_1(y)$ is the left secant slope
+in coordinate~1 at $y_{10}$, and $\theta_2 = R_2(y)$ is the right secant slope
+in coordinate~2 at $y_{10}$.
+By Lemma~\ref{lem:slopepin}(b), $\theta_1 \in [L_1(y), R_1(y)]$ (taking
+the left endpoint) pins coordinate~1: no adjacent move in coordinate~1
+improves $u_\theta$.  Similarly $\theta_2 \in [L_2(y), R_2(y)]$ (right endpoint)
+pins coordinate~2.  Therefore every neighbor of $y$ in $Y$ is non-improving.
+
+Now check that $y$ is not a global maximizer.
+At the diagonal vertex $y_{01} = (a_r, b_{s+1})$:
+\begin{align*}
+  u_\theta(y_{01}) - u_\theta(y_{10})
+  &= \theta_1(a_r - a_{r+1}) + \theta_2(b_{s+1} - b_s) - (p_{r,s+1} - p_{r+1,s}) \\
+  &= -(p_{r+1,s} - p_{r,s}) + (p_{r+1,s+1} - p_{r+1,s}) - p_{r,s+1} + p_{r+1,s} \\
+  &= p_{r+1,s+1} - p_{r+1,s} - p_{r,s+1} + p_{r,s} \\
+  &= \Delta_F > 0.
+\end{align*}
+So $y_{10}$ is trapped: locally non-improvable, yet strictly dominated by $y_{01}$.
+
+\smallskip
+\emph{Case $\Delta_F < 0$.}
+Set $y = y_{00} = (a_r, b_s)$ and choose
+\[
+  \theta_1 = \frac{p_{r+1,s} - p_{r,s}}{a_{r+1} - a_r} = R_1(y),
+  \qquad
+  \theta_2 = \frac{p_{r,s+1} - p_{r,s}}{b_{s+1} - b_s} = R_2(y).
+\]
+Both are nonneg\-ative and lie at the right endpoints of their respective
+slope intervals, so $\theta_1 \in [L_1(y), R_1(y)]$ and
+$\theta_2 \in [L_2(y), R_2(y)]$.
+By Lemma~\ref{lem:slopepin}(b), every adjacent move from $y_{00}$ is
+non-improving.  But
+\begin{align*}
+  u_\theta(y_{11}) - u_\theta(y_{00})
+  &= \theta_1(a_{r+1} - a_r) + \theta_2(b_{s+1} - b_s) - (p_{r+1,s+1} - p_{r,s}) \\
+  &= (p_{r+1,s} - p_{r,s}) + (p_{r,s+1} - p_{r,s}) - p_{r+1,s+1} + p_{r,s} \\
+  &= -(p_{r+1,s+1} - p_{r+1,s} - p_{r,s+1} + p_{r,s}) \\
+  &= -\Delta_F > 0.
+\end{align*}
+So $y_{00}$ is a non-global point with no improving neighbor.
+
+\smallskip
+In both cases, the trapped point violates simplicity.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:k2}]
+\emph{(Additive $\Rightarrow$ Simple.)}
+If $p_0(y_1,y_2) = p_1(y_1) + p_2(y_2)$, we may normalize the summands
+as coordinate-line restrictions: $p_1(a_r) = p_0(a_r, b_1) - p_0(a_1, b_1)$
+and $p_2(b_s) = p_0(a_1, b_s)$.  Since $p_0$ is convex and nondecreasing,
+each $p_i$ is convex and nondecreasing on $M_i$.
+The utility then separates, and each coordinate objective is discretely
+concave by Lemma~\ref{lem:concavity}.
+Therefore every local maximum is global, and any non-maximizer has an
+improving adjacent neighbor (this is the $k=2$ case of Lemma~\ref{lem:easy}
+below).
+
+\emph{(Simple $\Rightarrow$ Additive.)}
+Assume $\Simplenat(Y, p_0)$.
+By the contrapositive of Lemma~\ref{lem:trap}, every elementary face
+satisfies $\Delta_F = 0$.
+Since all adjacent $2 \times 2$ mixed differences vanish, the coordinate-1
+increments $p_0(a_{r+1}, b_s) - p_0(a_r, b_s)$ are independent of $b_s$
+(moving $b_s$ to an adjacent $b_{s+1}$ changes both terms identically).
+By chaining, each increment depends only on $r$.
+Fix a basepoint $(a_1, b_1)$ and define
+\[
+  q_1(a_r) \coloneqq p_0(a_r, b_1) - p_0(a_1, b_1),
+  \qquad
+  q_2(b_s) \coloneqq p_0(a_1, b_s) - p_0(a_1, b_1).
+\]
+Telescoping along first coordinate~1 and then coordinate~2 gives
+\[
+  p_0(a_r, b_s) = p_0(a_1, b_1) + q_1(a_r) + q_2(b_s).
+\]
+Absorbing $p_0(a_1, b_1)$ into $q_1$ yields the additive decomposition.
+\end{proof}
+
+%% ===================================================================
+\section{Proof of Theorem~\ref{thm:main} (Main Theorem)}\label{sec:proof}
+%% ===================================================================
+
+Although the theorem is stated for $k \geq 2$, we note for completeness
+that the case $k=1$ is trivial: additivity is vacuous, and simplicity
+follows from discrete concavity (Lemma~\ref{lem:concavity} below).
+We assume $k \geq 2$ throughout this section.
+
+%% -------------------------------------------------------------------
+\subsection{Easy direction: Additive implies Simple}\label{sec:easy}
+%% -------------------------------------------------------------------
+
+\begin{lemma}[Discrete concavity]\label{lem:concavity}
+Let $M = \{m_1 < \cdots < m_n\} \subseteq [0,1]$ and let $p\colon M \to \R$
+be \emph{convex on the chain} $M$, meaning the secant slopes
+\[
+  s_r \coloneqq \frac{p(m_{r+1}) - p(m_r)}{m_{r+1} - m_r}, \qquad r = 1,\dots,n-1,
+\]
+are nondecreasing: $s_1 \leq s_2 \leq \cdots \leq s_{n-1}$.
+For $\theta \geq 0$, define $f(m_r) = \theta\, m_r - p(m_r)$.
+Then $f$ is \emph{discretely concave} on $M$: every local maximum of~$f$
+(with respect to immediate adjacency in $M$) is a global maximum.
+\end{lemma}
+
+\begin{proof}
+The secant slopes of $f$ are
+\[
+  \sigma_r \coloneqq \frac{f(m_{r+1}) - f(m_r)}{m_{r+1} - m_r} = \theta - s_r,
+  \qquad r = 1,\dots,n-1.
+\]
+Since the $s_r$ are nondecreasing, the $\sigma_r$ are \emph{nonincreasing}:
+$\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_{n-1}$.
+
+Suppose $m_{r^*}$ is a local maximum of $f$, i.e.,
+$f(m_{r^*}) \geq f(m_{r^*-1})$ (if $r^* > 1$) and
+$f(m_{r^*}) \geq f(m_{r^*+1})$ (if $r^* < n$).
+
+\emph{Case 1: $1 < r^* < n$.}
+Then $\sigma_{r^*-1} \geq 0$ (from $f(m_{r^*}) \geq f(m_{r^*-1})$, noting $m_{r^*} > m_{r^*-1}$)
+and $\sigma_{r^*} \leq 0$ (from $f(m_{r^*}) \geq f(m_{r^*+1})$).
+Since the $\sigma_r$ are nonincreasing, we have
+$\sigma_r \geq \sigma_{r^*-1} \geq 0$ for all $r < r^*$
+and $\sigma_r \leq \sigma_{r^*} \leq 0$ for all $r \geq r^*$.
+Therefore, for any $r < r^*$:
+\[
+  f(m_{r^*}) - f(m_r) = \sum_{t=r}^{r^*-1} \sigma_t (m_{t+1} - m_t) \geq 0,
+\]
+and for any $r > r^*$:
+\[
+  f(m_r) - f(m_{r^*}) = \sum_{t=r^*}^{r-1} \sigma_t (m_{t+1} - m_t) \leq 0.
+\]
+So $f(m_{r^*}) \geq f(m_r)$ for all $r$, i.e., $m_{r^*}$ is a global maximum.
+
+\emph{Case 2: $r^* = 1$.}
+Then $\sigma_1 \leq 0$, so $\sigma_r \leq 0$ for all $r \geq 1$,
+and $f$ is nonincreasing, making $m_1$ a global maximum.
+
+\emph{Case 3: $r^* = n$.}
+Then $\sigma_{n-1} \geq 0$, so $\sigma_r \geq 0$ for all $r \leq n-1$,
+and $f$ is nondecreasing, making $m_n$ a global maximum.
+\end{proof}
+
+\begin{lemma}[Additive $\Longrightarrow$ Simple]\label{lem:easy}
+Suppose $p_0(y) = \sum_{i=1}^k p_i(y_i)$ for all $y \in Y$,
+where each $p_i\colon M_i \to \R$ is convex (nondecreasing secant slopes)
+and nondecreasing.
+Then $\Simplenat(Y, p_0)$.
+\end{lemma}
+
+\begin{proof}
+For any $\theta \in \Rp^k$, the utility separates:
+\[
+  u_\theta(y) = \sum_{i=1}^k \bigl[\theta_i y_i - p_i(y_i)\bigr]
+  \eqqcolon \sum_{i=1}^k f_i(y_i).
+\]
+Each $f_i$ is discretely concave on $M_i$ by Lemma~\ref{lem:concavity}
+(applied with $p = p_i$ and $\theta = \theta_i$).
+
+Suppose $y \in Y$ is not a global maximizer of $u_\theta$ over $Y$.
+Then there exists $y^* \in Y$ with $u_\theta(y^*) > u_\theta(y)$.
+Since $u_\theta(y^*) - u_\theta(y) = \sum_{i=1}^k [f_i(y^*_i) - f_i(y_i)] > 0$,
+there exists some coordinate $i \in [k]$ with $f_i(y^*_i) > f_i(y_i)$.
+In particular, $y_i$ is not a global maximizer of $f_i$ on $M_i$.
+
+By Lemma~\ref{lem:concavity}, $y_i$ is also not a \emph{local} maximum of $f_i$
+on $M_i$ (since every local maximum is global).
+Therefore, there exists an immediate neighbor $y'_i \in M_i$ of $y_i$
+(in the natural order) with $f_i(y'_i) > f_i(y_i)$.
+
+Define $z \in Y$ by $z_i = y'_i$ and $z_j = y_j$ for $j \neq i$.
+Then $z \in N_{\mathrm{nat}}(y)$ and
+\[
+  u_\theta(z) - u_\theta(y) = f_i(y'_i) - f_i(y_i) > 0. \qedhere
+\]
+\end{proof}
+
+%% -------------------------------------------------------------------
+\subsection{Hard direction: Simple implies Additive}\label{sec:hard}
+%% -------------------------------------------------------------------
+
+\begin{remark}[False uniform pinning]\label{rem:false}
+A natural approach to the slice reduction would be to find, for each frozen
+coordinate $\ell \notin \{i,j\}$, a \emph{single} value $\hat\theta_\ell \geq 0$
+that pins coordinate $\ell$ at the anchor $a_\ell$ \emph{simultaneously for
+all} $y \in S_{ij}(a)$.
+That is, one would want
+$\hat\theta_\ell \in \bigcap_{y \in S_{ij}(a)} [\sigma_\ell^-(y), \sigma_\ell^+(y)]$,
+where $\sigma_\ell^-(y)$ and $\sigma_\ell^+(y)$ are the left and right
+discrete slopes of the one-dimensional section $t \mapsto p_0(y|_{\ell \to t})$ at $a_\ell$.
+
+This \textbf{uniform} version is \textbf{false}.
+Consider $k = 3$ with
+\[
+  p_0(y_1, y_2, y_3) = \tfrac{1}{2}(y_1 + y_3)^2,
+\]
+$M_1 = M_2 = \{0,1\}$, $M_3 = \{0, \tfrac{1}{2}, 1\}$, and anchor $a_3 = \tfrac{1}{2}$.
+The one-dimensional section in coordinate~$3$ at anchor $a_3 = \frac{1}{2}$ is
+$g(t) = \frac{1}{2}(y_1 + t)^2$.
+At $y_1 = 0$: the supporting-slope interval at $t = \frac{1}{2}$ is
+$[\sigma^-, \sigma^+] = [\tfrac{1}{4}, \tfrac{3}{4}]$.
+At $y_1 = 1$: the supporting-slope interval at $t = \frac{1}{2}$ is
+$[\sigma^-, \sigma^+] = [\tfrac{5}{4}, \tfrac{7}{4}]$.
+These intervals are \emph{disjoint}, so no single $\hat\theta_3$ pins
+coordinate~$3$ at $a_3 = \frac{1}{2}$ for all $y \in S_{12}(a)$ simultaneously.
+
+\smallskip\noindent
+\emph{Why joint convexity does not rescue this.}
+One might hope that the monotonicity of the subdifferential
+$\partial p_0$ (which holds by joint convexity) would force the slope intervals to overlap.
+However, the relevant difference vectors have zero $\ell$-component:
+when $y$ and $y'$ differ only in coordinates $i,j$ (i.e., within the slice $S_{ij}(a)$),
+the vector $y - y'$ has $(y-y')_\ell = 0$, so subdifferential monotonicity gives
+$\langle \xi - \xi', y - y' \rangle \geq 0$
+with the $\ell$-components of $\xi, \xi'$ multiplied by zero.
+This provides no constraint on the $\ell$-th slope intervals.
+\end{remark}
+
+\begin{lemma}[Global pointwise pinning]\label{lem:pointwise}
+Fix $i \neq j$, an anchor $a \in \prod_{\ell \neq i,j} M_\ell$,
+a point $y \in S_{ij}(a)$, and a frozen coordinate $\ell \notin \{i,j\}$.
+There exists $\hat\theta_\ell(y) \geq 0$ such that for every
+$t \in M_\ell$,
+\[
+  \hat\theta_\ell(y)\, t - p_0(y|_{\ell \to t})
+  \;\leq\;
+  \hat\theta_\ell(y)\, a_\ell - p_0(y).
+\]
+That is, no move in coordinate $\ell$---adjacent or not---can strictly
+improve the utility component in that coordinate.
+\end{lemma}
+
+\begin{proof}
+Consider the one-dimensional section
+\[
+  g(t) \coloneqq p_0(y|_{\ell \to t}), \qquad t \in M_\ell.
+\]
+Since $p_0$ is convex on $[0,1]^k$, the restriction $g$ is convex on the
+chain $M_\ell$ (secant slopes nondecreasing).
+Since $p_0$ is coordinatewise nondecreasing, $g$ is nondecreasing.
+
+We need $\hat\theta_\ell \geq 0$ such that $\phi(t) \coloneqq \hat\theta_\ell\, t - g(t)$
+is maximized at $t = a_\ell$ over \emph{all} of $M_\ell$.
+
+Let $a_\ell = m_{\ell,q}$, i.e., $a_\ell$ is the $q$-th element of $M_\ell$.
+Define the left and right secant slopes (when they exist):
+\[
+  \sigma^- \coloneqq \frac{g(m_{\ell,q}) - g(m_{\ell,q-1})}{m_{\ell,q} - m_{\ell,q-1}}, \qquad
+  \sigma^+ \coloneqq \frac{g(m_{\ell,q+1}) - g(m_{\ell,q})}{m_{\ell,q+1} - m_{\ell,q}}.
+\]
+By convexity of $g$, $\sigma^- \leq \sigma^+$ whenever both are defined.
+By monotonicity of $g$, both slopes are nonnegative whenever defined.
+
+\emph{Case 1: Interior point ($1 < q < n_\ell$).}
+Choose $\hat\theta_\ell \in [\sigma^-, \sigma^+]$ (the interval is nonempty by convexity).
+For the left neighbor $m_{\ell,q-1}$:
+\[
+  \hat\theta_\ell (m_{\ell,q} - m_{\ell,q-1}) - [g(m_{\ell,q}) - g(m_{\ell,q-1})]
+  = (\hat\theta_\ell - \sigma^-)(m_{\ell,q} - m_{\ell,q-1}) \geq 0,
+\]
+so the move from $a_\ell$ to $m_{\ell,q-1}$ is weakly non-improving.
+For the right neighbor $m_{\ell,q+1}$:
+\[
+  \hat\theta_\ell (m_{\ell,q+1} - m_{\ell,q}) - [g(m_{\ell,q+1}) - g(m_{\ell,q})]
+  = (\hat\theta_\ell - \sigma^+)(m_{\ell,q+1} - m_{\ell,q}) \leq 0,
+\]
+so the move from $a_\ell$ to $m_{\ell,q+1}$ is also weakly non-improving.
+
+\emph{Case 2: Left boundary ($q = 1$).}
+The only adjacent move is rightward, to $m_{\ell,2}$.
+Set $\hat\theta_\ell = 0$.
+Then the utility change from moving to $m_{\ell,2}$ is
+\[
+  0 \cdot m_{\ell,2} - g(m_{\ell,2}) - [0 \cdot m_{\ell,1} - g(m_{\ell,1})]
+  = g(m_{\ell,1}) - g(m_{\ell,2}) \leq 0,
+\]
+since $g$ is nondecreasing.
+
+\emph{Case 3: Right boundary ($q = n_\ell$).}
+The only adjacent move is leftward, to $m_{\ell,n_\ell-1}$.
+Set $\hat\theta_\ell = \sigma^-$, the left secant slope (which is $\geq 0$).
+The utility change from moving to $m_{\ell,n_\ell-1}$ is
+\[
+  \sigma^-(m_{\ell,n_\ell-1} - m_{\ell,n_\ell}) - [g(m_{\ell,n_\ell-1}) - g(m_{\ell,n_\ell})]
+  = (\sigma^- - \sigma^-)(m_{\ell,n_\ell-1} - m_{\ell,n_\ell}) = 0 \leq 0,
+\]
+so the move is weakly non-improving.
+In all cases, $\hat\theta_\ell \geq 0$ and $a_\ell$ is a local maximizer of
+$\phi(t) = \hat\theta_\ell\, t - g(t)$ among the natural-adjacent values.
+Since $g$ is convex, $\phi$ is discretely concave on $M_\ell$.
+By Lemma~\ref{lem:concavity}, every local maximizer of a discretely
+concave function is a global maximizer.
+Therefore $\phi(a_\ell) \geq \phi(t)$ for \emph{all} $t \in M_\ell$,
+not merely for adjacent~$t$.
+\end{proof}
+
+\begin{lemma}[Slice reduction]\label{lem:slice}
+Let $k \geq 2$ and assume $\Simplenat(Y, p_0)$.
+Then for all distinct $i, j \in [k]$ and every anchor $a \in \prod_{\ell \neq i,j} M_\ell$,
+the two-coordinate slice $S_{ij}(a)$ equipped with $p_0|_{S_{ij}(a)}$ and the
+natural orders on $M_i, M_j$ is simple.
+\end{lemma}
+
+\begin{proof}
+Fix $(\theta_i, \theta_j) \in \Rp^2$ and $y \in S_{ij}(a)$ such that $y$ is not
+a global maximizer of
+\[
+  v_{(\theta_i,\theta_j)}(y) \coloneqq \theta_i y_i + \theta_j y_j - p_0(y)
+\]
+over $S_{ij}(a)$.  We must produce $z \in N_{\mathrm{nat}}(y) \cap S_{ij}(a)$
+with $v_{(\theta_i,\theta_j)}(z) > v_{(\theta_i,\theta_j)}(y)$.
+
+\emph{Step 1: Construct the extended type.}
+For each frozen coordinate $\ell \notin \{i,j\}$,
+apply Lemma~\ref{lem:pointwise} with the fixed point $y$ to obtain
+$\hat\theta_\ell(y) \geq 0$ that pins coordinate $\ell$ at $a_\ell$.
+Define the full type $\theta = (\theta_i, \theta_j, \hat\theta_{-\{i,j\}}(y)) \in \Rp^k$.
+(The pinning coordinates depend on $y$; no uniform choice over the slice
+is claimed or needed --- cf.\ Remark~\ref{rem:false}.)
+
+\emph{Step 2: Non-optimality on the full menu.}
+There exists $w \in S_{ij}(a)$ with $v_{(\theta_i,\theta_j)}(w) > v_{(\theta_i,\theta_j)}(y)$.
+Since $w$ and $y$ agree on all frozen coordinates, we have
+\[
+  u_\theta(w) - u_\theta(y) = v_{(\theta_i,\theta_j)}(w) - v_{(\theta_i,\theta_j)}(y)
+  + \sum_{\ell \notin \{i,j\}} \hat\theta_\ell(y)(w_\ell - y_\ell) = v_{(\theta_i,\theta_j)}(w) - v_{(\theta_i,\theta_j)}(y) > 0,
+\]
+where the sum vanishes because $w_\ell = a_\ell = y_\ell$ for all frozen $\ell$.
+So $y$ is not a global maximizer of $u_\theta$ on $Y$.
+
+\emph{Step 3: Apply full-menu simplicity.}
+By $\Simplenat(Y, p_0)$, there exists $z \in N_{\mathrm{nat}}(y)$ with
+$u_\theta(z) > u_\theta(y)$.
+The neighbor $z$ differs from $y$ in exactly one coordinate.
+
+\emph{Step 4: The neighbor must lie in the slice.}
+Suppose, for contradiction, that $z$ differs from $y$ in some frozen
+coordinate $\ell \notin \{i,j\}$, so $z_\ell \neq y_\ell = a_\ell$
+and $z_{-\ell} = y_{-\ell}$.
+Then
+\[
+  u_\theta(z) - u_\theta(y)
+  = \hat\theta_\ell(y)(z_\ell - a_\ell) - [p_0(y|_{\ell \to z_\ell}) - p_0(y)] \leq 0,
+\]
+by the pinning property of $\hat\theta_\ell(y)$ (Lemma~\ref{lem:pointwise}).
+This contradicts $u_\theta(z) > u_\theta(y)$.
+Therefore $z \in S_{ij}(a)$, and $z$ differs from $y$ in coordinate $i$ or $j$ only.
+Since $u_\theta(z) - u_\theta(y) = v_{(\theta_i,\theta_j)}(z) - v_{(\theta_i,\theta_j)}(y) > 0$,
+the point $z$ is the required improving neighbor within the slice.
+\end{proof}
+
+\begin{lemma}[Pairwise vanishing implies additivity]\label{lem:vanishing}
+Let $k \geq 2$.  Suppose that for every pair of distinct coordinates $i, j \in [k]$
+and every anchor $a \in \prod_{\ell \neq i,j} M_\ell$,
+all adjacent $2 \times 2$ minors of the slice price matrix vanish:
+\[
+  P^{ij,a}_{r+1,s+1} - P^{ij,a}_{r+1,s} - P^{ij,a}_{r,s+1} + P^{ij,a}_{r,s} = 0
+\]
+for all $r \in [n_i - 1]$, $s \in [n_j - 1]$.
+Then $p_0$ is additively separable on $Y$: there exist functions $q_\ell\colon M_\ell \to \R$
+such that
+\[
+  p_0(y) = \sum_{\ell=1}^k q_\ell(y_\ell) \qquad \forall\, y \in Y.
+\]
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1: Coordinate increments are independent of other coordinates.}
+For each coordinate $i \in [k]$ and index $r \in [n_i - 1]$, define the \emph{increment}
+\[
+  \Delta_{i,r}(x_{-i}) \coloneqq p_0(x|_{i \to m_{i,r+1}}) - p_0(x|_{i \to m_{i,r}}),
+\]
+where $x_{-i}$ denotes the values of all coordinates except~$i$.
+We claim that $\Delta_{i,r}(x_{-i})$ depends only on $r$, not on $x_{-i}$.
+
+Fix any $j \neq i$.  The vanishing $2\times 2$ minor condition for the pair $(i,j)$
+at anchor $a = x_{-\{i,j\}}$ states:
+\begin{align*}
+  &p_0(x|_{i \to m_{i,r+1},\, j \to m_{j,s+1}}) - p_0(x|_{i \to m_{i,r},\, j \to m_{j,s+1}}) \\
+  &\qquad = p_0(x|_{i \to m_{i,r+1},\, j \to m_{j,s}}) - p_0(x|_{i \to m_{i,r},\, j \to m_{j,s}})
+\end{align*}
+for all $s \in [n_j - 1]$.
+In other words, $\Delta_{i,r}$ is unchanged when $x_j$ moves from $m_{j,s}$ to $m_{j,s+1}$.
+By chaining over adjacent steps in $M_j$, $\Delta_{i,r}$ is constant across all values of~$x_j$.
+Since this holds for every $j \neq i$, the increment $\Delta_{i,r}$ is independent of
+$x_{-i}$ entirely.  Write $d_{i,r} \coloneqq \Delta_{i,r}$.
+
+\emph{Step 2: Basepoint telescoping.}
+Fix a basepoint $y^* \in Y$.  For each $\ell \in [k]$, define
+\[
+  q_\ell(y_\ell) \coloneqq p_0(y^*|_{\ell \to y_\ell}) - p_0(y^*).
+\]
+Note $q_\ell(y^*_\ell) = 0$ for all $\ell$.
+For an arbitrary $y \in Y$, telescope along the path that changes one coordinate at a time:
+\[
+  y^* \;\to\; (y_1, y^*_2, \dots, y^*_k) \;\to\; (y_1, y_2, y^*_3, \dots, y^*_k) \;\to\; \cdots \;\to\; y.
+\]
+The total change is
+\[
+  p_0(y) - p_0(y^*) = \sum_{\ell=1}^k \bigl[p_0(y_1,\dots,y_\ell, y^*_{\ell+1}, \dots, y^*_k) -
+  p_0(y_1,\dots,y_{\ell-1}, y^*_\ell, y^*_{\ell+1},\dots,y^*_k)\bigr].
+\]
+The $\ell$-th summand is the cost of changing coordinate $\ell$ from $y^*_\ell$ to $y_\ell$.
+By Step~1, this cost depends only on $y^*_\ell$, $y_\ell$, and the increments $d_{\ell,r}$,
+and is independent of the current values of the other coordinates.
+Concretely, if $y^*_\ell = m_{\ell,a}$ and $y_\ell = m_{\ell,b}$ with $b > a$, then
+\[
+  p_0(\cdots|_{\ell \to m_{\ell,b}}) - p_0(\cdots|_{\ell \to m_{\ell,a}}) = \sum_{r=a}^{b-1} d_{\ell,r},
+\]
+which depends only on $y^*_\ell$ and $y_\ell$ (and the case $b < a$ is analogous).
+In particular, the $\ell$-th summand equals $q_\ell(y_\ell) - q_\ell(y^*_\ell) = q_\ell(y_\ell)$.
+Therefore
+\[
+  p_0(y) = p_0(y^*) + \sum_{\ell=1}^k q_\ell(y_\ell).
+\]
+Absorbing the constant $p_0(y^*)$ into $q_1$ completes the proof.
+\end{proof}
+
+\begin{lemma}[Assembly]\label{lem:assembly}
+If $\Simplenat(Y, p_0)$, then $p_0$ is additively separable on $Y$.
+\end{lemma}
+
+\begin{proof}
+We chain the preceding results:
+\begin{enumerate}[label=(\arabic*)]
+  \item By Lemma~\ref{lem:slice} (slice reduction), for every pair of distinct coordinates
+    $i,j \in [k]$ and every anchor $a \in \prod_{\ell \neq i,j} M_\ell$,
+    the slice $S_{ij}(a)$ equipped with $p_0|_{S_{ij}(a)}$ and natural orders is simple.
+  \item By Theorem~\ref{thm:k2} (the $k=2$ characterization), simplicity
+    of $S_{ij}(a)$ implies the slice price matrix $P^{ij,a}$ is additively separable.
+    Additive separability of a two-index matrix is equivalent to the vanishing of all
+    adjacent $2 \times 2$ minors:
+    \[
+      P^{ij,a}_{r+1,s+1} - P^{ij,a}_{r+1,s} - P^{ij,a}_{r,s+1} + P^{ij,a}_{r,s} = 0
+      \quad \forall\, r \in [n_i - 1],\; s \in [n_j - 1].
+    \]
+  \item Since this holds for every pair $(i,j)$ and every anchor $a$,
+    the hypotheses of Lemma~\ref{lem:vanishing} are satisfied.
+  \item By Lemma~\ref{lem:vanishing}, $p_0$ is additively separable on~$Y$.  \qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The forward implication ($\Simplenat \Rightarrow$ additive) is Lemma~\ref{lem:assembly}.
+For the reverse, suppose $p_0(y) = \sum_i p_i(y_i)$ on $Y$.
+Since all adjacent $2 \times 2$ minors then vanish, we may normalize the
+summands via basepoint telescoping as in Lemma~\ref{lem:vanishing}:
+$q_\ell(y_\ell) = p_0(y^*|_{\ell \to y_\ell}) - p_0(y^*)$.
+Each $q_\ell$ is a restriction of $p_0$ to a coordinate line through $y^*$,
+hence convex and nondecreasing on $M_\ell$.
+The hypotheses of Lemma~\ref{lem:easy} are therefore satisfied,
+and $\Simplenat(Y, p_0)$ follows.
+\end{proof}
+
+%% ===================================================================
+\section{Proof of Theorem~\ref{thm:order-norm} (Order Normalization)}\label{sec:order-norm}
+%% ===================================================================
+
+\begin{lemma}[Order normalization]\label{lem:order-norm}
+If there exists a family of total orders $\preceq = (\preceq_i)_{i=1}^k$
+on the sets $M_i$ such that $\Simpleord(Y, p_0)$, then $\Simplenat(Y, p_0)$.
+\end{lemma}
+
+\begin{proof}
+We proceed in four steps.
+
+\emph{Step 1: Slice reduction under $\preceq$.}
+Fix distinct $i,j \in [k]$ and an anchor $a \in \prod_{\ell \neq i,j} M_\ell$.
+The argument of Lemma~\ref{lem:slice} goes through verbatim with
+$\preceq$-neighbors in place of nat-neighbors:
+for each $y \in S_{ij}(a)$ and each frozen $\ell \notin \{i,j\}$,
+Lemma~\ref{lem:pointwise} provides $\hat\theta_\ell(y) \geq 0$ pinning
+coordinate $\ell$ at $a_\ell$.
+By Lemma~\ref{lem:pointwise}, the pinning inequality
+$\hat\theta_\ell(y)\, t - p_0(y|_{\ell \to t}) \leq
+ \hat\theta_\ell(y)\, a_\ell - p_0(y)$
+holds for \emph{every} $t \in M_\ell$, not just adjacent values.
+In particular, any $\preceq_\ell$-adjacent move in a frozen coordinate
+is non-improving.
+Therefore, if $y$ is not optimal on the slice and the full type is
+$\theta = (\theta_i, \theta_j, \hat\theta_{-\{i,j\}}(y))$,
+then $\Simpleord(Y,p_0)$ produces an improving $\preceq$-neighbor
+that must lie in $S_{ij}(a)$ (frozen coordinates are pinned).
+Thus every slice $S_{ij}(a)$ is simple under $(\preceq_i, \preceq_j)$.
+
+\emph{Step 2: Contrapositive --- non-additive slice yields a contradiction.}
+Suppose for contradiction that some slice $S_{ij}(a)$ has a non-additive price matrix.
+By the contrapositive of Theorem~\ref{thm:k2},
+there exist $\eta = (\eta_i, \eta_j) \in \Rp^2$ and $y \in S_{ij}(a)$
+such that $y$ is not a global maximizer of
+$v_\eta(w) = \eta_i w_i + \eta_j w_j - p_0(w)$ on $S_{ij}(a)$,
+yet $y$ has \emph{no} nat-improving neighbor in $S_{ij}(a)$.
+This means $y_i$ is a local maximum of $w_i \mapsto \eta_i w_i - p_0(w|_{i \to w_i})$
+on $M_i$ (holding $y_j$ and $a$ fixed), and similarly $y_j$ is a local maximum
+of the corresponding function on $M_j$.
+
+By Lemma~\ref{lem:concavity} (discrete concavity), both local maxima are
+\emph{global} maxima on their respective coordinate lines.
+Thus the absence of a nat-improving neighbor forces $y_i$ and $y_j$ to be
+global maximizers of their coordinate-line utilities, so no
+one-coordinate move---regardless of which order defines adjacency---can
+improve $v_\eta$.
+
+Now consider improvement under any adjacency order $\preceq$.
+Any $\preceq$-neighbor $z \in N_\preceq(y) \cap S_{ij}(a)$ differs from $y$
+in exactly one of $\{i,j\}$.  If $z$ differs in coordinate~$i$, then
+$v_\eta(z) - v_\eta(y) = [\eta_i z_i - p_0(y|_{i \to z_i})] - [\eta_i y_i - p_0(y)] \leq 0$
+since $y_i$ is a global maximizer.  Similarly if $z$ differs in coordinate~$j$.
+So $y$ has no $\preceq$-improving neighbor in $S_{ij}(a)$ either,
+contradicting the simplicity of $S_{ij}(a)$ under $(\preceq_i, \preceq_j)$
+established in Step~1.
+
+\emph{Step 3: All slice price matrices are additive.}
+Step~2 shows that every slice $S_{ij}(a)$ has an additive price matrix,
+so all adjacent $2 \times 2$ minors vanish for every pair $(i,j)$ and every anchor $a$.
+
+\emph{Step 4: Conclude.}
+By Lemma~\ref{lem:vanishing}, $p_0$ is additively separable on $Y$.
+By Lemma~\ref{lem:easy}, $\Simplenat(Y, p_0)$ holds.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:order-norm}]
+The chain of implications is:
+\[
+  \bigl(\exists \preceq\;\; \Simpleord(Y,p_0)\bigr)
+  \;\;\xRightarrow{\text{Lem.~\ref{lem:order-norm}}}\;\;
+  \Simplenat(Y,p_0)
+  \;\;\xRightarrow{\text{Lem.~\ref{lem:assembly}}}\;\;
+  p_0 \text{ additive on } Y
+  \;\;\xRightarrow{\text{Lem.~\ref{lem:easy}}}\;\;
+  \Simplenat(Y,p_0).
+\]
+The converse $\Simplenat \Rightarrow (\exists \preceq\;\;\Simpleord)$ is trivial,
+since $\Simplenat$ is itself simplicity under the natural orders.
+\end{proof}
+
+\begin{remark}[Order normalization under the two neighbor notions]%
+\label{rem:order-norm-scope}
+Theorem~\ref{thm:order-norm} has genuine content because we use
+\emph{immediate-adjacency} neighbors: different total orders on a
+coordinate set $M_i$ produce different adjacency graphs
+(e.g., on $\{0, 0.5, 1\}$, the natural order makes $0$ and $1$
+non-adjacent, while the order $0 \prec 1 \prec 0.5$ makes them
+adjacent).  The theorem says that among all such adjacency structures,
+the natural numerical ordering already suffices.
+
+Under the original model's neighbor definition
+(Definition~\ref{def:broad-simplicity}), order normalization is
+\emph{automatic}: since every pair in a total order is comparable,
+the neighbor set $N_\preceq(y)$ is the same for every choice of
+$\preceq_i$, and coincides with the broad-neighbor set.
+Thus the order-selection clause in Theorem~\ref{thm:order-norm} is
+vacuous under the original definition --- the orders do no mathematical
+work.  This is not a defect; it simply means the original definition
+already possesses the order-independence property for free, and
+Theorem~\ref{thm:order-norm} establishes the analogous property for
+the finer-grained immediate-adjacency formulation.
+\end{remark}
+
+%% ===================================================================
+\section{Discussion}\label{sec:discussion}
+%% ===================================================================
+
+\paragraph{Summary.}
+Theorem~\ref{thm:main} establishes that on a finite product menu
+$Y = \prod_{i=1}^k M_i$, the simplicity property (every suboptimal bundle admits
+an improving immediate neighbor) holds if and only if the canonical price
+$p_0$ is additively separable on $Y$.
+Theorem~\ref{thm:order-norm} further shows an order-normalization
+result under the immediate-adjacency formulation: if simplicity holds
+for \emph{some} family of total orders on the coordinate sets, then it
+also holds under the natural numerical order.
+Since different orderings produce genuinely different adjacency graphs,
+this says the natural orders are canonical among successful orderings.
+(Under the original model's broad-neighbor definition, order normalization
+is automatic; see Remark~\ref{rem:order-norm-scope}.)
+
+The proof strategy reduces the $k$-good problem to the
+$k=2$ case (Theorem~\ref{thm:k2}) via a sequence of steps:
+\begin{enumerate}[label=(\roman*)]
+  \item \emph{Two-good trap construction} (Lemma~\ref{lem:trap}): a nonzero
+    $2 \times 2$ mixed difference creates a point that is locally non-improvable
+    yet globally suboptimal, by choosing secant slopes that simultaneously pin
+    both coordinates.
+  \item \emph{Pointwise pinning} (Lemma~\ref{lem:pointwise}): for each
+    fixed point in a two-coordinate slice, frozen coordinates can be
+    pinned using one-dimensional supporting slopes from convexity.
+  \item \emph{Slice reduction} (Lemma~\ref{lem:slice}): simplicity of the
+    full menu induces simplicity of every two-coordinate slice.
+  \item \emph{$k=2$ theorem} (Theorem~\ref{thm:k2}): each slice has additive price.
+  \item \emph{Discrete integration} (Lemma~\ref{lem:vanishing}): pairwise
+    additive separability implies global additive separability.
+\end{enumerate}
+
+\paragraph{The false uniform-pinning lemma as a cautionary note.}
+As documented in Remark~\ref{rem:false}, the \emph{uniform} pinning statement
+--- choosing a single supporting slope $\hat\theta_\ell$ that works
+simultaneously for all points in a slice --- is false.
+The explicit counterexample ($p_0 = \frac{1}{2}(y_1+y_3)^2$ with
+$M_3 = \{0,\frac{1}{2},1\}$) shows that joint convexity of $p_0$ does not
+force the supporting-slope intervals at a given anchor to intersect across
+all slice points.
+The correct replacement is the \emph{pointwise} version
+(Lemma~\ref{lem:pointwise}), which suffices because the slice reduction
+fixes the suboptimal point $y$ \emph{before} choosing the extended type.
+The quantifier order --- $\forall y$, $\exists \hat\theta(y)$ --- is
+the crucial distinction.
+
+\paragraph{Open question: beyond convex $p_0$.}
+The entire argument relies on the convexity of $p_0$ (inherited from the
+IC/IR/NPT mechanism-design model) in three places:
+discrete concavity (Lemma~\ref{lem:concavity}),
+pointwise pinning (Lemma~\ref{lem:pointwise}), and
+the monotonicity of secant slopes used in the $k=2$ theorem.
+It is an open question whether the equivalence between simplicity and
+additive separability extends to non-convex pricing functions on product grids.
+
+\paragraph{Out of scope.}
+This draft addresses only finite product menus with convex canonical
+pricing.  The extension to infinite (or continuous) menus is deferred.
+As shown in Lemma~\ref{lem:broad-narrow} and
+Remark~\ref{rem:model-pdf}, the original model's neighbor definition
+(any one-coordinate change) coincides with immediate-adjacency
+simplicity in the finite convex setting, so our characterization
+covers the original model's notion on its intended domain.
+What remains open is whether the equivalence extends beyond the
+finite-grid convex regime.
+
+\end{document}
