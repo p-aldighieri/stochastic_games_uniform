@@ -1,0 +1,793 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+\usepackage{microtype}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{condition}[theorem]{Condition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\1}{\mathbf{1}}
+\DeclareMathOperator{\spn}{sp}
+\DeclareMathOperator{\supp}{supp}
+
+\title{A Direct Proof in Irreducible Finite Stochastic Games:\\Stationary Average-Reward Equilibria Yield Uniform $\varepsilon$-Equilibria with $O(1/T)$ Regret}
+\author{Anonymous draft}
+\date{v28}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Classical work of Rogers \cite{Rogers1969}, Sobel \cite{Sobel1971}, and Federgruen \cite{Federgruen1978} studies the irreducible average-reward regime of stochastic games and, in particular, yields stationary equilibrium existence there. This note does \emph{not} address Neyman's general open problem on uniform equilibria in arbitrary finite stochastic games. Instead, under Condition~\ref{cond:A} --- equivalently, the classical requirement that every stationary profile induce an irreducible Markov chain on the original finite state space $S$ --- we give a direct proof that a stationary average-reward equilibrium yields a uniform $\varepsilon$-equilibrium with explicit $O(1/T)$ regret. Against fixed stationary opponents, each player's unilateral control problem is a finite unichain average-reward Markov decision process on $S$. A normalized bias satisfying the average-reward optimality equation then yields a supermartingale that bounds the payoff of \emph{every} unilateral deviation, including arbitrary history-dependent behavioral deviations. If $x^*$ is a stationary average-reward equilibrium, then the compliant payoff is within $\spn(h_i^*)/T$ of the optimal gain at horizon $T$, while every deviation payoff is at most $g_i^*+\spn(h_i^*)/T$. Hence the regret is at most $2\max_i \spn(h_i^*)/T$, so $x^*$ is a uniform $\varepsilon$-equilibrium for all sufficiently long finite horizons. For completeness, we also record a short Kakutani-Fan-Glicksberg derivation of stationary average-reward equilibrium existence in this classical irreducible regime. The point of the paper is therefore a direct, self-contained irreducible-case route from stationary average-reward equilibrium to uniform equilibrium, not a proof of Neyman's general conjecture.
+\end{abstract}
+
+\section{Introduction}
+
+Finite stochastic games, introduced by Shapley \cite{Shapley1953}, form the basic finite-state model of dynamic strategic interaction with publicly observed states. In the zero-sum two-player case, Mertens and Neyman \cite{MertensNeyman1981} proved existence of the uniform value. In the nonzero-sum two-player case, Vieille \cite{Vieille2000a,Vieille2000b} proved existence of uniform equilibrium payoffs. For general multiplayer finite stochastic games, however, the existence of uniform equilibria remains open; see the surveys of Solan and Vieille \cite{SolanVieille2015}, Solan \cite{Solan2022}, and the current open-problem list maintained by the Game Theory Society \cite{OpenProblems2026}.
+
+This paper does \emph{not} solve that open problem. The difficult part of Neyman's conjecture is the multichain case: without additional recurrence assumptions, a unilateral stationary policy may lead to several recurrent classes, so the long-run gain and the relevant continuation terms may depend on the recurrent class reached and on the initial state. The argument below assumes away exactly that obstruction by working in the classical irreducible regime.
+
+That irreducible regime is already classical in the average-reward literature. Rogers \cite{Rogers1969} and Sobel \cite{Sobel1971} established stationary average-reward equilibrium existence in irreducible finite stochastic games, and Federgruen \cite{Federgruen1978} extended the recurrency-based theory to broader state-space settings. The contribution claimed here is therefore narrower and more explicit. We give a direct proof that, in this irreducible setting, a stationary average-reward equilibrium automatically yields a uniform $\varepsilon$-equilibrium with an explicit $O(1/T)$ regret bound.
+
+We state the recurrence assumption in the following unilateral form.
+
+\begin{quote}
+For every player $i$, every pure stationary strategy $f_i$ of player $i$, and every mixed stationary profile $x_{-i}$ of the other players, the Markov chain on $S$ induced by $(f_i,x_{-i})$ is irreducible.
+\end{quote}
+
+We call this Condition~\ref{cond:A}. Proposition~\ref{prop:mixed-irreducible} and Remark~\ref{rem:classical-irreducibility} show that it is equivalent to the classical irreducibility requirement that every stationary mixed profile induce an irreducible Markov chain on $S$. We keep the unilateral formulation because it is exactly the form needed for the Markov-decision-process step: against stationary opponents, each player then faces a finite unichain average-reward MDP on the original state space $S$.
+
+The paper's mathematical point is correspondingly specific. We do \emph{not} claim novelty for stationary equilibrium existence under irreducibility. Rather, we isolate a short bias-span mechanism that upgrades a stationary average-reward equilibrium to a uniform finite-horizon incentive guarantee. For each player, a normalized bias satisfying the average-reward optimality equation against $x^*_{-i}$ yields a supermartingale that bounds the payoff of every unilateral deviation, including arbitrary history-dependent randomized deviations. Since the equilibrium action is stationary average-reward optimal, the compliant payoff is within $\spn(h_i^*)/T$ of the optimal gain at horizon $T$. This gives an explicit regret bound of order $1/T$.
+
+Combining the classical irreducible-case equilibrium existence step with this direct deviation argument yields the following consequence.
+
+\begin{theorem}[Main theorem]\label{thm:intro-main}
+Let $G$ be a finite stochastic game satisfying Condition~\ref{cond:A}. Then for every $\varepsilon>0$ there exist a stationary mixed strategy profile $x^*$ and an integer $T_0$ such that for every initial state $s\in S$, every horizon $T\ge T_0$, every player $i$, and every behavioral deviation $\tau_i$ of player $i$,
+\[
+\gamma_i^T(s,x^*)\;\ge\;\gamma_i^T\bigl(s,(\tau_i,x^*_{-i})\bigr)-\varepsilon.
+\]
+Hence $x^*$ is a uniform $\varepsilon$-equilibrium.
+
+More precisely, if $h_i^*$ is a normalized bias for player $i$ against $x^*_{-i}$, then one may take
+\[
+T_0\;=\;\left\lceil \frac{2\max_{i}\spn(h_i^*)}{\varepsilon}\right\rceil.
+\]
+\end{theorem}
+
+Read narrowly, the theorem says that once a stationary average-reward equilibrium $x^*$ exists in an irreducible finite stochastic game, its finite-horizon regret is at most $2\max_i \spn(h_i^*)/T$. For completeness, Section~\ref{sec:metagame} also rederives the existence of such an equilibrium by a standard Kakutani-Fan-Glicksberg argument, but that existence step is classical in this setting.
+
+For completeness and self-containment, the proof recorded here has five ingredients.
+\begin{enumerate}[label=\textup{(\arabic*)},leftmargin=2.8em]
+\item Define the average-reward meta-game in which players choose stationary mixed strategies and receive their ergodic average rewards.
+\item Show that every stationary mixed profile induces an irreducible Markov chain, hence an invariant distribution and an average payoff vector $g(x)$; then prove that $g$ is continuous.
+\item Fix opponents' stationary profile. Condition~\ref{cond:A} turns the unilateral optimization problem of player $i$ into a finite unichain average-reward MDP on $S$, with optimal gain $g_i^*$ and a normalized bias $h_i^*$.
+\item Use the Bellman inequality to build a supermartingale that bounds the payoff of \emph{every} unilateral deviation, including arbitrary history-dependent randomized deviations.
+\item For self-containment, recover a stationary average-reward Nash equilibrium $x^*$ of the meta-game by a standard Kakutani-Fan-Glicksberg fixed-point argument, and then combine the deviation upper bound with the exact finite-horizon identity for optimal stationary policies.
+\end{enumerate}
+
+The conclusion is quantitative: the regret at horizon $T$ is $O(1/T)$. In particular, the stationary profile does not depend on the horizon. What Condition~\ref{cond:A} buys is the irreducible, hence unichain, structure needed for a single bias function to control finite-horizon deviations uniformly over initial states. The missing part of the general theory is precisely what happens beyond this regime.
+
+The paper is organized as follows. Section~\ref{sec:model} introduces the model, fixes the pre-action filtration, and explains the equivalence between Condition~\ref{cond:A} and classical irreducibility for stationary profiles. Section~\ref{sec:mdp} records the average-reward MDP facts that we use, including the supermartingale bound for arbitrary deviations. Section~\ref{sec:metagame} defines the average-reward meta-game, proves continuity of the payoff map, and for completeness rederives a stationary average-reward equilibrium by a Kakutani-Fan-Glicksberg argument. Section~\ref{sec:proof-main} proves Theorem~\ref{thm:intro-main}. Section~\ref{sec:discussion} closes with an honest discussion of scope and remaining open problems.
+
+\section{Finite stochastic games and the irreducibility condition}\label{sec:model}
+
+\subsection{Game model}
+
+A finite stochastic game is given by
+\[
+G=(N,S,(A_i)_{i\in N},u,P),
+\]
+where:
+\begin{itemize}[leftmargin=2.3em]
+\item $N=\{1,\dots,n\}$ is the finite set of players,
+\item $S$ is a finite nonempty set of states,
+\item for each player $i$ and each state $s\in S$, the action set $A_i(s)$ is finite and nonempty,
+\item for each player $i$, the stage payoff function satisfies
+\[
+ u_i(s,a)\in[0,1]\qquad\text{for all }s\in S,\ a=(a_j)_{j\in N}\in A(s):=\prod_{j\in N}A_j(s),
+\]
+\item $P(\cdot\mid s,a)\in\Delta(S)$ is the transition law from state $s$ under action profile $a$.
+\end{itemize}
+
+At stage $t$, the current state $s_t$ is publicly observed, the players simultaneously choose an action profile $a_t=(a_{1,t},\dots,a_{n,t})\in A(s_t)$, players receive payoffs $u_i(s_t,a_t)$, and the next state is drawn according to $P(\cdot\mid s_t,a_t)$.
+
+A \emph{behavioral strategy} of player $i$ is a rule $\tau_i$ assigning to every finite public history
+\[
+h_t=(s_1,a_1,s_2,a_2,\dots,s_t)
+\]
+a probability distribution $\tau_i(\cdot\mid h_t)\in\Delta(A_i(s_t))$. A strategy profile is denoted by $\sigma=(\sigma_1,\dots,\sigma_n)$.
+
+For stagewise arguments we use the \emph{pre-action public filtration}
+\[
+\mathcal F_t:=\sigma(s_1,a_1,\dots,s_{t-1},a_{t-1},s_t),\qquad t\ge1.
+\]
+Thus $\mathcal F_t$ is exactly the publicly observed history up to stage $t$, just before the stage-$t$ action is chosen. In particular, $s_t$ and the mixed action $\tau_i(\cdot\mid h_t)$ prescribed by any behavioral strategy are $\mathcal F_t$-measurable.
+
+For $T\ge1$, the expected $T$-stage average payoff of player $i$ from initial state $s$ under profile $\sigma$ is
+\[
+\gamma_i^T(s,\sigma)
+=\E_s^{\sigma}\!\left[\frac1T\sum_{t=1}^{T}u_i(s_t,a_t)\right].
+\]
+
+\begin{definition}
+A strategy profile $\sigma$ is a \emph{uniform $\varepsilon$-equilibrium} if there exists $T_0\in\mathbb N$ such that for every horizon $T\ge T_0$, every initial state $s\in S$, every player $i$, and every behavioral deviation $\tau_i$ of player $i$,
+\[
+\gamma_i^T(s,\sigma)\ge\gamma_i^T\bigl(s,(\tau_i,\sigma_{-i})\bigr)-\varepsilon.
+\]
+\end{definition}
+
+We will use the following stationary strategy spaces.
+\[
+X_i:=\prod_{s\in S}\Delta(A_i(s)),\qquad X:=\prod_{i\in N}X_i.
+\]
+An element $x_i\in X_i$ is a \emph{stationary mixed strategy}. We write $x_i(a_i\mid s)$ for the probability assigned to action $a_i\in A_i(s)$. A \emph{pure stationary strategy} of player $i$ is a map $f_i:S\to\bigcup_{s}A_i(s)$ such that $f_i(s)\in A_i(s)$ for all $s$; the finite set of such strategies is denoted by
+\[
+F_i:=\prod_{s\in S}A_i(s).
+\]
+
+Given $x=(x_1,\dots,x_n)\in X$, define its stagewise product distribution by
+\[
+x(a\mid s):=\prod_{j\in N}x_j(a_j\mid s),\qquad a\in A(s),\ s\in S.
+\]
+Then the induced transition matrix on $S$ is
+\[
+P^x(s,s'):=\sum_{a\in A(s)}x(a\mid s)P(s'\mid s,a),\qquad s,s'\in S.
+\]
+For a pure stationary strategy $f_i\in F_i$ and an opponents' stationary mixed profile $x_{-i}\in X_{-i}$, we similarly write
+\[
+P^{f_i,x_{-i}}(s,s'):=\sum_{a_{-i}\in A_{-i}(s)}x_{-i}(a_{-i}\mid s)
+P\bigl(s'\mid s,f_i(s),a_{-i}\bigr).
+\]
+
+\subsection{Condition A and classical irreducibility}
+
+\begin{condition}[Classical irreducibility / Condition A]\label{cond:A}
+For every player $i\in N$, every pure stationary strategy $f_i\in F_i$, and every stationary mixed profile $x_{-i}\in X_{-i}$ of the other players, the Markov chain on $S$ with transition matrix $P^{f_i,x_{-i}}$ is irreducible.
+\end{condition}
+
+\begin{remark}
+Condition~\ref{cond:A} is imposed on the original game and on the original state space $S$. A simple sufficient condition is a Doeblin-type lower bound: if there exist $\alpha>0$ and a probability measure $q$ with full support on $S$ such that
+\[
+P(\cdot\mid s,a)\ge \alpha q(\cdot)\qquad\text{for every }s\in S\text{ and }a\in A(s),
+\]
+then Condition~\ref{cond:A} holds automatically. The point of Condition~\ref{cond:A}, however, is that it does \emph{not} require such a uniform minorization. It only requires irreducibility of the full chain on $S$ under every unilateral pure stationary deviation against stationary mixed opponents.
+\end{remark}
+
+The first basic consequence is that mixed stationary strategies do not destroy irreducibility.
+
+\begin{proposition}\label{prop:mixed-irreducible}
+Assume Condition~\ref{cond:A}. Then for every stationary mixed profile $x\in X$, the Markov chain on $S$ with transition matrix $P^x$ is irreducible.
+\end{proposition}
+
+\begin{proof}
+Fix $x\in X$ and fix one player $i\in N$. For each pure stationary strategy $f_i\in F_i$, define
+\[
+\lambda_{f_i}(x_i):=\prod_{s\in S}x_i\bigl(f_i(s)\mid s\bigr).
+\]
+Because the action choices at different states factor, we have
+\[
+\sum_{f_i\in F_i}\lambda_{f_i}(x_i)=1.
+\]
+Moreover, a direct expansion over pure stationary strategies gives the matrix identity
+\begin{equation}\label{eq:convex-combination}
+P^x=\sum_{f_i\in F_i}\lambda_{f_i}(x_i)\,P^{f_i,x_{-i}}.
+\end{equation}
+Indeed, for each pair of states $s,s'$, the $(s,s')$-entry of the right-hand side equals
+\begin{align*}
+\sum_{f_i\in F_i}\lambda_{f_i}(x_i)P^{f_i,x_{-i}}(s,s')
+&=\sum_{f_i\in F_i}\left(\prod_{z\in S}x_i(f_i(z)\mid z)\right)
+\sum_{a_{-i}}x_{-i}(a_{-i}\mid s)P(s'\mid s,f_i(s),a_{-i})\\
+&=\sum_{a_i\in A_i(s)}x_i(a_i\mid s)\sum_{a_{-i}}x_{-i}(a_{-i}\mid s)P(s'\mid s,a_i,a_{-i})\\
+&=P^x(s,s').
+\end{align*}
+Choose $f_i^\sharp\in F_i$ such that $x_i(f_i^\sharp(s)\mid s)>0$ for every state $s$. Then $\lambda_{f_i^\sharp}(x_i)>0$. By Condition~\ref{cond:A}, the chain $P^{f_i^\sharp,x_{-i}}$ is irreducible. Therefore, for every pair of states $p,q\in S$, there exists $m\ge1$ such that
+\[
+\bigl(P^{f_i^\sharp,x_{-i}}\bigr)^m(p,q)>0.
+\]
+From \eqref{eq:convex-combination} we have the entrywise inequality
+\[
+P^x\ge \lambda_{f_i^\sharp}(x_i)\,P^{f_i^\sharp,x_{-i}},
+\]
+whence, by monotonicity of matrix multiplication for nonnegative matrices,
+\[
+(P^x)^m\ge \lambda_{f_i^\sharp}(x_i)^m\bigl(P^{f_i^\sharp,x_{-i}}\bigr)^m.
+\]
+In particular,
+\[
+(P^x)^m(p,q)\ge \lambda_{f_i^\sharp}(x_i)^m\bigl(P^{f_i^\sharp,x_{-i}}\bigr)^m(p,q)>0.
+\]
+Thus $P^x$ is irreducible.
+\end{proof}
+
+\begin{remark}[Condition~\ref{cond:A} is the classical irreducibility assumption]\label{rem:classical-irreducibility}
+Proposition~\ref{prop:mixed-irreducible} shows that Condition~\ref{cond:A} implies irreducibility under every stationary mixed profile $x\in X$. The converse is immediate, because a unilateral pure stationary strategy against stationary mixed opponents is a special case of a stationary mixed profile. Thus Condition~\ref{cond:A} is exactly the classical irreducibility requirement for stationary profiles. We retain the unilateral formulation because it interfaces directly with the MDP arguments below.
+\end{remark}
+
+For the unilateral optimization problems that will appear later, this immediately implies a unichain property.
+
+\begin{corollary}\label{cor:unichain-from-A}
+Assume Condition~\ref{cond:A}, fix a player $i$, and fix an opponents' stationary mixed profile $x_{-i}\in X_{-i}$. Consider the MDP faced by player $i$ on state space $S$, with action set $A_i(s)$ at state $s$, transition kernel
+\[
+Q_i^{x_{-i}}(s'\mid s,a_i):=\sum_{a_{-i}\in A_{-i}(s)}x_{-i}(a_{-i}\mid s)P(s'\mid s,a_i,a_{-i}),
+\]
+and reward
+\[
+r_i^{x_{-i}}(s,a_i):=\sum_{a_{-i}\in A_{-i}(s)}x_{-i}(a_{-i}\mid s)u_i(s,a_i,a_{-i}).
+\]
+Then every pure stationary policy of this MDP induces an irreducible Markov chain on $S$. In particular, the MDP is unichain; indeed it is irreducible under every pure stationary policy.
+\end{corollary}
+
+\begin{proof}
+A pure stationary policy of the MDP is exactly a pure stationary strategy $f_i\in F_i$ of player $i$ in the stochastic game. Its induced transition matrix is $P^{f_i,x_{-i}}$, which is irreducible by Condition~\ref{cond:A}.
+\end{proof}
+
+\section{Average-reward MDP facts under fixed opponents}\label{sec:mdp}
+
+Fix a player $i\in N$ and an opponents' stationary mixed profile $x_{-i}\in X_{-i}$. The controlled process of player $i$ is the finite MDP from Corollary~\ref{cor:unichain-from-A}.
+
+For a stationary mixed policy $\mu_i\in X_i$, its induced transition matrix is
+\[
+P^{\mu_i,x_{-i}}(s,s'):=\sum_{a_i\in A_i(s)}\mu_i(a_i\mid s)
+Q_i^{x_{-i}}(s'\mid s,a_i),
+\]
+and its expected one-step reward in state $s$ is
+\[
+\bar r_i^{\mu_i,x_{-i}}(s):=\sum_{a_i\in A_i(s)}\mu_i(a_i\mid s)r_i^{x_{-i}}(s,a_i).
+\]
+By Proposition~\ref{prop:mixed-irreducible}, the chain $P^{\mu_i,x_{-i}}$ is irreducible, so it has a unique invariant distribution $\pi^{\mu_i,x_{-i}}$ and an average reward
+\[
+g_i(\mu_i,x_{-i})
+:=\sum_{s\in S}\pi^{\mu_i,x_{-i}}(s)\,\bar r_i^{\mu_i,x_{-i}}(s),
+\]
+independent of the initial state.
+
+\subsection{Gain and bias}
+
+Fix a reference state $s^\dagger\in S$ once and for all. The following is standard finite-state average-reward MDP theory; see Puterman \cite[Chapter~8]{Puterman1994} or Neyman \cite[Section~3]{Neyman2003MarkovChains}.
+
+\begin{theorem}[Average-reward optimality equation]\label{thm:aroe}
+Assume Condition~\ref{cond:A}. For each player $i$ and each opponents' stationary mixed profile $x_{-i}\in X_{-i}$, there exist a scalar $g_i^*(x_{-i})\in\R$ and a function $h_i^{x_{-i}}:S\to\R$, normalized by
+\[
+h_i^{x_{-i}}(s^\dagger)=0,
+\]
+such that
+\begin{equation}\label{eq:bellman-equality}
+g_i^*(x_{-i})+h_i^{x_{-i}}(s)
+=\max_{a_i\in A_i(s)}\Bigl[r_i^{x_{-i}}(s,a_i)+\sum_{s'\in S}Q_i^{x_{-i}}(s'\mid s,a_i)h_i^{x_{-i}}(s')\Bigr]
+\end{equation}
+for every $s\in S$.
+
+The number $g_i^*(x_{-i})$ is the optimal average reward of player $i$ against $x_{-i}$ over all admissible policies, including history-dependent randomized policies. Moreover, every pure stationary selector of the maximizers in \eqref{eq:bellman-equality} is average-reward optimal. Since $S$ is finite, every such normalized bias has finite span.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:unichain-from-A}, the induced MDP is finite and unichain. The existence of a normalized solution $(g_i^*(x_{-i}),h_i^{x_{-i}})$ to the average-reward optimality equation, together with the optimality of stationary maximizing selectors, is standard finite-state average-reward MDP theory; see Puterman \cite[Chapter~8]{Puterman1994} or Neyman \cite[Section~3]{Neyman2003MarkovChains}.
+\end{proof}
+
+Write
+\[
+A_i^*(s;x_{-i})
+:=\arg\max_{a_i\in A_i(s)}\Bigl[r_i^{x_{-i}}(s,a_i)+\sum_{s'\in S}Q_i^{x_{-i}}(s'\mid s,a_i)h_i^{x_{-i}}(s')\Bigr].
+\]
+Each set $A_i^*(s;x_{-i})$ is nonempty by finiteness.
+
+\subsection{The supermartingale bound for arbitrary deviations}
+
+The next proposition is the key estimate in the entire argument. It bounds the finite-horizon payoff of \emph{every} unilateral deviation, not merely stationary deviations.
+
+\begin{proposition}[Supermartingale upper bound]\label{prop:supermartingale}
+Assume Condition~\ref{cond:A}. Fix a player $i$ and a stationary mixed opponents' profile $x_{-i}\in X_{-i}$. Let $g_i^*=g_i^*(x_{-i})$ and $h_i=h_i^{x_{-i}}$ be the gain and normalized bias from Theorem~\ref{thm:aroe}. Then for every initial state $s\in S$, every horizon $T\ge1$, and every behavioral strategy $\tau_i$ of player $i$,
+\begin{equation}\label{eq:deviation-upper}
+\gamma_i^T\bigl(s,(\tau_i,x_{-i})\bigr)
+\le g_i^*+\frac{\spn(h_i)}{T}.
+\end{equation}
+Equivalently, if $u_t:=u_i(s_t,a_t)$ and
+\[
+M_t:=h_i(s_t)+\sum_{k=1}^{t-1}(g_i^*-u_k),\qquad t\ge1,
+\]
+then $(M_t)_{t\ge1}$ is a supermartingale under $\Prob_s^{(\tau_i,x_{-i})}$.
+\end{proposition}
+
+\begin{proof}
+Fix $s$, $T$, and $\tau_i$. Let $(\mathcal F_t)_{t\ge1}$ be the pre-action public filtration from Section~\ref{sec:model}, so
+\[
+\mathcal F_t=\sigma(s_1,a_1,\dots,s_{t-1},a_{t-1},s_t).
+\]
+Write
+\[
+\mu_t(\cdot):=\tau_i(\cdot\mid h_t),
+\]
+where $h_t=(s_1,a_1,\dots,s_t)$. Then $s_t$ and $\mu_t$ are $\mathcal F_t$-measurable. Under the profile $(\tau_i,x_{-i})$, conditional on $\mathcal F_t$, player $i$'s stage-$t$ action is sampled from $\mu_t(\cdot)$, the opponents' action profile is sampled from $x_{-i}(\cdot\mid s_t)$, and then $s_{t+1}$ is drawn from $P(\cdot\mid s_t,a_t)$.
+
+By Theorem~\ref{thm:aroe}, for every state $s$ and every action $a_i\in A_i(s)$,
+\[
+r_i^{x_{-i}}(s,a_i)+\sum_{s'}Q_i^{x_{-i}}(s'\mid s,a_i)h_i(s')\le g_i^*+h_i(s).
+\]
+Applying this inequality at the random state $s_t$ and averaging over the $\mathcal F_t$-measurable mixed action $\mu_t$ yields
+\begin{align*}
+\E\bigl[u_t+h_i(s_{t+1})\mid\mathcal F_t\bigr]
+&=\sum_{a_i\in A_i(s_t)}\mu_t(a_i)\left(r_i^{x_{-i}}(s_t,a_i)+\sum_{s'}Q_i^{x_{-i}}(s'\mid s_t,a_i)h_i(s')\right)\\
+&\le g_i^*+h_i(s_t).
+\end{align*}
+Rearranging gives
+\[
+\E[M_{t+1}\mid \mathcal F_t]\le M_t,
+\]
+so $(M_t)$ is a supermartingale.
+
+Taking expectations and using $M_1=h_i(s)$, we obtain
+\[
+\E[h_i(s_{T+1})]+Tg_i^*-\E\Bigl[\sum_{t=1}^{T}u_t\Bigr]\le h_i(s).
+\]
+Hence
+\[
+\E\Bigl[\sum_{t=1}^{T}u_t\Bigr]\le Tg_i^*+h_i(s)-\E[h_i(s_{T+1})].
+\]
+Because the difference between any two values of $h_i$ is bounded by its span,
+\[
+h_i(s)-\E[h_i(s_{T+1})]\le \max_{z\in S}h_i(z)-\min_{z\in S}h_i(z)=\spn(h_i).
+\]
+Dividing by $T$ yields \eqref{eq:deviation-upper}.
+\end{proof}
+
+\subsection{Optimal stationary responses and the exact finite-horizon identity}
+
+The next result identifies the stationary optimal responses to $x_{-i}$ and gives the matching lower bound along such responses.
+
+\begin{proposition}[Optimal stationary responses]\label{prop:optimal-stationary}
+Assume Condition~\ref{cond:A}. Fix a player $i$ and a stationary mixed opponents' profile $x_{-i}\in X_{-i}$. Let $g_i^*=g_i^*(x_{-i})$ and $h_i=h_i^{x_{-i}}$ be as in Theorem~\ref{thm:aroe}.
+
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2.4em]
+\item If a stationary mixed strategy $\mu_i\in X_i$ satisfies
+\[
+\supp \mu_i(\cdot\mid s)\subseteq A_i^*(s;x_{-i})\qquad\text{for every }s\in S,
+\]
+then for every initial state $s\in S$ and every horizon $T\ge1$,
+\begin{equation}\label{eq:exact-identity}
+\gamma_i^T\bigl(s,(\mu_i,x_{-i})\bigr)
+= g_i^*+\frac{h_i(s)-\E_s^{(\mu_i,x_{-i})}[h_i(s_{T+1})]}{T}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:exact-lower-bound}
+\left|\gamma_i^T\bigl(s,(\mu_i,x_{-i})\bigr)-g_i^*\right|\le \frac{\spn(h_i)}{T},
+\end{equation}
+so $\mu_i$ is average-reward optimal.
+
+\item Conversely, if a stationary mixed strategy $\mu_i\in X_i$ is average-reward optimal against $x_{-i}$, then
+\[
+\supp \mu_i(\cdot\mid s)\subseteq A_i^*(s;x_{-i})\qquad\text{for every }s\in S.
+\]
+Hence the stationary optimal responses are exactly the stationary mixed strategies whose support is contained statewise in the maximizing action sets.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textit{Part (a).} Let $\mu_i$ satisfy the support condition. Averaging the Bellman equality \eqref{eq:bellman-equality} over $\mu_i(\cdot\mid s)$ gives, for each state $s$,
+\[
+g_i^*+h_i(s)
+=\bar r_i^{\mu_i,x_{-i}}(s)+\sum_{s'\in S}P^{\mu_i,x_{-i}}(s,s')h_i(s').
+\]
+Therefore, under the profile $(\mu_i,x_{-i})$,
+\[
+\E\bigl[u_t+h_i(s_{t+1})\mid s_t\bigr]=g_i^*+h_i(s_t).
+\]
+Taking full expectations and summing from $t=1$ to $T$ yields
+\[
+\E\Bigl[\sum_{t=1}^{T}u_t\Bigr]+\E[h_i(s_{T+1})]=Tg_i^*+h_i(s),
+\]
+which is exactly \eqref{eq:exact-identity}. The bound \eqref{eq:exact-lower-bound} follows immediately because the numerator is bounded in absolute value by $\spn(h_i)$. Thus $\mu_i$ attains the optimal average reward $g_i^*$.
+
+\smallskip
+\noindent
+\textit{Part (b).} Let $\mu_i$ be stationary and average-reward optimal against $x_{-i}$. Define the nonnegative slack function
+\[
+d(s,a_i):=g_i^*+h_i(s)-r_i^{x_{-i}}(s,a_i)-\sum_{s'\in S}Q_i^{x_{-i}}(s'\mid s,a_i)h_i(s').
+\]
+By construction, $d(s,a_i)\ge0$ for every state-action pair. Let $\pi$ be the unique invariant distribution of the irreducible chain $P^{\mu_i,x_{-i}}$. Then
+\begin{align*}
+\sum_{s\in S}\pi(s)\sum_{a_i\in A_i(s)}\mu_i(a_i\mid s)d(s,a_i)
+&=\sum_{s}\pi(s)\left(g_i^*+h_i(s)-\bar r_i^{\mu_i,x_{-i}}(s)-\sum_{s'}P^{\mu_i,x_{-i}}(s,s')h_i(s')\right)\\
+&=g_i^*-\sum_s\pi(s)\bar r_i^{\mu_i,x_{-i}}(s)\\
+&=g_i^*-g_i(\mu_i,x_{-i})\\
+&=0.
+\end{align*}
+The second equality uses the invariance identity $\sum_s\pi(s)h_i(s)=\sum_{s,s'}\pi(s)P^{\mu_i,x_{-i}}(s,s')h_i(s')$, and the last equality uses optimality. Since all terms are nonnegative and, because the chain is irreducible, $\pi(s)>0$ for every state $s$, we must have
+\[
+\sum_{a_i}\mu_i(a_i\mid s)d(s,a_i)=0\qquad\text{for every }s\in S.
+\]
+Thus whenever $\mu_i(a_i\mid s)>0$, necessarily $d(s,a_i)=0$, which means $a_i\in A_i^*(s;x_{-i})$. This proves the support inclusion.
+\end{proof}
+
+\section{The average-reward meta-game}\label{sec:metagame}
+
+\subsection{Definition and continuity of the payoff map}
+
+For a stationary mixed profile $x\in X$, define the expected one-step payoff of player $i$ in state $s$ by
+\[
+\bar u_i^x(s):=\sum_{a\in A(s)}x(a\mid s)u_i(s,a).
+\]
+By Proposition~\ref{prop:mixed-irreducible}, the chain $P^x$ is irreducible. Let $\pi^x$ denote its unique invariant distribution. We define the average-reward meta-game payoff of player $i$ at $x$ by
+\begin{equation}\label{eq:meta-payoff}
+g_i(x):=\sum_{s\in S}\pi^x(s)\bar u_i^x(s).
+\end{equation}
+Because $P^x$ is irreducible, this quantity is equal to the unique average reward of player $i$ under the stationary profile $x$, independent of the initial state.
+
+\begin{proposition}[Continuity of invariant distributions and average rewards]\label{prop:continuity}
+Assume Condition~\ref{cond:A}. For every player $i$, the map
+\[
+x\longmapsto \pi^x\in \Delta(S)
+\]
+is continuous on $X$, and therefore the payoff map
+\[
+x\longmapsto g_i(x)
+\]
+is continuous on $X$.
+\end{proposition}
+
+\begin{proof}
+The map $x\mapsto P^x$ is multilinear, hence continuous. Let $(x^m)_{m\ge1}$ be a sequence in $X$ converging to $x\in X$. Write $\pi^m:=\pi^{x^m}$. Since $\Delta(S)$ is compact, every subsequence of $(\pi^m)$ admits a further convergent subsequence. Let $\pi^{m_k}\to \bar\pi$.
+
+For each $k$, the invariance identity is
+\[
+\pi^{m_k}P^{x^{m_k}}=\pi^{m_k}.
+\]
+Passing to the limit and using continuity of matrix multiplication gives
+\[
+\bar\pi P^x=\bar\pi.
+\]
+Thus $\bar\pi$ is an invariant distribution for $P^x$. By Proposition~\ref{prop:mixed-irreducible}, $P^x$ is irreducible, so its invariant distribution is unique. Hence $\bar\pi=\pi^x$.
+
+We have shown that every convergent subsequence of $(\pi^m)$ converges to $\pi^x$. Since $\Delta(S)$ is compact, this implies the whole sequence converges: $\pi^m\to \pi^x$. Therefore $x\mapsto \pi^x$ is continuous.
+
+The map $x\mapsto \bar u_i^x(s)$ is continuous for each state $s$ because it is multilinear in the stationary mixed strategies. Formula \eqref{eq:meta-payoff} then shows that $g_i$ is continuous as the composition of continuous operations.
+\end{proof}
+
+The next proposition records the ergodic interpretation of $g_i(x)$. The proof is standard but useful because it links the meta-game payoff to the actual long-run behavior of play.
+
+\begin{proposition}[Ergodic theorem for stationary profiles]\label{prop:ergodic}
+Assume Condition~\ref{cond:A}. Fix a stationary mixed profile $x\in X$, an initial state $s\in S$, and a player $i$. Then under $\Prob_s^x$,
+\[
+\frac1T\sum_{t=1}^{T}u_i(s_t,a_t)\longrightarrow g_i(x)
+\qquad\text{almost surely and in }L^1.
+\]
+\end{proposition}
+
+\begin{proof}
+Because $P^x$ is a finite irreducible Markov chain, the ergodic theorem for finite irreducible chains implies that for every bounded function $f:S\to\R$,
+\[
+\frac1T\sum_{t=1}^{T}f(s_t)\longrightarrow\sum_{z\in S}\pi^x(z)f(z)
+\qquad\text{almost surely and in }L^1.
+\]
+Apply this to $f=\bar u_i^x$. Then
+\begin{equation}\label{eq:ergodic-expected-reward}
+\frac1T\sum_{t=1}^{T}\bar u_i^x(s_t)\longrightarrow \sum_{z\in S}\pi^x(z)\bar u_i^x(z)=g_i(x)
+\qquad\text{almost surely and in }L^1.
+\end{equation}
+
+Next define
+\[
+d_t:=u_i(s_t,a_t)-\bar u_i^x(s_t),\qquad t\ge1.
+\]
+Let
+\[
+\mathcal G_t:=\sigma(s_1,a_1,s_2,a_2,\dots,s_t,a_t,s_{t+1}),\qquad t\ge0,
+\]
+with the convention that $\mathcal G_0=\sigma(s_1)$. Then $d_t$ is $\mathcal G_t$-measurable and, because under the stationary profile $x$ the action at stage $t$ is drawn according to $x(\cdot\mid s_t)$,
+\[
+\E[d_t\mid \mathcal G_{t-1}]=0.
+\]
+Hence the partial sums $D_T:=\sum_{t=1}^{T}d_t$ form a martingale with bounded increments. By the strong law for bounded martingale differences,
+\[
+\frac{D_T}{T}\longrightarrow 0
+\qquad\text{almost surely and in }L^1.
+\]
+Combining this with \eqref{eq:ergodic-expected-reward} yields
+\[
+\frac1T\sum_{t=1}^{T}u_i(s_t,a_t)
+=\frac1T\sum_{t=1}^{T}\bar u_i^x(s_t)+\frac{D_T}{T}
+\longrightarrow g_i(x)
+\]
+almost surely and in $L^1$.
+\end{proof}
+
+\subsection{Best responses in the meta-game}
+
+Fix a player $i$. The best-response correspondence of player $i$ in the average-reward meta-game is
+\[
+B_i(x_{-i}):=\arg\max_{\mu_i\in X_i} g_i(\mu_i,x_{-i}),\qquad x_{-i}\in X_{-i}.
+\]
+
+\begin{proposition}[Structure of best responses]\label{prop:best-response-structure}
+Assume Condition~\ref{cond:A}. Fix a player $i$ and $x_{-i}\in X_{-i}$. Then
+\begin{equation}\label{eq:best-response-product}
+B_i(x_{-i})=
+\Bigl\{\mu_i\in X_i:\supp\mu_i(\cdot\mid s)\subseteq A_i^*(s;x_{-i})\text{ for every }s\in S\Bigr\}.
+\end{equation}
+In particular, $B_i(x_{-i})$ is nonempty, compact, and convex.
+\end{proposition}
+
+\begin{proof}
+Because $X_i$ is compact and $\mu_i\mapsto g_i(\mu_i,x_{-i})$ is continuous by Proposition~\ref{prop:continuity}, the set $B_i(x_{-i})$ is nonempty and compact.
+
+By Proposition~\ref{prop:optimal-stationary}, a stationary mixed strategy $\mu_i$ is average-reward optimal against $x_{-i}$ if and only if its support is contained statewise in the maximizing sets $A_i^*(s;x_{-i})$. This proves \eqref{eq:best-response-product}. The right-hand side is a product of simplices
+\[
+\prod_{s\in S}\Delta\bigl(A_i^*(s;x_{-i})\bigr),
+\]
+hence convex and compact.
+\end{proof}
+
+\begin{proposition}[Closed graph of the best-response correspondence]\label{prop:best-response-closed-graph}
+Assume Condition~\ref{cond:A}. For each player $i$, the correspondence $B_i:X_{-i}\rightrightarrows X_i$ has closed graph. Consequently it is upper hemicontinuous.
+\end{proposition}
+
+\begin{proof}
+Let $x_{-i}^m\to x_{-i}$ in $X_{-i}$, let $\mu_i^m\to \mu_i$ in $X_i$, and suppose $\mu_i^m\in B_i(x_{-i}^m)$ for every $m$. Then for every fixed $\eta_i\in X_i$,
+\[
+g_i(\mu_i^m,x_{-i}^m)\ge g_i(\eta_i,x_{-i}^m).
+\]
+Passing to the limit and using continuity of $g_i$ from Proposition~\ref{prop:continuity}, we get
+\[
+g_i(\mu_i,x_{-i})\ge g_i(\eta_i,x_{-i})\qquad\text{for every }\eta_i\in X_i.
+\]
+Hence $\mu_i\in B_i(x_{-i})$, so the graph is closed.
+
+Because the domain $X_{-i}$ is compact and the values of $B_i$ are compact by Proposition~\ref{prop:best-response-structure}, closed graph implies upper hemicontinuity.
+\end{proof}
+
+\begin{remark}[Occupation-measure formulation]\label{rem:occupation}
+For fixed $i$ and $x_{-i}$, the average-reward MDP can also be written as a linear program over state-action occupation measures. One maximizes
+\[
+\sum_{s\in S}\sum_{a_i\in A_i(s)}m(s,a_i)\,r_i^{x_{-i}}(s,a_i)
+\]
+subject to the balance equations
+\[
+\sum_{a_i}m(s,a_i)=\sum_{z\in S}\sum_{b_i\in A_i(z)}m(z,b_i)Q_i^{x_{-i}}(s\mid z,b_i),
+\qquad s\in S,
+\]
+together with $m\ge0$ and $\sum_{s,a_i}m(s,a_i)=1$. The feasible set is convex, so the set of $\eta$-optimal \emph{occupation measures} is convex for every $\eta\ge0$. We will not use this formulation below, because Proposition~\ref{prop:best-response-structure} already gives the stronger policy-space description of exact best responses that is needed for the fixed-point argument.
+\end{remark}
+
+\subsection{Existence of a stationary average-reward equilibrium}
+
+Stationary average-reward equilibrium existence in this irreducible setting is classical; see Rogers \cite{Rogers1969}, Sobel \cite{Sobel1971}, and Federgruen \cite{Federgruen1978}. We record the short fixed-point argument here only for completeness and because it matches the notation used later in the $O(1/T)$ regret estimate.
+
+We now apply a standard fixed-point theorem to the product best-response correspondence.
+
+\begin{theorem}[Kakutani-Fan-Glicksberg fixed-point theorem]\label{thm:kfg}
+Let $K$ be a nonempty compact convex subset of a Euclidean space, and let $\Phi:K\rightrightarrows K$ be a correspondence with nonempty compact convex values and closed graph. Then there exists $x\in K$ such that $x\in \Phi(x)$.
+\end{theorem}
+
+\begin{proof}
+This is the classical Kakutani-Fan-Glicksberg fixed-point theorem; see Glicksberg \cite{Glicksberg1952}.
+\end{proof}
+
+\begin{theorem}[Stationary equilibrium of the average-reward meta-game]\label{thm:meta-equilibrium}
+Assume Condition~\ref{cond:A}. Then there exists a stationary mixed profile $x^*\in X$ such that for every player $i$,
+\[
+g_i(x^*)\ge g_i(\mu_i,x_{-i}^*)\qquad\text{for every }\mu_i\in X_i.
+\]
+Equivalently, $x_i^*\in B_i(x_{-i}^*)$ for every player $i$.
+\end{theorem}
+
+\begin{proof}
+Define the product correspondence $B:X\rightrightarrows X$ by
+\[
+B(x):=\prod_{i\in N}B_i(x_{-i}).
+\]
+The set $X$ is a nonempty compact convex subset of a finite-dimensional Euclidean space. By Propositions~\ref{prop:best-response-structure} and \ref{prop:best-response-closed-graph}, each $B_i$ has nonempty compact convex values and closed graph. Therefore $B$ itself has nonempty compact convex values and closed graph.
+
+By Theorem~\ref{thm:kfg}, there exists $x^*\in X$ with $x^*\in B(x^*)$. This means precisely that $x_i^*\in B_i(x_{-i}^*)$ for every player $i$, or equivalently that each $x_i^*$ maximizes $g_i(\mu_i,x_{-i}^*)$ over $\mu_i\in X_i$.
+\end{proof}
+
+\section{Proof of the main theorem}\label{sec:proof-main}
+
+We can now prove the uniform-equilibrium theorem announced in the introduction. The existence of the stationary average-reward equilibrium used in the first line is classical in the irreducible regime and was also rederived in Section~\ref{sec:metagame} for completeness.
+
+\begin{proof}[Proof of Theorem~\ref{thm:intro-main}]
+Fix $\varepsilon>0$. By Theorem~\ref{thm:meta-equilibrium}, choose a stationary mixed profile
+\[
+x^*=(x_1^*,\dots,x_n^*)\in X
+\]
+such that each $x_i^*$ is a best response to $x_{-i}^*$ in the average-reward meta-game.
+
+Now fix a player $i$. Consider the average-reward MDP faced by player $i$ against the stationary mixed opponents' profile $x_{-i}^*$. Let
+\[
+g_i^*:=g_i^*(x_{-i}^*),\qquad h_i^*:=h_i^{x_{-i}^*},\qquad H_i:=\spn(h_i^*).
+\]
+Because $x_i^*\in B_i(x_{-i}^*)$, we have
+\[
+g_i(x^*)=\max_{\mu_i\in X_i}g_i(\mu_i,x_{-i}^*)=g_i^*.
+\]
+Moreover, by Proposition~\ref{prop:best-response-structure}, the support of $x_i^*(\cdot\mid s)$ is contained in the maximizing set $A_i^*(s;x_{-i}^*)$ for every state $s$.
+
+Let $s\in S$ be any initial state, let $T\ge1$, and let $\tau_i$ be any behavioral deviation of player $i$.
+
+\smallskip
+\noindent
+\textbf{Step 1: upper bound on the deviator.}
+By Proposition~\ref{prop:supermartingale},
+\begin{equation}\label{eq:proof-dev-upper}
+\gamma_i^T\bigl(s,(\tau_i,x_{-i}^*)\bigr)\le g_i^*+\frac{H_i}{T}.
+\end{equation}
+This bound holds for \emph{every} behavioral deviation $\tau_i$, including arbitrary history-dependent randomized deviations.
+
+\smallskip
+\noindent
+\textbf{Step 2: lower bound on the compliant payoff.}
+Since $x_i^*$ mixes only over maximizing actions, Proposition~\ref{prop:optimal-stationary}(a) yields the exact identity
+\[
+\gamma_i^T(s,x^*)=g_i^*+\frac{h_i^*(s)-\E_s^{x^*}[h_i^*(s_{T+1})]}{T}.
+\]
+Hence
+\begin{equation}\label{eq:proof-compliant-lower}
+\gamma_i^T(s,x^*)\ge g_i^* - \frac{H_i}{T}.
+\end{equation}
+By Proposition~\ref{prop:ergodic}, one also has almost sure and $L^1$ convergence
+\[
+\frac1T\sum_{t=1}^{T}u_i(s_t,a_t)\longrightarrow g_i(x^*)=g_i^*
+\qquad\text{under }\Prob_s^{x^*}.
+\]
+Thus the compliant path has the correct ergodic average, and \eqref{eq:proof-compliant-lower} gives the quantitative finite-horizon estimate needed for uniform equilibrium.
+
+\smallskip
+\noindent
+\textbf{Step 3: regret bound.}
+Subtracting \eqref{eq:proof-compliant-lower} from \eqref{eq:proof-dev-upper} gives
+\[
+\gamma_i^T\bigl(s,(\tau_i,x_{-i}^*)\bigr)-\gamma_i^T(s,x^*)\le \frac{2H_i}{T}.
+\]
+Since this holds for every player $i$, every initial state $s$, every horizon $T\ge1$, and every behavioral deviation $\tau_i$, we obtain the uniform estimate
+\[
+\sup_{i\in N}\sup_{s\in S}\sup_{\tau_i}\Bigl[\gamma_i^T\bigl(s,(\tau_i,x_{-i}^*)\bigr)-\gamma_i^T(s,x^*)\Bigr]
+\le \frac{2H}{T},
+\]
+where
+\[
+H:=\max_{i\in N}H_i=\max_{i\in N}\spn(h_i^*).
+\]
+
+\smallskip
+\noindent
+\textbf{Step 4: choose the threshold.}
+Set
+\[
+T_0:=\left\lceil \frac{2H}{\varepsilon}\right\rceil.
+\]
+Then for every $T\ge T_0$,
+\[
+\gamma_i^T(s,x^*)\ge \gamma_i^T\bigl(s,(\tau_i,x_{-i}^*)\bigr)-\varepsilon
+\]
+for every player $i$, every initial state $s$, and every behavioral deviation $\tau_i$.
+
+Therefore $x^*$ is a uniform $\varepsilon$-equilibrium. This proves Theorem~\ref{thm:intro-main}.
+\end{proof}
+
+For later reference, we record the quantitative consequence explicitly.
+
+\begin{corollary}[Uniform $O(1/T)$ regret]\label{cor:o1overT}
+Under Condition~\ref{cond:A}, the stationary profile $x^*$ from Theorem~\ref{thm:meta-equilibrium} satisfies
+\[
+\gamma_i^T\bigl(s,(\tau_i,x_{-i}^*)\bigr)-\gamma_i^T(s,x^*)
+\le \frac{2\spn(h_i^*)}{T}
+\le \frac{2\max_j\spn(h_j^*)}{T}
+\]
+for every player $i$, every initial state $s$, every horizon $T\ge1$, and every behavioral deviation $\tau_i$.
+\end{corollary}
+
+\section{Discussion}\label{sec:discussion}
+
+The right way to position the result is narrowly and honestly. By Remark~\ref{rem:classical-irreducibility}, Condition~\ref{cond:A} is exactly the classical irreducibility assumption for stationary profiles. Accordingly, this paper does \emph{not} resolve Neyman's open problem on uniform equilibria in general finite stochastic games.
+
+What is classical here is the irreducible-case equilibrium existence theory. Rogers \cite{Rogers1969} and Sobel \cite{Sobel1971} already established stationary average-reward equilibrium existence in irreducible finite stochastic games, and Federgruen \cite{Federgruen1978} developed the same recurrency-based line in broader average-reward settings. The present paper does not enlarge that class.
+
+What the note contributes is a direct route from stationary average-reward equilibrium to uniform finite-horizon incentives in that same irreducible regime. Once opponents are fixed at a stationary profile, every unilateral deviation problem is a unichain average-reward MDP on the original state space $S$. A normalized bias satisfying the Bellman equation yields the supermartingale in Proposition~\ref{prop:supermartingale}, and that single inequality simultaneously controls all unilateral deviations, including fully history-dependent behavioral deviations. Combined with the exact finite-horizon identity for stationary optimal responses, this gives the explicit regret bound
+\[
+\gamma_i^T\bigl(s,(\tau_i,x_{-i}^*)\bigr)-\gamma_i^T(s,x^*)\le \frac{2\spn(h_i^*)}{T}.
+\]
+This bias-span mechanism, and the resulting self-contained $O(1/T)$ upgrade from stationary average-reward equilibrium to uniform $\varepsilon$-equilibrium, are the main mathematical points being isolated here.
+
+The hard open part remains the multichain case. Without Condition~\ref{cond:A}, a unilateral stationary policy may create several recurrent classes. Then the average gain can depend on the class reached or on the initial state, and there need not be a single global bias that controls finite-horizon deviations uniformly across initial states. That is precisely the central obstacle in the general multiplayer problem.
+
+In that sense, Condition~\ref{cond:A} assumes away the main barrier. The theorem is therefore best read as an irreducible-case direct proof, not as a solution of the general conjecture. Any progress beyond the present note must confront the multichain continuation problem directly.
+
+\begin{thebibliography}{99}
+
+\bibitem{Federgruen1978}
+A. Federgruen.
+\newblock On $N$-person stochastic games with denumerable state space.
+\newblock \emph{Advances in Applied Probability}, 10(2):452--471, 1978.
+
+\bibitem{Glicksberg1952}
+I.~L. Glicksberg.
+\newblock A further generalization of the Kakutani fixed point theorem, with application to Nash equilibrium points.
+\newblock \emph{Proceedings of the American Mathematical Society}, 3(1):170--174, 1952.
+
+\bibitem{MertensNeyman1981}
+J.-F. Mertens and A. Neyman.
+\newblock Stochastic games.
+\newblock \emph{International Journal of Game Theory}, 10(2):53--66, 1981.
+
+\bibitem{Neyman2003Minmax}
+A. Neyman.
+\newblock Stochastic games: existence of the minmax.
+\newblock In A. Neyman and S. Sorin, editors, \emph{Stochastic Games and Applications}, volume 570 of \emph{NATO Science Series C: Mathematical and Physical Sciences}, pages 173--193. Springer, Dordrecht, 2003.
+
+\bibitem{Neyman2003MarkovChains}
+A. Neyman.
+\newblock From Markov chains to stochastic games.
+\newblock In A. Neyman and S. Sorin, editors, \emph{Stochastic Games and Applications}, volume 570 of \emph{NATO Science Series C: Mathematical and Physical Sciences}, pages 9--25. Springer, Dordrecht, 2003.
+
+\bibitem{Norris1998}
+J.~R. Norris.
+\newblock \emph{Markov Chains}.
+\newblock Cambridge University Press, Cambridge, 1998.
+
+\bibitem{OpenProblems2026}
+Game Theory Society (Israel Chapter).
+\newblock Open problems.
+\newblock \url{https://sites.google.com/view/thegametheorysocietyilchapter/open-problems}, accessed April 2, 2026.
+
+\bibitem{Puterman1994}
+M.~L. Puterman.
+\newblock \emph{Markov Decision Processes: Discrete Stochastic Dynamic Programming}.
+\newblock Wiley, New York, 1994.
+
+\bibitem{Rogers1969}
+P.~D. Rogers.
+\newblock \emph{Nonzero-Sum Stochastic Games}.
+\newblock PhD thesis, University of California, Berkeley, 1969.
+\newblock Operations Research Center Report ORC 69--8.
+
+\bibitem{Shapley1953}
+L.~S. Shapley.
+\newblock Stochastic games.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, 39(10):1095--1100, 1953.
+
+\bibitem{Sobel1971}
+M.~J. Sobel.
+\newblock Noncooperative stochastic games.
+\newblock \emph{The Annals of Mathematical Statistics}, 42(6):1930--1935, 1971.
+
+\bibitem{Solan2022}
+E. Solan.
+\newblock \emph{A Course in Stochastic Game Theory}.
+\newblock Cambridge University Press, Cambridge, 2022.
+
+\bibitem{SolanVieille2015}
+E. Solan and N. Vieille.
+\newblock Stochastic games.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, 112(45):13743--13746, 2015.
+
+\bibitem{Vieille2000a}
+N. Vieille.
+\newblock Two-player stochastic games {I}: A reduction.
+\newblock \emph{Israel Journal of Mathematics}, 119:55--91, 2000.
+
+\bibitem{Vieille2000b}
+N. Vieille.
+\newblock Two-player stochastic games {II}: The case of recursive games.
+\newblock \emph{Israel Journal of Mathematics}, 119:93--126, 2000.
+
+\end{thebibliography}
+
+\end{document}
