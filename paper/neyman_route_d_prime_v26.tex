@@ -1,0 +1,2643 @@
+\documentclass[12pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array,booktabs,enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[capitalize,nameinlink,noabbrev]{cleveref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Pb}{\mathbb{P}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cX}{\mathcal{X}}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\spn}{sp}
+\DeclareMathOperator{\Out}{Out}
+\DeclareMathOperator{\BR}{BR}
+
+\title{\textbf{Uniform Equilibrium from an Augmented Metastable Tree\\via a Direct Global Induced-MDP Comparison}}
+\author{Pedro Aldighieri}
+\date{April 2026}
+
+\begin{document}
+\maketitle
+
+
+
+
+
+\begin{abstract}
+Neyman's problem asks whether every finite stochastic game admits a uniform
+$\eps$-equilibrium. The full conjecture remains open. This paper proves the
+\emph{downstream} part of the compact-tree route under explicit conditional input:
+we assume that a finite universal $\eta$-tree representation is available,
+together with its first-exit controller realization, and we show that this input
+yields a public finite-memory uniform $\eps$-equilibrium under a robust
+nodewise irreducibility hypothesis.
+
+Version~26 keeps the finite universal $\eta$-tree, the local Bellman
+certificates $(g_{i,C}^*,h_{i,C}^*)$, the stock variable $Z$, the potential
+$\Psi$, and the Kakutani fixed-point construction. The final regret estimate,
+however, no longer compares local gains across different routed nodes. Once the
+other players are frozen at $(\sigma_{\eta,\delta,M_*})_{-i}$, player $i$ faces a
+finite one-player MDP on the finite public-memory state space of the realized
+profile. Under condition~\textnormal{(a)}, this induced MDP is unichain.
+
+Standard average-reward MDP theory therefore supplies a unique optimal gain
+$g_i^*$ and an optimal bias $h_i^*$. The Bellman optimality inequality gives,
+for every unilateral deviation $\tau_i$,
+\[
+\gamma_i^T\bigl(s,(\tau_i,(\sigma_{\eta,\delta,M_*})_{-i})\bigr)
+\le
+ g_i^*+\frac{\spn(h_i^*)}{T}.
+\]
+On the compliant side, the fixed-point construction yields an
+$O(\eta+\delta)$-optimal stationary policy in the same induced MDP. If
+$g_i^{\sigma}$ denotes its average reward and $\widehat h_i^{\sigma}$ a bias for
+that policy, then
+\[
+g_i^{\sigma}\ge g_i^*-O(\eta+\delta),
+\qquad
+\gamma_i^T(s,\sigma_{\eta,\delta,M_*})
+\ge
+g_i^{\sigma}-\frac{\spn(\widehat h_i^{\sigma})}{T}.
+\]
+Subtracting the two estimates yields
+\[
+\gamma_i^T\bigl(s,(\tau_i,(\sigma_{\eta,\delta,M_*})_{-i})\bigr)
+-
+\gamma_i^T\bigl(s,\sigma_{\eta,\delta,M_*}\bigr)
+\le
+A_\eta\eta + C_\eta\delta + \frac{K_\eta}{T}.
+\]
+Thus the local tree machinery remains the construction engine, while the final
+global comparison is the standard unichain average-reward MDP argument.
+\end{abstract}
+
+
+
+
+
+
+\tableofcontents
+
+\section{Introduction}
+
+\subsection{Neyman's problem}
+
+Shapley introduced stochastic games in 1953 and proved existence of stationary
+equilibria for the discounted evaluation \cite{Shapley1953}. The long-run average
+evaluation is much subtler. For zero-sum stochastic games, Mertens and Neyman
+proved existence of the uniform value \cite{MertensNeyman1981}. For two-player
+non-zero-sum stochastic games, Vieille established the existence of uniform
+$\eps$-equilibria \cite{Vieille2000I,Vieille2000II}. Beyond two players the full
+problem remains open; see Neyman's survey chapter, Solan's chapter on the
+multi-player problem, Vieille's survey, and the handbook treatment
+\cite{Neyman2003,Solan2003,Vieille2002,MertensSorinZamir2003}. Positive results
+are known in special subclasses, including three-player absorbing games
+\cite{Solan1999}, correlated equilibrium constructions \cite{SolanVieille2002},
+cyclic Markov equilibria phenomena \cite{FleschThuijsmanVrieze1997}, and extensions
+to broader state-space settings \cite{Nowak2003}.
+
+The central question is:
+\begin{quote}
+\textbf{Neyman's open problem.}
+For every finite stochastic game and every $\eps>0$, does there exist a strategy
+profile that is an $\eps$-equilibrium simultaneously for all sufficiently large
+finite horizons?
+\end{quote}
+
+This paper does not claim to settle the conjecture in full generality. Its scope
+is narrower and more precise: we start from the finite universal $\eta$-tree
+representation produced by the route-D' reduction, together with its first-exit
+controller realization, and show that once that input is available the remainder
+of the route is correct under a robust nodewise irreducibility condition. The
+point of the rewrite is not to alter the theorem's scope but to make every
+definition used downstream mathematically correct and every stated proof complete.
+
+\subsection{Main theorem}
+
+We first record the standing scope. The compact asymptotic tree representation and
+its first-exit controller realization are inputs to the present paper.
+
+\begin{assumption}[Standing tree input]
+\label{ass:tree-input}
+For every $\eta\in(0,1)$, the game is endowed with a finite universal
+$\eta$-tree representation as specified in
+\Cref{ass:node-data,ass:controller-input}. All theorems in
+Sections~\ref{sec:bookkeeping}--\ref{sec:proof-main} are proved relative to that
+finite-dimensional input.
+\end{assumption}
+
+Under this standing input the paper proves the following theorem.
+
+\begin{theorem}[Main theorem]
+\label{thm:main}
+Let
+\[
+G=(N,S,(A_i)_{i\in N},u,P)
+\]
+be a finite stochastic game, and assume \Cref{ass:tree-input}. Assume further
+that condition~\textnormal{(a)} from \Cref{cond:a} holds for the augmented node
+kernels of the universal $\eta$-trees. Then for every $\eps>0$ there exist a
+public finite-memory strategy profile $\sigma^\eps$ and $T_0\in\N$ such that for
+every $T\ge T_0$, every initial state $s\in S$, every player $i\in N$, and every
+unilateral deviation $\tau_i$,
+\[
+\gamma_i^T(s,\sigma^\eps)
+\ge
+\gamma_i^T\bigl(s,(\tau_i,\sigma^\eps_{-i})\bigr)-\eps.
+\]
+In particular, every finite stochastic game equipped with a universal
+$\eta$-tree representation and first-exit controller realization satisfying
+condition~\textnormal{(a)} admits a public finite-memory uniform
+$\eps$-equilibrium for every $\eps>0$.
+\end{theorem}
+
+\begin{remark}
+The theorem is intentionally scoped to the downstream part of the compact-tree
+route. The full Neyman conjecture remains open because the route still requires,
+in the background, construction of the universal $\eta$-tree representation and
+its realization map for an arbitrary game. The purpose of the present rewrite is
+to show that the remaining argument from that representation to a uniform
+equilibrium is mathematically correct once the earlier blockers and the
+expectation-level bookkeeping repair are in place.
+\end{remark}
+
+
+
+
+\subsection{The v26 repair: a direct global MDP comparison}
+
+Version~26 keeps the v10--v25 frozen-continuation, local-Nash,
+bias-normalization, augmented-kernel, routing, terminal-node,
+expectation-bookkeeping, finite-memory, one-profile Bellman, stock-variable,
+and stagewise-$\Psi$ repairs. The only change is the global comparison step.
+Pass~114 confirmed that the single-player MDP reframing is correct, but it also
+pinpointed the remaining defect: the local gain $g_{i,C}^*$ is a restarted-node
+average and need not equal the value of the global deviator MDP.
+
+The repaired final step is therefore simpler and fully standard.
+\begin{enumerate}[label=\textnormal{(\arabic*)},leftmargin=2.4em]
+\item Freeze the other players at $(\sigma_{\eta,\delta,M_*})_{-i}$. Player $i$
+faces a finite one-player MDP on the finite public-memory state space of the
+realized profile. The local tree, Bellman, routing, and controller machinery are
+still used to build that profile.
+
+\item Under condition~\textnormal{(a)}, the induced MDP is unichain. Hence there
+exists a unique optimal gain $g_i^*$ and an optimal bias $h_i^*$ satisfying the
+average-reward Bellman optimality equation.
+
+\item The global optimal bias gives the deviator upper bound
+\[
+\gamma_i^T\bigl(s,(\tau_i,(\sigma_{\eta,\delta,M_*})_{-i})\bigr)
+\le
+ g_i^*+\frac{\spn(h_i^*)}{T}.
+\]
+This is the standard finite-horizon optimality inequality for a unichain
+average-reward MDP.
+
+\item The fixed-point construction from
+Sections~\ref{sec:global}--\ref{sec:realization} still supplies the compliant
+stationary policy. Its global average reward is $O(\eta+\delta)$-optimal in the
+same induced MDP. If $g_i^{\sigma}$ denotes that gain and
+$\widehat h_i^{\sigma}$ is a bias for the compliant stationary policy, then
+\[
+\gamma_i^T\bigl(s,\sigma_{\eta,\delta,M_*}\bigr)
+\ge
+ g_i^{\sigma}-\frac{\spn(\widehat h_i^{\sigma})}{T}
+\ge
+ g_i^* - A_\eta^{\mathrm{opt}}\eta - C_\eta\delta - \frac{\spn(\widehat h_i^{\sigma})}{T}.
+\]
+
+\item Therefore
+\[
+\gamma_i^T\bigl(s,(\tau_i,(\sigma_{\eta,\delta,M_*})_{-i})\bigr)
+-
+\gamma_i^T\bigl(s,\sigma_{\eta,\delta,M_*}\bigr)
+\le
+A_\eta^{\mathrm{opt}}\eta + C_\eta\delta + O\!\left(\frac1T\right).
+\]
+Choosing $\eta$ and $\delta$ small and then $T$ large yields the uniform
+$\eps$-equilibrium.
+\end{enumerate}
+
+No routed comparison of the family $(g_{i,C}^*)_{C\in\cT_\eta}$ along different
+node sequences is used. The local gains remain essential in the construction,
+but the final regret bound is now global and MDP-theoretic.
+
+\subsection{Roadmap}
+
+
+
+Section~\ref{sec:model} recalls the game model and states the finite-dimensional
+node data used by the compact-tree route. Section~\ref{sec:bookkeeping}
+introduces the bookkeeping kernel and proves the graph theorem for the internal
+occupation package. Section~\ref{sec:local} formulates the local game on the
+genuine augmented state space and establishes local best-response and local
+equilibrium existence. Section~\ref{sec:global} defines the global correspondence
+with frozen continuation values and proves a Kakutani fixed point theorem.
+Section~\ref{sec:realization} defines actual node visits and realizes the fixed
+point by public finite-memory visit controllers. Section~\ref{sec:proof-main}
+proves the augmented-kernel bias bound, the deviation-value Lipschitz lemma, and
+the stagewise potential drift lemma, and then replaces the failed routed
+comparison by a direct comparison in the global induced MDP. The appendices
+record the finite-MDP facts, including the unichain optimality proposition and
+the induced-MDP comparison used in the proof of \Cref{thm:main}, together with
+the stagewise summation lemma.
+
+\section{Model and standing asymptotic input}
+\label{sec:model}
+
+\subsection{Finite stochastic games}
+
+A finite stochastic game is a tuple
+\[
+G=(N,S,(A_i)_{i\in N},u,P)
+\]
+where $N=\{1,\dots,n\}$ is the finite set of players, $S$ is the finite state
+space, $A_i(s)$ is the finite action set of player $i$ at state $s$, the stage
+payoff of player $i$ is a function
+\[
+u_i:S\times \prod_{j\in N}A_j(s)\to [0,1],
+\]
+and the transition kernel is
+\[
+P(\cdot\mid s,a)\in \Delta(S)
+\qquad (s\in S,\ a\in \prod_{j\in N}A_j(s)).
+\]
+The public history at stage $t$ is
+\[
+h_t=(s_1,a_1,s_2,a_2,\dots,s_t).
+\]
+A behavioral strategy of player $i$ assigns to every public history $h_t$ a
+probability distribution on $A_i(s_t)$.
+
+For a horizon $T\ge 1$, an initial state $s$, and a profile $\sigma$, the average
+payoff of player $i$ is
+\[
+\gamma_i^T(s,\sigma)
+=
+\E_{s,\sigma}\Bigl[\frac1T\sum_{t=1}^T u_i(s_t,a_t)\Bigr].
+\]
+We write
+\[
+\|u\|_\infty
+:=
+\max_{i\in N}\max_{s\in S}\max_{a\in\prod_{j\in N}A_j(s)} |u_i(s,a)|.
+\]
+Under the standing normalization $u_i\in[0,1]$, one has $\|u\|_\infty\le 1$.
+
+\begin{definition}
+A profile $\sigma$ is an \emph{$\eps$-equilibrium for horizon $T$} if for every
+player $i$, every initial state $s$, and every unilateral deviation $\tau_i$,
+\[
+\gamma_i^T(s,\sigma)
+\ge
+\gamma_i^T\bigl(s,(\tau_i,\sigma_{-i})\bigr)-\eps.
+\]
+It is a \emph{uniform $\eps$-equilibrium} if there exists $T_0$ such that the same
+inequality holds for every $T\ge T_0$.
+\end{definition}
+
+\subsection{Node data from the tree representation}
+
+The present paper starts after the route-D' reduction has produced a finite rooted
+universal $\eta$-tree. We record exactly the node data used later.
+
+\begin{assumption}[Finite node data]
+\label{ass:node-data}
+Fix $\eta\in(0,1)$. The universal $\eta$-tree $\cT_\eta$ is finite. We write
+$C_{\mathrm{rt}}$ for its unique root. Its nodes are of two kinds: ordinary nodes
+and degenerate terminal nodes. Every node $C\in \cT_\eta$ carries the following
+data.
+\begin{enumerate}[label=\textnormal{(D\arabic*)},leftmargin=2.8em]
+\item A finite phase-state set
+\[
+\Xi_C=\bigsqcup_{k\in\mathbb Z/d_C\mathbb Z}\{k\}\times S_C^k
+\]
+and a distinguished reference state $\xi_C^\circ\in\Xi_C$.
+\item For each player $i$ and phase-state $\xi\in\Xi_C$, a finite action set
+$A_i(\xi)$.
+\item A finite boundary set $B_C$ and a successor map $b\mapsto C[b]$ sending
+boundary states to child nodes of $\cT_\eta$. Whenever the earlier route would
+have attached a terminal label $b$, the enlarged tree now contains the
+corresponding degenerate terminal child $T_b:=C[b]$.
+\item Internal transition coefficients
+\[
+P_C^0(\xi'\mid \xi,a)\in[0,1],
+\qquad \xi,\xi'\in \Xi_C,
+\ a\in \prod_{j\in N}A_j(\xi),
+\]
+and exit coefficients
+\[
+\lambda_C(b\mid \xi,a)\in[0,1],
+\qquad b\in B_C,
+\]
+such that
+\[
+\sum_{\xi'\in\Xi_C}P_C^0(\xi'\mid \xi,a)+\sum_{b\in B_C}\lambda_C(b\mid\xi,a)=1.
+\]
+\item A bookkeeping restart kernel fixed by the convention
+\[
+\rho_C(\cdot\mid b)=\delta_{\xi_C^\circ}
+\qquad (b\in B_C).
+\]
+This kernel is used only in the internal bookkeeping chain from
+Section~\ref{sec:bookkeeping}; it is not part of the executed first-exit
+dynamics. In particular every bookkeeping restart returns to the reference
+state $\xi_C^\circ$.
+\item A universal bias box constant $B_\eta^0<\infty$ such that every local
+Bellman certificate used later can be normalized inside
+$[-B_\eta^0,B_\eta^0]^{\Xi_C}$.
+\end{enumerate}
+
+If $C=T$ is a degenerate terminal node, then
+\[
+\Xi_T=\{\xi_T^\circ\},
+\qquad
+B_T=\varnothing,
+\qquad
+A_i(\xi_T^\circ)\text{ is a singleton for every }i,
+\]
+the unique internal transition is absorbing,
+\[
+P_T^0(\xi_T^\circ\mid \xi_T^\circ,a)=1,
+\]
+and for the unique action profile $a^\dagger$ one has
+\[
+u_i(\xi_T^\circ,a^\dagger)=w_i(T)\in[0,1].
+\]
+Thus $T$ is a one-state absorbing leaf with trivial bookkeeping kernel and exact
+local certificate
+\[
+g_{i,T}=w_i(T),
+\qquad
+h_{i,T}\equiv 0.
+\]
+For a boundary label $b$ leading to $T_b$, we also write $w(b):=w(T_b)$.
+\end{assumption}
+
+\begin{remark}[Tree-depth bookkeeping]
+\label{rem:tree-depth}
+For each degenerate terminal node $T$, set $d_\eta(T):=1$. For an ordinary node
+$C\in\cT_\eta$, define recursively
+\[
+d_\eta(C)
+:=
+\begin{cases}
+1, & B_C=\varnothing,\\[0.3em]
+1+\max_{b\in B_C} d_\eta(C[b]), & B_C\neq \varnothing.
+\end{cases}
+\]
+Thus $d_\eta(C)$ is the maximal number of node layers on a path beginning at $C$.
+Set
+\[
+D_\eta:=\max_{C\in\cT_\eta} d_\eta(C)<\infty.
+\]
+Whenever $b\in B_C$, the remaining depth below $b$ is at most $d_\eta(C)-1$.
+Accordingly, boundary continuation values will always be stored in
+$[0,d_\eta(C)-1]^N$, and the corresponding local gains will lie in
+$[0,d_\eta(C)]$. In particular a exit-routing path contains at most
+$D_\eta-1$ strict child moves, hence certainly at most $D_\eta$ strict exit moves.
+Once play enters a degenerate terminal node, no further strict exit can occur.
+\end{remark}
+
+
+\begin{assumption}[First-exit controller realization]
+\label{ass:controller-input}
+Fix $\eta\in(0,1)$ and a node $C\in\cT_\eta$. For every stationary mixed kernel
+$\sigma_C\in\Sigma_C$ and every cap $L\ge 1$, the universal
+$\eta$-tree representation supplies a public finite-memory first-exit
+\emph{visit controller} $\mathcal R_{C,L}^{\sigma_C}$. During every live stage
+with current phase-state $\xi\in\Xi_C$, the compliant action profile is sampled
+from the prescribed stationary kernel $\sigma_C(\cdot\mid\xi)$; the additional
+public memory is only an implementation device and does not alter the one-step
+coefficients on $\Xi_C$. The controller has the following properties.
+\begin{enumerate}[label=\textnormal{(R\arabic*)},leftmargin=2.8em]
+\item If the controller starts from an entry phase-state in $\Xi_C$, its path
+evolves on the augmented state space
+\[
+\Xi_C^{\mathrm{aug}}=\Xi_C\sqcup\partial B_C
+\]
+until the stopping time
+\[
+\tau_{C,L}
+:=
+\inf\{t\ge 1:X_t\in\partial B_C\}\wedge L.
+\]
+This stopping time is the length of the actual node visit. If
+$\tau_{C,L}<L$ and $X_{\tau_{C,L}}=\partial_b$, then the current visit ends at
+that stage and the public routing automaton launches the successor node $C[b]$
+at the next stage. No payoff is attached to the abstract exit state
+$\partial_b$ itself.
+\item At most one boundary label is emitted during a visit. If
+$\tau_{C,L}<L$ and $X_{\tau_{C,L}}=\partial_b$, then that unique label is $b$.
+If $\tau_{C,L}=L$ without a boundary hit, the visit ends by cap and the next
+visit starts in the same node.
+\item Let $N_{C,L}(\xi,a)$ be the number of live stages
+$t\in\{0,\dots,\tau_{C,L}-1\}$ at which $(X_t,A_t)=(\xi,a)$, and let
+$I_{C,L}(b):=\1_{\{X_{\tau_{C,L}}=\partial_b\}}$. Define the empirical visit
+rates
+\[
+\widehat\mu_{C,L}^{\mathrm{rate}}(\xi,a):=\frac{N_{C,L}(\xi,a)}{\tau_{C,L}},
+\qquad
+\widehat\beta_{C,L}(b):=\frac{I_{C,L}(b)}{\tau_{C,L}}.
+\]
+Then, uniformly over entry states, there exists $K_C(\sigma_C)<\infty$ such that
+\begin{equation}
+\label{eq:controller-input-occ}
+\E\Bigl[
+\bigl\|(\widehat\mu_{C,L}^{\mathrm{rate}},\widehat\beta_{C,L})
+-
+\bar\mu_C^\sigma
+\bigr\|_1
+\Bigr]
+\le \frac{K_C(\sigma_C)}{\sqrt L}.
+\end{equation}
+\item The controller realizes the bookkeeping occupation package in expectation.
+If $\bar\mu_C^\sigma=(\mu_C^\sigma,\beta_C^\sigma)$ is the occupation package
+from Section~\ref{sec:bookkeeping}, then for every entry state, every cap
+$L\ge 1$, every phase-state $\xi\in\Xi_C$, every admissible action profile
+$a\in \prod_{j\in N}A_j(\xi)$, and every boundary label $b\in B_C$,
+\begin{equation}
+\label{eq:controller-input-expected-counts}
+\E[N_{C,L}(\xi,a)]
+=
+\mu_C^\sigma(\xi,a)\,\E[\tau_{C,L}],
+\qquad
+\E[I_{C,L}(b)]
+=
+\beta_C^\sigma(b)\,\E[\tau_{C,L}].
+\end{equation}
+\end{enumerate}
+\end{assumption}
+
+\begin{remark}
+If $C=T$ is a degenerate terminal node, then the controller
+$\mathcal R_{T,L}^{\sigma_T}$ is the trivial capped visit of length $L$: it
+stays at $\xi_T^\circ$ throughout, emits no boundary label, satisfies
+$\tau_{T,L}=L$ almost surely, and yields the exact actual payoff
+\[
+U_{i,T,L}^{\mathrm{act}}=L\,w_i(T).
+\]
+Hence both \eqref{eq:controller-input-occ} and
+\eqref{eq:controller-input-expected-counts} hold with zero error at degenerate
+terminal nodes.
+\end{remark}
+
+
+\subsection{Pure and mixed stationary kernels inside a node}
+
+Fix a node $C$. A \emph{pure stationary selector} of player $i$ in node $C$ is a
+map
+\[
+f_i: \Xi_C\to \bigsqcup_{\xi\in\Xi_C}A_i(\xi)
+\quad\text{with }f_i(\xi)\in A_i(\xi).
+\]
+The finite set of such selectors is denoted by $F_{i,C}$. A \emph{stationary
+mixed kernel} of player $i$ is an element of
+\[
+\Sigma_{i,C}:=\prod_{\xi\in\Xi_C}\Delta(A_i(\xi)).
+\]
+We write $\Sigma_C:=\prod_{i\in N}\Sigma_{i,C}$.
+
+\begin{remark}
+A point of $\Sigma_{i,C}$ may be viewed either as a statewise mixed-action kernel
+or, equivalently, as a product distribution over the finite selector set
+$F_{i,C}$. We work with statewise mixed kernels because the deviation MDP
+coefficients are affine in those kernels; this is the precise form needed later.
+The local equilibrium existence result in Section~\ref{sec:local} is equivalent to
+Nash's theorem for the finite selector game.
+\end{remark}
+
+\section{The bookkeeping node system and the linear exit map}
+\label{sec:bookkeeping}
+
+\subsection{Bookkeeping kernel and balance equations}
+
+Fix a node $C\in\cT_\eta$. This section does \emph{not} describe the executed
+block dynamics. It records only the internal bookkeeping chain used to define the
+convex occupation package. Exit mass is instantaneously re-injected into internal
+states through $\rho_C$, so the bookkeeping chain lives on $\Xi_C$ alone.
+
+For a stationary mixed kernel $\sigma_C\in\Sigma_C$, define the induced internal
+kernel
+\[
+Q_C^{\sigma}(\xi'\mid \xi)
+:=
+\sum_{a\in\prod_j A_j(\xi)} \sigma_C(a\mid \xi)
+P_C^0(\xi'\mid \xi,a),
+\]
+and the induced exit kernel
+\[
+\Lambda_C^{\sigma}(b\mid\xi)
+:=
+\sum_{a\in\prod_j A_j(\xi)}\sigma_C(a\mid\xi)\lambda_C(b\mid\xi,a).
+\]
+The corresponding bookkeeping kernel on $\Xi_C$ is
+\begin{equation}
+\label{eq:bookkeeping-kernel}
+\widetilde Q_C^{\sigma}(\xi'\mid \xi)
+=
+Q_C^{\sigma}(\xi'\mid \xi)
++
+\sum_{b\in B_C}\Lambda_C^{\sigma}(b\mid \xi)\rho_C(\xi'\mid b).
+\end{equation}
+Its row sums are equal to one by construction.
+
+If $\pi_C^{\sigma,\mathrm{book}}$ denotes an invariant law of
+$\widetilde Q_C^{\sigma}$, define the internal occupation measure and exit rate by
+\[
+\mu_C^{\sigma}(\xi,a):=\pi_C^{\sigma,\mathrm{book}}(\xi)\sigma_C(a\mid\xi),
+\qquad
+\beta_C^{\sigma}(b):=\sum_{(\xi,a)\in\Omega_C}
+\mu_C^{\sigma}(\xi,a)\lambda_C(b\mid\xi,a).
+\]
+The pair is denoted by
+\[
+\bar\mu_C^{\sigma}=(\mu_C^{\sigma},\beta_C^{\sigma}).
+\]
+
+
+\begin{definition}
+\label{def:PC}
+The \emph{internal feasible set} of node $C$ is the set of all
+$\mu\in\R_+^{\Omega_C}$ for which there exists $\beta\in\R_+^{B_C}$ such that
+\begin{align}
+\sum_{(\xi,a)\in\Omega_C}\mu(\xi,a)&=1,
+\label{eq:norm-PC}
+\\
+\pi_\mu(\xi')
+&=
+\sum_{(\xi,a)\in\Omega_C}\mu(\xi,a)P_C^0(\xi'\mid\xi,a)
++
+\sum_{b\in B_C}\beta(b)\rho_C(\xi'\mid b)
+\qquad (\xi'\in\Xi_C),
+\label{eq:internal-balance}
+\\
+\beta(b)
+&=
+\sum_{(\xi,a)\in\Omega_C}\mu(\xi,a)\lambda_C(b\mid\xi,a)
+\qquad (b\in B_C),
+\label{eq:beta-balance}
+\end{align}
+where
+\[
+\pi_\mu(\xi):=\sum_{a\in\prod_j A_j(\xi)}\mu(\xi,a).
+\]
+We denote this set by $\cP_C$.
+\end{definition}
+
+
+\begin{remark}
+The restart kernel $\rho_C$ belongs only to the bookkeeping balance equations
+\eqref{eq:internal-balance}. It does not describe what the executed dynamics do
+after leaving node $C$. In the realized strategy a node visit stops at the first
+exit state, and the public routing automaton moves immediately to the successor
+node at the next stage; the restart kernel never appears in the executed play.
+\end{remark}
+
+\subsection{The graph theorem for exit fluxes}
+
+Define the linear exit map
+\begin{equation}
+\label{eq:LC-def}
+L_C:\R^{\Omega_C}\to \R^{B_C},
+\qquad
+(L_C\mu)(b):=
+\sum_{(\xi,a)\in\Omega_C}\mu(\xi,a)\lambda_C(b\mid\xi,a).
+\end{equation}
+The associated restart operator is
+\begin{equation}
+\label{eq:RC-def}
+R_C:\R^{B_C}\to \R^{\Xi_C},
+\qquad
+(R_C\beta)(\xi'):=\sum_{b\in B_C}\beta(b)\rho_C(\xi'\mid b).
+\end{equation}
+
+
+\begin{proposition}
+\label{prop:PC-polytope}
+For every node $C$, the set $\cP_C$ is a nonempty compact convex polytope.
+Moreover, $\mu\in\cP_C$ if and only if
+\begin{align}
+\sum_{(\xi,a)}\mu(\xi,a)&=1,
+\label{eq:PC-short1}
+\\
+\pi_\mu &= P_C^0\mu + R_C L_C\mu,
+\label{eq:PC-short2}
+\end{align}
+where $(P_C^0\mu)(\xi'):=\sum_{(\xi,a)}\mu(\xi,a)P_C^0(\xi'\mid\xi,a)$.
+\end{proposition}
+
+\begin{proof}
+The defining relations in \Cref{def:PC} are finitely many linear equalities and
+inequalities in the variables $(\mu,\beta)$. Hence the feasible set in
+$\R_+^{\Omega_C}\times\R_+^{B_C}$ is a compact convex polyhedron; compactness
+comes from \eqref{eq:norm-PC}. Projecting onto the $\mu$-coordinates shows that
+$\cP_C$ is a compact convex polytope.
+
+If $\mu\in\cP_C$, the auxiliary vector $\beta$ is unique by
+\eqref{eq:beta-balance}, namely $\beta=L_C\mu$. Substituting this into
+\eqref{eq:norm-PC} and \eqref{eq:internal-balance} gives
+\eqref{eq:PC-short1}--\eqref{eq:PC-short2}. Conversely, if
+\eqref{eq:PC-short1}--\eqref{eq:PC-short2} hold and one sets $\beta=L_C\mu$, then
+all three relations from \Cref{def:PC} are satisfied.
+\end{proof}
+
+
+\begin{definition}
+\label{def:MCbook}
+The \emph{bookkeeping augmented feasible set} of node $C$ is
+\[
+\cM_C^{\mathrm{book}}
+:=
+\{(\mu,\beta)\in\cP_C\times\R_+^{B_C}:\beta=L_C\mu\}.
+\]
+The affine graph map is
+\[
+J_C:\cP_C\to \cM_C^{\mathrm{book}},
+\qquad J_C(\mu)=(\mu,L_C\mu).
+\]
+\end{definition}
+
+\begin{theorem}[Graph theorem for the bookkeeping node]
+\label{thm:graph-theorem}
+For every node $C$,
+\[
+\cM_C^{\mathrm{book}} = J_C(\cP_C).
+\]
+The map $J_C$ is affine and injective. In particular the exit coordinates are not
+independent variables: once the internal part $\mu$ is fixed, the exit mass is
+uniquely determined as $L_C\mu$.
+\end{theorem}
+
+\begin{proof}
+The identity is immediate from \Cref{def:MCbook}. Affineness follows from the
+linearity of $L_C$, and injectivity is obvious from the first coordinate.
+\end{proof}
+
+\begin{corollary}
+\label{cor:no-vp3}
+There is no separate compatibility condition between internal occupation and exit
+mass. The feasible bookkeeping set is exactly the graph of the linear exit map.
+\end{corollary}
+
+\begin{proof}
+This is a restatement of \Cref{thm:graph-theorem}.
+\end{proof}
+
+\subsection{Actual bookkeeping packages induced by stationary mixed kernels}
+
+\begin{definition}
+\label{def:actual-local-package}
+For a stationary mixed kernel $\sigma_C\in\Sigma_C$, its \emph{actual bookkeeping
+occupation} is the pair $\bar\mu_C^{\sigma}$ induced by an invariant law of the
+bookkeeping kernel \eqref{eq:bookkeeping-kernel}. By construction,
+$\bar\mu_C^{\sigma}\in \cM_C^{\mathrm{book}}$.
+\end{definition}
+
+\begin{proof}
+Let $\pi=\pi_C^{\sigma,\mathrm{book}}$ be an invariant law of
+$\widetilde Q_C^{\sigma}$. Writing the stationarity equation for
+$\widetilde Q_C^{\sigma}$ and expanding \eqref{eq:bookkeeping-kernel} gives
+exactly \eqref{eq:norm-PC}--\eqref{eq:beta-balance} with
+$\mu=\mu_C^{\sigma}$ and $\beta=\beta_C^{\sigma}$.
+\end{proof}
+
+\section{Local average-reward games and Bellman certificates}
+\label{sec:local}
+
+\subsection{Local continuation values}
+
+Fix $\eta\in(0,1)$ and a node $C$. Let $x$ be a package of continuation data on the
+whole tree. For each boundary state $b\in B_C$ the successor $D=C[b]$ is always a
+child node of the enlarged tree. The value
+$v_C^x(b)\in[0,d_\eta(C)-1]^N$ is the continuation vector stored at that boundary
+coordinate in $x$. At a fixed point it is tied, via
+\eqref{eq:frozen-continuation}, to the child-node continuation benchmark, and in
+the global proof below it is exactly the datum that transfers the Bellman
+potential across a strict exit. If $D=T_b$ is a degenerate terminal child, then
+$g_D^x=w(D)=w(b)$ exactly and $h_D^x=0$. Thus exits to degenerate terminal nodes
+enter the local Bellman equations through the same frozen continuation
+coordinates as all other exits. There is no separate terminal accounting outside
+the fixed-point system. Throughout this section $x$ is considered fixed.
+
+
+\subsection{The stopped kernel and the continuation Bellman operator}
+
+Fix a node $C$ and a stationary mixed kernel $\sigma_C\in\Sigma_C$. The
+\emph{augmented state space} is
+\[
+\Xi_C^{\mathrm{aug}}:=\Xi_C\sqcup \partial B_C,
+\qquad
+\partial B_C:=\{\partial_b:b\in B_C\}.
+\]
+The executed kernel of a capped node visit is
+\begin{equation}
+\label{eq:aug-kernel}
+P_C^{\sigma,\mathrm{aug}}(z\mid y)
+=
+\begin{cases}
+Q_C^{\sigma}(\xi'\mid \xi), & y=\xi\in\Xi_C,\ z=\xi'\in\Xi_C,\\[0.3em]
+\Lambda_C^{\sigma}(b\mid \xi), & y=\xi\in\Xi_C,\ z=\partial_b,\\[0.3em]
+1, & y=z=\partial_b,\\[0.3em]
+0, & \text{otherwise.}
+\end{cases}
+\end{equation}
+The absorbing exit states $\partial_b$ are a stopping-time device: they record
+that the current node visit has ended through boundary label $b$. They are not
+stages of the stochastic game and they do not carry any literal stage payoff.
+
+For a fixed player $i$ and opponents' kernel $\sigma_{-i}$, the stage reward part,
+the internal transition part, and the exit part are
+\begin{align}
+\label{eq:r-sigma}
+r_{i,C}^{\sigma_{-i}}(\xi,a_i)
+&:=
+\sum_{a_{-i}}\sigma_{-i}(a_{-i}\mid\xi)
+\,u_i\bigl(\xi,(a_i,a_{-i})\bigr),
+\\
+\label{eq:Q-sigma}
+Q_{i,C}^{\sigma_{-i}}(\xi'\mid \xi,a_i)
+&:=
+\sum_{a_{-i}}\sigma_{-i}(a_{-i}\mid\xi)
+\,P_C^0\bigl(\xi'\mid\xi,(a_i,a_{-i})\bigr),
+\\
+\label{eq:q-exit-sigma}
+\Lambda_{i,C}^{\sigma_{-i}}(b\mid\xi,a_i)
+&:=
+\sum_{a_{-i}}\sigma_{-i}(a_{-i}\mid\xi)
+\,\lambda_C\bigl(b\mid\xi,(a_i,a_{-i})\bigr).
+\end{align}
+The auxiliary continuation-corrected coefficient is
+\begin{equation}
+\label{eq:augmented-reward}
+\widetilde r_{i,C}^{\sigma_{-i},x}(\xi,a_i)
+:=
+r_{i,C}^{\sigma_{-i}}(\xi,a_i)
++
+\sum_{b\in B_C}\Lambda_{i,C}^{\sigma_{-i}}(b\mid\xi,a_i)v_{i,C}^x(b).
+\end{equation}
+This is \emph{not} an executed stage payoff. It is the coefficient appearing in
+the Bellman equation for the stopped node-visit problem: one sums the actual
+stage payoffs earned before the visit stops and then attaches a single
+continuation certificate at the boundary label, if a boundary is hit.
+
+The Bellman operator is therefore
+\begin{equation}
+\label{eq:Bellman-operator}
+(T_{i,C}^{\sigma_{-i},x}h)(\xi)
+:=
+\max_{a_i\in A_i(\xi)}\Bigl[
+ r_{i,C}^{\sigma_{-i}}(\xi,a_i)
+ +\sum_{\xi'\in\Xi_C}Q_{i,C}^{\sigma_{-i}}(\xi'\mid\xi,a_i)h(\xi')
+ +\sum_{b\in B_C}\Lambda_{i,C}^{\sigma_{-i}}(b\mid\xi,a_i)v_{i,C}^x(b)
+ \Bigr].
+\end{equation}
+Equivalently, this is the Bellman operator of the stopped augmented MDP on
+$\Xi_C^{\mathrm{aug}}$ with boundary biases fixed at zero.
+
+\begin{lemma}
+\label{lem:coeff-affine}
+For fixed $C$, $i$, and $x$, the maps
+\[
+\sigma_{-i}\mapsto r_{i,C}^{\sigma_{-i}},
+\qquad
+\sigma_{-i}\mapsto Q_{i,C}^{\sigma_{-i}},
+\qquad
+\sigma_{-i}\mapsto \Lambda_{i,C}^{\sigma_{-i}},
+\qquad
+\sigma_{-i}\mapsto \widetilde r_{i,C}^{\sigma_{-i},x}
+\]
+are affine. Consequently there exists a finite constant $K_{i,C}$ such that for
+all $\sigma_{-i},\tau_{-i}$,
+\begin{align}
+\|\widetilde r_{i,C}^{\tau_{-i},x}-\widetilde r_{i,C}^{\sigma_{-i},x}\|_\infty
+&\le K_{i,C}\|\tau_{-i}-\sigma_{-i}\|_1,
+\label{eq:r-lip}
+\\
+\sup_{\xi,a_i}\|Q_{i,C}^{\tau_{-i}}(\cdot\mid\xi,a_i)-Q_{i,C}^{\sigma_{-i}}(\cdot\mid\xi,a_i)\|_{\mathrm{TV}}
+&\le K_{i,C}\|\tau_{-i}-\sigma_{-i}\|_1,
+\label{eq:Q-lip}
+\\
+\sup_{\xi,a_i}\|\Lambda_{i,C}^{\tau_{-i}}(\cdot\mid\xi,a_i)-\Lambda_{i,C}^{\sigma_{-i}}(\cdot\mid\xi,a_i)\|_{1}
+&\le K_{i,C}\|\tau_{-i}-\sigma_{-i}\|_1.
+\label{eq:Lambda-lip}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Each coefficient is a finite linear combination of the components of
+$\sigma_{-i}(\cdot\mid\xi)$, with coefficients given by the primitive reward,
+transition, and continuation data. This proves affineness. The Lipschitz bounds
+follow because all underlying arrays are bounded and finite.
+\end{proof}
+
+\subsection{Local best responses}
+
+We now formulate the local best-response correspondence. Since the local state and
+action sets are finite, every unilateral local problem is a finite average-reward
+MDP with communicating internal part and bounded continuation rewards at exits.
+
+\begin{definition}
+\label{def:local-BR-set}
+For fixed $x$, node $C$, and player $i$, let $\mathfrak B_{i,C}(x)$ be the set of
+triples $(\sigma_{i,C},g_{i,C},h_{i,C})$ such that
+\begin{enumerate}[label=\textnormal{(BR\arabic*)},leftmargin=2.9em]
+\item $\sigma_{i,C}\in \Sigma_{i,C}$;
+\item $g_{i,C}\in[0,d_\eta(C)]$ and
+$h_{i,C}\in[-B_\eta^0,B_\eta^0]^{\Xi_C}$;
+\item $h_{i,C}$ is normalized by
+\[
+h_{i,C}(\xi_C^\circ)=0;
+\]
+\item for every $\xi\in\Xi_C$,
+\begin{equation}
+\label{eq:Bellman-ineq-def}
+g_{i,C}+h_{i,C}(\xi)
+\ge
+r_{i,C}^{\sigma_{-i,C}^x}(\xi,a_i)
++
+\sum_{\xi'}Q_{i,C}^{\sigma_{-i,C}^x}(\xi'\mid\xi,a_i)h_{i,C}(\xi')
++
+\sum_b \Lambda_{i,C}^{\sigma_{-i,C}^x}(b\mid\xi,a_i)v_{i,C}^x(b)
+\end{equation}
+for every $a_i\in A_i(\xi)$;
+\item equality holds in \eqref{eq:Bellman-ineq-def} for every action $a_i$ in the
+support of $\sigma_{i,C}(\cdot\mid\xi)$.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+\label{prop:local-BR}
+Assume condition~\textnormal{(a)}. For every fixed $x$, node $C$, and player $i$,
+the set $\mathfrak B_{i,C}(x)$ is nonempty, compact, and convex. The
+correspondence $x\mapsto \mathfrak B_{i,C}(x)$ has closed graph.
+\end{proposition}
+
+\begin{proof}
+Fix $x$, $C$, and $i$. The Bellman system
+\eqref{eq:Bellman-ineq-def} is exactly the dual optimality system for the finite
+average-reward MDP faced by player $i$ against the frozen environment encoded by
+$x$; see \Cref{prop:mdp-duality}. Because the frozen continuation vector lies in
+$[0,d_\eta(C)-1]^N$ and the stage payoffs lie in $[0,1]$, the augmented one-step
+reward in that MDP is bounded by $d_\eta(C)$. Hence there exists an optimal
+stationary mixed kernel together with a gain-bias pair satisfying
+\eqref{eq:Bellman-ineq-def} and the support equalities, with
+$g_{i,C}\in[0,d_\eta(C)]$. Therefore $\mathfrak B_{i,C}(x)$ is nonempty.
+
+Compactness follows because $\Sigma_{i,C}$ is a product of simplices and the gain
+and bias coordinates are confined to compact boxes. The defining equalities and
+inequalities are closed.
+
+For convexity, condition~\textnormal{(a)} implies that the internal part of the
+deviation MDP is communicating on $\Xi_C$. For communicating finite MDPs, the
+optimal bias is unique up to an additive constant; after the linear normalization
+$h(\xi_C^\circ)=0$, the optimal bias is unique, see
+\Cref{prop:bias-unique} and \cite[Chapter~8]{Puterman1994}. The same is true for
+the optimal gain. Hence, once $x$ is fixed, there is a unique normalized optimal
+pair $(g^*,h^*)$. A stationary mixed kernel is optimal if and only if, at every
+state, it assigns mass only to actions attaining equality in the Bellman system
+for $(g^*,h^*)$. The set of such kernels is a product of simplices and hence
+convex. Thus $\mathfrak B_{i,C}(x)$ is convex.
+
+For the graph property, let $x^m\to x$ and let
+$(\sigma_i^m,g_i^m,h_i^m)\in \mathfrak B_{i,C}(x^m)$ converge to
+$(\sigma_i,g_i,h_i)$. The coefficient arrays from \Cref{lem:coeff-affine} depend
+continuously on $x$, hence passing to the limit in the Bellman equalities and
+inequalities shows $(\sigma_i,g_i,h_i)\in\mathfrak B_{i,C}(x)$.
+\end{proof}
+
+\subsection{Local equilibrium existence}
+
+\begin{proposition}[Local stationary Nash equilibrium]
+\label{prop:local-equilibrium}
+Assume condition~\textnormal{(a)}. Fix $x$ and a node $C$. There exists a
+stationary mixed kernel $\sigma_C^*\in\Sigma_C$ such that for every player $i$,
+$(\sigma_{i,C}^*,g_{i,C}^*,h_{i,C}^*)\in \mathfrak B_{i,C}(x)$ for some
+$(g_{i,C}^*,h_{i,C}^*)$. Equivalently, the local average game at node $C$ with
+continuation values frozen at $x$ has a stationary Nash equilibrium, and every
+player admits a Bellman certificate at that equilibrium.
+\end{proposition}
+
+\begin{proof}
+Fix the continuation vector $v_C^x(\cdot)$ extracted from $x$. For each player
+$i$ and every opponents' kernel
+$\sigma_{-i,C}\in\prod_{j\ne i}\Sigma_{j,C}$, let
+\[
+\BR_{i,C}^x(\sigma_{-i,C})
+:=
+\{\tau_{i,C}\in\Sigma_{i,C}: \exists g,h\text{ with }
+(\tau_{i,C},g,h)\text{ satisfying \eqref{eq:Bellman-ineq-def} against }
+\sigma_{-i,C}\text{ and }v_C^x\}.
+\]
+By the same MDP-duality argument as in \Cref{prop:local-BR}, each value
+$\BR_{i,C}^x(\sigma_{-i,C})$ is nonempty, compact, and convex, and the graph of
+the playerwise best-response correspondence is closed. Define the product
+correspondence on $\Sigma_C$ by
+\[
+\BR_C^x(\sigma_C):=\prod_{i\in N}\BR_{i,C}^x(\sigma_{-i,C}).
+\]
+Its values are therefore nonempty, compact, and convex, and its graph is closed.
+Since $\Sigma_C$ is a compact convex product of simplices, Kakutani's theorem
+\cite{Kakutani1941} yields a fixed point $\sigma_C^*\in\BR_C^x(\sigma_C^*)$. For
+each player $i$, choose a Bellman certificate $(g_{i,C}^*,h_{i,C}^*)$ associated
+with the best-response relation at that fixed point. This is exactly the required
+local stationary Nash package.
+\end{proof}
+
+\begin{remark}
+This proposition is the correct multiplayer replacement for the v4 appendix, which
+contained only one-player LP duality. One-player LP duality is still needed, but
+only to identify each player's best-response set. Existence of a simultaneous
+local Nash package requires the fixed-point step above.
+\end{remark}
+
+\section{The global correspondence with frozen continuation values}
+\label{sec:global}
+
+\subsection{Ambient package space}
+
+A global package contains, at each node and for each player, a stationary mixed
+kernel and a Bellman certificate, together with nodewise continuation values.
+There is \emph{no} self-consistency requirement in the ambient space.
+
+\begin{definition}
+\label{def:Aeta}
+For fixed $\eta\in(0,1)$, the ambient package space $\cA_\eta$ consists of all
+families
+\[
+x=\Bigl((\sigma_{i,C},g_{i,C},h_{i,C})_{i\in N},\ (v_C(b))_{b\in B_C}\Bigr)_{C\in\cT_\eta}
+\]
+such that:
+\begin{enumerate}[label=\textnormal{(A\arabic*)},leftmargin=2.8em]
+\item $\sigma_{i,C}\in \Sigma_{i,C}$ for all $i,C$;
+\item $g_{i,C}\in[0,d_\eta(C)]$ for all $i,C$;
+\item $h_{i,C}\in[-B_\eta^0,B_\eta^0]^{\Xi_C}$ and
+$h_{i,C}(\xi_C^\circ)=0$ for all $i,C$;
+\item $v_C(b)\in[0,d_\eta(C)-1]^N$ for all $C$ and $b\in B_C$.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+\label{prop:Aeta-compact}
+For every $\eta\in(0,1)$, the set $\cA_\eta$ is compact and convex.
+\end{proposition}
+
+\begin{proof}
+Each $\Sigma_{i,C}$ is a product of simplices, hence compact and convex. The gain
+coordinates lie in the depth-dependent intervals $[0,d_\eta(C)]$, the bias
+coordinates lie in a compact box intersected with the linear normalization
+hyperplane $h(\xi_C^\circ)=0$, and the continuation values lie in the
+depth-dependent cubes $[0,d_\eta(C)-1]^N$. Because the tree is finite,
+$\cA_\eta$ is a finite product of compact convex sets.
+\end{proof}
+
+\subsection{Global best response}
+
+The key point is that continuation values are frozen from the reference package
+$x$. The response package $y$ is allowed to differ from $x$.
+
+\begin{definition}
+\label{def:global-BR}
+For $x\in\cA_\eta$, define $\BR_\eta(x)$ to be the set of all packages
+$y\in\cA_\eta$ such that:
+\begin{enumerate}[label=\textnormal{(G\arabic*)},leftmargin=2.8em]
+\item for every node $C$ and every player $i$,
+\[
+(\sigma_{i,C}^y,g_{i,C}^y,h_{i,C}^y)\in \mathfrak B_{i,C}(x);
+\]
+\item whenever $b\in B_C$ and $D=C[b]$, one has
+\begin{equation}
+\label{eq:frozen-continuation}
+\|v_C^y(b)-g_D^x\|_\infty\le \eta,
+\end{equation}
+where $g_D^x=(g_{i,D}^x)_{i\in N}$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+The response package $y$ is assembled against \emph{frozen} continuation values and
+frozen opponents from $x$. There is no circularity here. One does not ask $y$ to
+be self-consistent while defining $\BR_\eta(x)$; that happens only at a fixed
+point. This is exactly the continuation repair already made in v5 and retained in
+v6.
+\end{remark}
+
+\begin{theorem}[Global Kakutani fixed point]
+\label{thm:kakutani-global}
+Assume condition~\textnormal{(a)}. For every $\eta\in(0,1)$, the correspondence
+$\BR_\eta:\cA_\eta\rightrightarrows\cA_\eta$ has nonempty compact convex values and
+closed graph. Consequently it has a fixed point $x^*\in\cA_\eta$.
+\end{theorem}
+
+\begin{proof}
+By \Cref{prop:Aeta-compact}, the domain $\cA_\eta$ is compact and convex.
+
+Fix $x\in\cA_\eta$. For every node $C$ and player $i$, the set
+$\mathfrak B_{i,C}(x)$ is nonempty, compact, and convex by
+\Cref{prop:local-BR}. The continuation constraints
+\eqref{eq:frozen-continuation} are closed convex constraints. Therefore
+$\BR_\eta(x)$ is a finite product of nonempty compact convex sets, hence itself
+nonempty, compact, and convex.
+
+For the graph property, let $x^m\to x$ and $y^m\to y$ with
+$y^m\in\BR_\eta(x^m)$ for all $m$. For every node $C$ and player $i$ we have
+$(\sigma_{i,C}^{y^m},g_{i,C}^{y^m},h_{i,C}^{y^m})\in\mathfrak B_{i,C}(x^m)$. By
+the closed-graph property from \Cref{prop:local-BR}, the limit belongs to
+$\mathfrak B_{i,C}(x)$. Passing to the limit in the continuation inequalities gives
+\eqref{eq:frozen-continuation} for $y$ against $x$. Hence $y\in\BR_\eta(x)$, so
+$\BR_\eta$ has closed graph.
+
+Closed graph plus compact values on a compact domain imply upper
+hemicontinuity. Kakutani's theorem \cite{Kakutani1941} yields a fixed point.
+\end{proof}
+
+\begin{corollary}
+\label{cor:local-nash-at-fixed-point}
+If $x^*\in\BR_\eta(x^*)$, then for every node $C$ the stationary mixed kernel
+$\sigma_C^*:=(\sigma_{i,C}^*)_{i\in N}$ is a local stationary Nash equilibrium of
+the node game with continuation values $v_C^{x^*}(\cdot)$, and each player has a
+Bellman certificate $(g_{i,C}^*,h_{i,C}^*)$.
+\end{corollary}
+
+\begin{proof}
+At a fixed point,
+$(\sigma_{i,C}^*,g_{i,C}^*,h_{i,C}^*)\in\mathfrak B_{i,C}(x^*)$ for every $i,C$.
+Thus each player's stationary mixed kernel is a best response to the others inside
+node $C$, against the continuation values carried by $x^*$. That is exactly the
+local stationary Nash property.
+\end{proof}
+
+
+\section{Local controllers and global realization}
+\label{sec:realization}
+
+\subsection{The node controller, actual node visits, and auxiliary exit certificates}
+
+Fix a fixed point $x^*\in\BR_\eta(x^*)$. For each node $C$, write
+\[
+\sigma_C^*:=(\sigma_{i,C}^*)_{i\in N},
+\qquad
+\bar\mu_C^*:=(\mu_C^{\sigma_C^*},\beta_C^{\sigma_C^*}).
+\]
+The local controller for node $C$ is the first-exit visit controller
+$\mathcal R_{C,L}^{\sigma_C^*}$ supplied by \Cref{ass:controller-input}. A
+launch with cap $L$ produces an \emph{actual node visit}: a contiguous interval
+of stochastic-game stages during which the public routing automaton stays in the
+node $C$, ending at the stopping time $\tau_{C,L}\le L$. If the visit exits
+through boundary label $b$ before the cap, the next stage is routed immediately
+to the successor node $C[b]$. There is no post-exit holding phase and no
+artificial continuation payoff on the remaining stages.
+
+For a node visit $V$ in node $C$, let $L(V)$ denote its announced cap and let
+\[
+\ell(V):=\tau(V)\le L(V)
+\]
+denote its realized length. Let $N_V(\xi,a)$ be the number of stages in $V$ at
+which $(X_t,A_t)=(\xi,a)$, and let $I_V(b)$ be the indicator that $V$ exits
+through label $b$. The empirical visit rates are
+\[
+\widehat\mu_V^{\mathrm{rate}}(\xi,a):=\frac{N_V(\xi,a)}{\ell(V)},
+\qquad
+\widehat\beta_V(b):=\frac{I_V(b)}{\ell(V)}.
+\]
+For any evaluation profile $\varsigma$ on the visit $V$, the \emph{actual visit
+payoff} is
+\begin{equation}
+\label{eq:visit-actual-payoff}
+U_i^{\mathrm{act}}(V;\varsigma)
+:=
+\sum_{t\in V} u_i^t(\varsigma).
+\end{equation}
+We also introduce the auxiliary \emph{exit-corrected visit functional}
+\begin{equation}
+\label{eq:visit-aux-payoff}
+\widetilde U_i(V;\varsigma)
+:=
+U_i^{\mathrm{act}}(V;\varsigma)
++
+\sum_{b\in B_C}I_V(b)\,v_{i,C}^{x^*}(b).
+\end{equation}
+This auxiliary quantity is retained only as a local stopped-Bellman diagnostic.
+Version~26 keeps it local, and it also retains the stock-augmented stagewise
+potential $\Psi_{i,t}=h_{i,C_t}^*(X_t)+Z_{i,t}$ defined later in
+\Cref{sec:proof-main} as the correct transport of local Bellman certificates
+across node exits. The final regret bound, however, is not obtained by
+telescoping local gains across routed nodes. It is deduced directly from the
+global gain-bias theory of the induced MDP.
+
+Define the actual nodewise average payoff rate
+\begin{equation}
+\label{eq:alpha-node}
+\alpha_{i,C}^*
+:=
+\sum_{(\xi,a)\in\Omega_C}\mu_C^*(\xi,a)u_i(\xi,a)\in[0,1].
+\end{equation}
+
+\begin{theorem}[Local controller lemma]
+\label{thm:local-controller}
+Assume \Cref{ass:controller-input}. Fix a node $C$ and the fixed-point kernel
+$\sigma_C^*$. Then there exists a constant $K_C<\infty$ such that for every cap
+$L\ge 1$, every entry phase-state, and every player $i$,
+\begin{equation}
+\label{eq:local-controller-occ}
+\E\bigl[\|(\widehat\mu_{C,L}^{\mathrm{rate}},\widehat\beta_{C,L})-\bar\mu_C^*\|_1\bigr]
+\le \frac{K_C}{\sqrt L},
+\end{equation}
+\begin{equation}
+\label{eq:local-controller-actual-payoff}
+\E[U_{i,C,L}^{\mathrm{act}}]
+=
+\alpha_{i,C}^*\,\E[\tau_{C,L}],
+\end{equation}
+\begin{equation}
+\label{eq:local-controller-exit-count}
+\E[I_{C,L}(b)]
+=
+\beta_C^*(b)\,\E[\tau_{C,L}]
+\qquad (b\in B_C),
+\end{equation}
+and
+\begin{equation}
+\label{eq:local-controller-aux-payoff}
+\E[\widetilde U_{i,C,L}]
+=
+g_{i,C}^*\,\E[\tau_{C,L}].
+\end{equation}
+Consequently, for every $\delta>0$ there exists $L_C(\delta)$ such that whenever
+$L\ge L_C(\delta)$, the occupation estimate \eqref{eq:local-controller-occ} is at
+most $\delta$; the expectation identities
+\eqref{eq:local-controller-actual-payoff}--\eqref{eq:local-controller-aux-payoff}
+hold for every cap $L$.
+\end{theorem}
+
+\begin{proof}
+The occupation estimate \eqref{eq:local-controller-occ} is exactly the controller
+estimate from \Cref{ass:controller-input}, with $K_C:=K_C(\sigma_C^*)$.
+
+For the actual payoff identity, write
+\[
+U_{i,C,L}^{\mathrm{act}}
+=
+\sum_{\xi\in\Xi_C}
+\sum_{a\in\prod_j A_j(\xi)}
+N_{C,L}(\xi,a)\,u_i(\xi,a).
+\]
+Taking expectations and using \eqref{eq:controller-input-expected-counts} for the
+kernel $\sigma_C^*$ gives
+\[
+\E[U_{i,C,L}^{\mathrm{act}}]
+=
+\sum_{\xi,a}
+\mu_C^*(\xi,a)\,u_i(\xi,a)\,\E[\tau_{C,L}]
+=
+\alpha_{i,C}^*\,\E[\tau_{C,L}],
+\]
+which is \eqref{eq:local-controller-actual-payoff}. The exit-count identity
+\eqref{eq:local-controller-exit-count} is the second part of
+\eqref{eq:controller-input-expected-counts} for the same kernel.
+
+For the auxiliary functional,
+\[
+\E[\widetilde U_{i,C,L}]
+=
+\E[U_{i,C,L}^{\mathrm{act}}]
++
+\sum_{b\in B_C} v_{i,C}^{x^*}(b)\,\E[I_{C,L}(b)].
+\]
+Using \eqref{eq:local-controller-actual-payoff} and
+\eqref{eq:local-controller-exit-count}, we obtain
+\[
+\E[\widetilde U_{i,C,L}]
+=
+\left(
+\alpha_{i,C}^*
++
+\sum_{b\in B_C}\beta_C^*(b)\,v_{i,C}^{x^*}(b)
+\right)\E[\tau_{C,L}].
+\]
+Integrating the Bellman equalities for actions in the support of
+$\sigma_{i,C}^*(\cdot\mid\xi)$ against the bookkeeping package
+$\bar\mu_C^*=(\mu_C^*,\beta_C^*)$ and using
+\eqref{eq:internal-balance}--\eqref{eq:beta-balance} yields
+\begin{equation}
+\label{eq:node-gain-identity}
+g_{i,C}^*
+=
+\alpha_{i,C}^*
++
+\sum_{b\in B_C}\beta_C^*(b)\,v_{i,C}^{x^*}(b)
+-
+\sum_{\xi'\in\Xi_C}(R_C\beta_C^*)(\xi')h_{i,C}^*(\xi').
+\end{equation}
+Because the bookkeeping restart is fixed at the reference state,
+$\rho_C(\cdot\mid b)=\delta_{\xi_C^\circ}$, the last term is
+\[
+\Bigl(\sum_{b\in B_C}\beta_C^*(b)\Bigr)h_{i,C}^*(\xi_C^\circ)=0
+\]
+by the normalization $h_{i,C}^*(\xi_C^\circ)=0$. Therefore
+\[
+g_{i,C}^*
+=
+\alpha_{i,C}^*
++
+\sum_{b\in B_C}\beta_C^*(b)\,v_{i,C}^{x^*}(b),
+\]
+and substituting this identity into the previous display gives
+\eqref{eq:local-controller-aux-payoff}.
+\end{proof}
+
+
+\subsection{Frozen superexponential schedule}
+
+\begin{definition}
+A sequence $(M_r)_{r\ge 1}$ of positive integers is a
+\emph{superexponential schedule} if $M_{r+1}\ge M_r^2$ for all $r$. Its
+\emph{freezing at level $R$} is the sequence $(M_r^{(R)})_{r\ge 1}$ defined by
+\[
+M_r^{(R)}=
+\begin{cases}
+M_r, & r<R,\\
+M_R, & r\ge R.
+\end{cases}
+\]
+We write $M_*:=M_R$ for the tail visit cap.
+\end{definition}
+
+\begin{lemma}
+\label{lem:frozen-memory}
+A frozen superexponential visit schedule uses only finite public memory.
+\end{lemma}
+
+\begin{proof}
+Only the finitely many caps $M_1,\dots,M_R$ appear. To implement the schedule one
+stores the current node, the current position inside the active visit, the
+current local memory state of the node controller, and the visit index truncated
+at $R$. All of these coordinates range over finite sets.
+\end{proof}
+
+\begin{definition}[Actual node-visit schedule]
+\label{def:visit-schedule}
+Fix a frozen superexponential schedule and a public routing automaton. Let
+$t_1:=1$ and $C_1:=C_{\mathrm{rt}}$. At each launch time $t_k$, the public memory
+determines the current node $C_k$ and an announced cap
+\[
+L_k:=M_k^{(R)}.
+\]
+The automaton launches the controller
+$\mathcal R_{C_k,L_k}^{\sigma_{C_k}^*}$ and defines the $k$th \emph{node visit}
+by
+\[
+V_k:=[t_k,t_k+\ell_k),
+\qquad
+\ell_k:=\tau(V_k)\le L_k.
+\]
+The next launch time is
+\[
+t_{k+1}:=t_k+\ell_k.
+\]
+If $V_k$ exits through label $b$, then $C_{k+1}=C_k[b]$; otherwise
+$C_{k+1}=C_k$.
+\end{definition}
+
+\subsection{Public routing and realization}
+
+Recall from \Cref{rem:tree-depth} that $D_\eta<\infty$ is the maximal number of
+node layers on a root-to-leaf path of the finite universal tree $\cT_\eta$.
+
+\begin{proposition}[Public routing]
+\label{prop:public-routing}
+Fix a fixed point $x^*$ and a frozen superexponential schedule. There exists a
+public finite-memory profile $\sigma_{\eta,\delta,M_*}$ with the following
+properties.
+\begin{enumerate}[label=\textnormal{(R\arabic*)},leftmargin=2.8em]
+\item At each launch time $t_k$ the public routing automaton reads the current
+public memory, chooses a node $C_k$ and the announced cap $L_k$ from the frozen
+schedule, and launches the controller $\mathcal R_{C_k,L_k}^{\sigma_{C_k}^*}$.
+The resulting actual segment is the node visit $V_k$ from
+\Cref{def:visit-schedule}.
+\item If $V_k$ exits through boundary label $b$ before its cap, then the next
+stage is routed immediately to the successor node $D=C_k[b]$, and the next visit
+starts there. If $V_k$ reaches its cap without exit, the next visit starts in the
+same node.
+\item Because every exit-routing move goes to a strict child and degenerate
+terminal nodes have no exits, every play path contains at most $D_\eta$ strict
+node changes.
+\item The public memory stores the current node, the current cap index, the
+current position inside the current active visit, and the local controller state.
+Hence the profile uses finite public memory.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Item~(R1) is the frozen schedule together with the controller supplied by
+\Cref{ass:controller-input}. Item~(R2) is immediate from the first-exit routing
+rule in that assumption. Item~(R3) follows from the rooted-tree structure: every
+strict child move lowers the remaining depth and therefore can occur at most
+$D_\eta$ times along a play path. Finite memory is \Cref{lem:frozen-memory}.
+\end{proof}
+
+\begin{theorem}[Realization theorem]
+\label{thm:realization}
+Assume condition~\textnormal{(a)} and \Cref{ass:controller-input}. Fix
+$\eta\in(0,1)$ and a fixed point $x^*\in\BR_\eta(x^*)$. Let
+$\sigma_{\eta,\delta,M_*}$ be the public profile obtained from
+\Cref{prop:public-routing} by freezing a superexponential schedule at level $R$.
+Then there exist constants $C_\eta,K_\eta<\infty$ such that:
+\begin{enumerate}[label=\textnormal{(Q\arabic*)},leftmargin=2.8em]
+\item if a complete tail visit $V$ is played in node $C$ and its announced cap
+satisfies $L(V)\ge M_*$, then
+\begin{equation}
+\label{eq:visit-occupation-realization}
+\E\bigl[\|(\widehat\mu_V^{\mathrm{rate}},\widehat\beta_V)-\bar\mu_C^*\|_1
+\mid \cF_{\mathrm{in}(V)}\bigr]
+\le \delta;
+\end{equation}
+\item for every player $i$ and every complete tail visit $V$ played in node $C$
+with announced cap $L(V)\ge M_*$,
+\begin{align}
+\label{eq:visit-actual-realization-exact}
+\E\bigl[U_i^{\mathrm{act}}(V;\sigma_{\eta,\delta,M_*})\mid \cF_{\mathrm{in}(V)}\bigr]
+&=
+\alpha_{i,C}^*\,
+\E\bigl[\ell(V)\mid \cF_{\mathrm{in}(V)}\bigr],
+\\
+\label{eq:visit-exit-realization}
+\E\bigl[I_V(b)\mid \cF_{\mathrm{in}(V)}\bigr]
+&=
+\beta_C^*(b)\,
+\E\bigl[\ell(V)\mid \cF_{\mathrm{in}(V)}\bigr]
+\qquad (b\in B_C),
+\\
+\label{eq:visit-aux-realization-exact}
+\E\bigl[\widetilde U_i(V;\sigma_{\eta,\delta,M_*})\mid \cF_{\mathrm{in}(V)}\bigr]
+&=
+g_{i,C}^*\,
+\E\bigl[\ell(V)\mid \cF_{\mathrm{in}(V)}\bigr],
+\end{align}
+and in particular
+\begin{align}
+\label{eq:visit-actual-realization}
+\E\bigl[U_i^{\mathrm{act}}(V;\sigma_{\eta,\delta,M_*})\mid \cF_{\mathrm{in}(V)}\bigr]
+&\ge
+\bigl(\alpha_{i,C}^*-C_\eta\delta\bigr)\,
+\E\bigl[\ell(V)\mid \cF_{\mathrm{in}(V)}\bigr],
+\\
+\label{eq:visit-aux-realization}
+\E\bigl[\widetilde U_i(V;\sigma_{\eta,\delta,M_*})\mid \cF_{\mathrm{in}(V)}\bigr]
+&\ge
+\bigl(g_{i,C}^*-C_\eta\delta\bigr)\,
+\E\bigl[\ell(V)\mid \cF_{\mathrm{in}(V)}\bigr];
+\end{align}
+\item for every profile $\varsigma$ following the same public visit-routing
+convention and every horizon $T$,
+\begin{equation}
+\label{eq:realization-actual-tail-bound}
+\left|
+\gamma_i^T(s,\varsigma)
+-
+\frac1T\E\left[
+\sum_{V\in\mathcal V_T(\varsigma)}
+U_i^{\mathrm{act}}(V;\varsigma)
+\right]
+\right|
+\le \frac{K_\eta}{T},
+\end{equation}
+where $\mathcal V_T(\varsigma)$ denotes the complete tail visits contained in
+$[1,T]$. The constant $K_\eta$ absorbs the finite prelude visits and the final
+incomplete fragment cut by the horizon;
+\item the total auxiliary boundary correction is uniformly bounded:
+for every profile $\varsigma$ following the public visit-routing convention and
+every horizon $T$,
+\begin{equation}
+\label{eq:aux-actual-discrepancy}
+0
+\le
+\sum_{V\in\mathcal V_T(\varsigma)}
+\bigl(
+\widetilde U_i(V;\varsigma)-U_i^{\mathrm{act}}(V;\varsigma)
+\bigr)
+\le
+V_\eta,
+\end{equation}
+where one may take
+\[
+V_\eta:=D_\eta(D_\eta-1).
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Item~(Q1) is \Cref{thm:local-controller} at the chosen tail scale, conditioned on
+the entry state of the visit.
+
+For (Q2), condition on $\cF_{\mathrm{in}(V)}$ and apply
+\Cref{thm:local-controller} inside the announced node $C$ with kernel
+$\sigma_C^*$. This yields the exact identities
+\eqref{eq:visit-actual-realization-exact}--\eqref{eq:visit-aux-realization-exact}.
+The lower bounds \eqref{eq:visit-actual-realization} and
+\eqref{eq:visit-aux-realization} are immediate after enlarging $C_\eta$
+uniformly over the finite tree.
+
+For (Q3), the horizon $[1,T]$ consists of the finitely many prelude visits before
+the frozen schedule reaches the tail cap $M_*$, the complete tail visits
+contained in $[1,T]$, and at most one final incomplete fragment. Every prelude
+visit has deterministic cap bounded by the finite prefix
+$M_1,\dots,M_{R-1}$, and the final incomplete fragment has length at most $M_*$.
+Therefore the total expected contribution of the prelude visits and final
+fragment is bounded by a finite constant depending only on the frozen schedule
+and the finite tree object. Absorb it into $K_\eta$ to obtain
+\eqref{eq:realization-actual-tail-bound}.
+
+For (Q4), each complete tail visit contributes exactly one auxiliary boundary
+certificate if and only if it exits through a strict child label. Such a
+certificate has size at most
+\[
+v_{i,C}^{x^*}(b)\le d_\eta(C)-1\le D_\eta-1.
+\]
+By \Cref{prop:public-routing}, there are at most $D_\eta$ strict child moves
+along any play path. Hence the total auxiliary correction over the entire horizon
+is bounded by $D_\eta(D_\eta-1)$.
+\end{proof}
+
+
+\section{Condition \texorpdfstring{$(a)$}{(a)}, bias bounds, and the proof of the main theorem}
+\label{sec:proof-main}
+
+\subsection{Condition \texorpdfstring{$(a)$}{(a)} in primitive data}
+
+We now formulate the nodewise irreducibility hypothesis directly from the genuine
+augmented transition data.
+
+\begin{condition}[Robust nodewise irreducibility]
+\label{cond:a}
+
+For every $\eta\in(0,1)$, every node $C\in\cT_\eta$, every player $i\in N$, every
+statewise mixed kernel of the other players
+$\sigma_{-i}\in\prod_{j\ne i}\Sigma_{j,C}$, and every pure action selection
+$a_i(\cdot)$ of player $i$, the augmented kernel
+\[
+P_{i,C}^{\sigma_{-i},a_i,\mathrm{aug}}(z\mid y)
+\]
+on $\Xi_C^{\mathrm{aug}}=\Xi_C\sqcup\partial B_C$, defined by
+\[
+P_{i,C}^{\sigma_{-i},a_i,\mathrm{aug}}(z\mid y)
+=
+\begin{cases}
+\displaystyle
+\sum_{a_{-i}}\sigma_{-i}(a_{-i}\mid\xi)
+P_C^0\bigl(\xi'\mid\xi,(a_i(\xi),a_{-i})\bigr),
+& y=\xi\in\Xi_C,\ z=\xi'\in\Xi_C,\\[0.7em]
+\displaystyle
+\sum_{a_{-i}}\sigma_{-i}(a_{-i}\mid\xi)
+\lambda_C\bigl(b\mid\xi,(a_i(\xi),a_{-i})\bigr),
+& y=\xi\in\Xi_C,\ z=\partial_b,\\[0.7em]
+1, & y=z=\partial_b,\\
+0, & \text{otherwise,}
+\end{cases}
+\]
+has the property that its restriction to the internal states remains irreducible
+before absorption: for every $\xi,\zeta\in\Xi_C$ there exists
+$0\le n\le |\Xi_C|-1$ with
+\[
+\bigl(P_{i,C}^{\sigma_{-i},a_i,\mathrm{aug}}\bigr)^n(\zeta\mid\xi)>0.
+\]
+\end{condition}
+
+\begin{remark}
+Condition~\textnormal{(a)} has a direct operational meaning: no single player can,
+by choosing actions state by state while the others keep their local kernels,
+create a noncommunicating internal class inside a metastable node before the block
+is absorbed at a exit state.
+\end{remark}
+
+\begin{example}
+\label{ex:cond-a-trivial}
+Suppose that for every node $C$, every phase-state $\xi\in\Xi_C$, and every full
+action profile $a\in\prod_j A_j(\xi)$, the internal transition kernel
+$P_C^0(\cdot\mid\xi,a)$ belongs to an irreducible family whose directed support
+graph is the same strongly connected graph on $\Xi_C$. Then every convex mixture
+of those kernels still gives positive probability to each support edge, and hence
+every augmented kernel from \Cref{cond:a} can reach any internal state from any
+other before absorption. Therefore condition~\textnormal{(a)} holds.
+\end{example}
+
+\subsection{A uniform irreducibility modulus}
+
+For fixed $\eta$, define
+\begin{equation}
+\label{eq:kappa-eta}
+\kappa_\eta
+:=
+\min_{C\in\cT_\eta}
+\min_{i\in N}
+\inf_{\sigma_{-i}\in\prod_{j\ne i}\Sigma_{j,C}}
+\min_{a_i(\cdot)}
+\min_{\xi,\zeta\in\Xi_C}
+\max_{0\le n\le |\Xi_C|-1}
+\Bigl(P_{i,C}^{\sigma_{-i},a_i,\mathrm{aug}}\Bigr)^n(\zeta\mid\xi).
+\end{equation}
+
+\begin{lemma}
+\label{lem:kappa-positive}
+Assume condition~\textnormal{(a)}. Then $\kappa_\eta>0$ for every $\eta\in(0,1)$.
+\end{lemma}
+
+\begin{proof}
+Fix $C$, $i$, and a pure action selection $a_i(\cdot)$. By
+condition~\textnormal{(a)}, every kernel
+$P_{i,C}^{\sigma_{-i},a_i,\mathrm{aug}}$ has strictly positive internal
+reachability between any two internal states in at most $|\Xi_C|-1$ steps. Hence
+the displayed quantity in \eqref{eq:kappa-eta} is strictly positive for each fixed
+$\sigma_{-i}$.
+
+The map
+$\sigma_{-i}\mapsto P_{i,C}^{\sigma_{-i},a_i,\mathrm{aug}}$ is continuous by
+\Cref{lem:coeff-affine}, and the compact domain
+$\prod_{j\ne i}\Sigma_{j,C}$ is a finite product of simplices. Therefore the
+minimum over that domain is attained and remains strictly positive. Finally there
+are only finitely many nodes, players, and pure action selections, so the overall
+minimum is strictly positive.
+\end{proof}
+
+\subsection{Bias bound}
+
+
+\begin{lemma}[Hitting the reference state or absorption]
+\label{lem:hitting-time}
+Let $X$ be a finite set, let $\partial$ be a finite absorbing set, and let $P$ be a
+Markov kernel on $X\sqcup\partial$ such that for every $x,y\in X$ there exists
+$0\le n\le |X|-1$ with $P^n(y\mid x)>0$. Define
+\[
+\kappa(P):=\min_{x,y\in X}\max_{0\le n\le |X|-1}P^n(y\mid x).
+\]
+Then for every $x,y\in X$,
+\[
+\E_x[\tau_{A_y}]\le \frac{|X|-1}{\kappa(P)},
+\qquad
+A_y:=\{y\}\cup \partial,
+\qquad
+\tau_{A_y}:=\inf\{t\ge 0:X_t\in A_y\}.
+\]
+\end{lemma}
+
+\begin{proof}
+If $|X|=1$, then $A_y=X\sqcup\partial$ and $\tau_{A_y}=0$, so the claim is
+immediate. Assume henceforth that $|X|\ge 2$ and set $m:=|X|-1$. For each pair
+$(x,y)$ choose
+$n(x,y)\in\{0,\dots,m\}$ such that
+\[
+P^{n(x,y)}(y\mid x)\ge \kappa(P).
+\]
+This is possible by the definition of $\kappa(P)$. Since $n(x,y)\le m$,
+\[
+\Pb_x(\tau_{A_y}\le m)\ge \Pb_x(X_{n(x,y)}=y)\ge \kappa(P).
+\]
+Indeed the event $\{X_{n(x,y)}=y\}$ already excludes prior absorption when
+$n(x,y)\ge 1$ because all states in $\partial$ are absorbing, and when
+$n(x,y)=0$ it simply means $x=y$, in which case $\tau_{A_y}=0$. Therefore
+\[
+\Pb_x(\tau_{A_y}>m)\le 1-\kappa(P).
+\]
+Applying the Markov property at times $m,2m,3m,\dots$ on the event
+$\{\tau_{A_y}>km\}$, where the chain is still in $X$, gives
+\[
+\Pb_x(\tau_{A_y}>(k+1)m)\le (1-\kappa(P))\Pb_x(\tau_{A_y}>km)
+\qquad (k\ge 0),
+\]
+hence
+\[
+\Pb_x(\tau_{A_y}>km)\le (1-\kappa(P))^k.
+\]
+Therefore
+\[
+\E_x[\tau_{A_y}]
+=
+\sum_{t\ge 0}\Pb_x(\tau_{A_y}>t)
+\le
+m\sum_{k\ge 0}\Pb_x(\tau_{A_y}>km)
+\le
+m\sum_{k\ge 0}(1-\kappa(P))^k
+=
+\frac{m}{\kappa(P)}.
+\]
+\end{proof}
+
+
+\begin{proposition}[Uniform bias bound]
+\label{prop:bias-span}
+Assume condition~\textnormal{(a)}. Let $x^*\in\BR_\eta(x^*)$ be a fixed point and
+let $(g_{i,C}^*,h_{i,C}^*)$ be the Bellman certificate of player $i$ in node $C$,
+normalized by $h_{i,C}^*(\xi_C^\circ)=0$. Then
+\[
+\|h_{i,C}^*\|_\infty\le
+H_\eta:=D_\eta\left(1+\frac{\max_D|\Xi_D|-1}{\kappa_\eta}\right).
+\]
+In particular,
+\[
+\spn(h_{i,C}^*)\le 2H_\eta.
+\]
+\end{proposition}
+
+\begin{proof}
+Fix $C$ and $i$. If $C$ is degenerate terminal, then
+$g_{i,C}^*=w_i(C)$ and $h_{i,C}^*\equiv 0$ by construction, so the claim is
+immediate. Assume henceforth that $C$ is ordinary. Let $a_i^*(\cdot)$ be a
+measurable selector choosing, in each state, an action where equality holds in
+the Bellman system. Consider the genuine augmented kernel
+$P_{i,C}^{\sigma_{-i,C}^*,a_i^*,\mathrm{aug}}$ on
+$\Xi_C^{\mathrm{aug}}$. Let
+\[
+A_C^\circ:=\{\xi_C^\circ\}\cup\partial B_C,
+\qquad
+\tau^\circ:=\inf\{t\ge 0:X_t\in A_C^\circ\}.
+\]
+By \Cref{lem:kappa-positive,lem:hitting-time},
+\[
+\E_\xi[\tau^\circ]\le \frac{|\Xi_C|-1}{\kappa_\eta}
+\qquad (\xi\in\Xi_C).
+\]
+
+Along the selected policy $a_i^*(\cdot)$, the Bellman equalities read
+\[
+g_{i,C}^*+h_{i,C}^*(\xi)
+=
+r_{i,C}^{\sigma_{-i,C}^*}(\xi,a_i^*(\xi))
++
+\sum_{\xi'}Q_{i,C}^{\sigma_{-i,C}^*}(\xi'\mid\xi,a_i^*(\xi))h_{i,C}^*(\xi')
++
+\sum_b\Lambda_{i,C}^{\sigma_{-i,C}^*}(b\mid\xi,a_i^*(\xi))v_{i,C}^{x^*}(b).
+\]
+Stopping this identity at $\tau^\circ$ and using $h_{i,C}^*(\xi_C^\circ)=0$ and
+the boundary convention $h_{i,C}^*(\partial_b)=0$ gives the standard relative-value
+representation
+\[
+h_{i,C}^*(\xi)
+=
+\E_\xi\!\left[
+\sum_{t=0}^{\tau^\circ-1}\bigl(u_i^t-g_{i,C}^*\bigr)
++
+\sum_{b\in B_C}\1_{\{X_{\tau^\circ}=\partial_b\}}\,v_{i,C}^{x^*}(b)
+\right].
+\]
+Since $u_i^t\in[0,1]$, $g_{i,C}^*\in[0,d_\eta(C)]$, and
+$v_{i,C}^{x^*}(b)\in[0,d_\eta(C)-1]$, the absolute value of the last display is
+bounded by
+\[
+\begin{aligned}
+d_\eta(C)\,\E_\xi[\tau^\circ] + d_\eta(C)-1
+&\le
+d_\eta(C)\bigl(\E_\xi[\tau^\circ]+1\bigr)
+\\
+&\le
+D_\eta\left(1+\frac{|\Xi_C|-1}{\kappa_\eta}\right)
+\\
+&\le
+D_\eta\left(1+\frac{\max_D|\Xi_D|-1}{\kappa_\eta}\right)
+=
+H_\eta.
+\end{aligned}
+\]
+This proves the sup-norm bound. The span bound is immediate.
+\end{proof}
+
+\subsection{Deviation-value Lipschitz bound}
+
+\begin{lemma}[Coefficient-level Bellman transfer]
+\label{lem:coefficient-transfer}
+Let $r,Q$ and $r',Q'$ be two finite average-reward MDP coefficient systems on the
+same state-action graph, and let $(g,h)$ satisfy
+\[
+g+h(x)\ge r(x,a)+\sum_y Q(y\mid x,a)h(y)
+\qquad\text{for all }(x,a).
+\]
+Then
+\[
+g+h(x)
+\ge
+r'(x,a)+\sum_y Q'(y\mid x,a)h(y)
+-\Bigl(\|r'-r\|_\infty + \spn(h)\sup_{x,a}\|Q'(\cdot\mid x,a)-Q(\cdot\mid x,a)\|_{\mathrm{TV}}\Bigr)
+\]
+for all $(x,a)$. In particular the perturbation constant is governed by
+$1+\spn(h)$, not merely by $\spn(h)$.
+\end{lemma}
+
+\begin{proof}
+Fix $(x,a)$. Write
+\begin{align*}
+&r'(x,a)+\sum_y Q'(y\mid x,a)h(y)
+-
+\Bigl(r(x,a)+\sum_y Q(y\mid x,a)h(y)\Bigr)
+\\
+&= \bigl(r'(x,a)-r(x,a)\bigr)
++
+\sum_y\bigl(Q'(y\mid x,a)-Q(y\mid x,a)\bigr)h(y).
+\end{align*}
+The first term is bounded by $\|r'-r\|_\infty$. For the second term, subtract the
+minimum of $h$ and use that signed measures of total mass $0$ have dual norm equal
+to total variation against functions of oscillation $\spn(h)$:
+\[
+\left|\sum_y\bigl(Q'-Q\bigr)(y\mid x,a)h(y)\right|
+\le
+\spn(h)\,\|Q'(\cdot\mid x,a)-Q(\cdot\mid x,a)\|_{\mathrm{TV}}.
+\]
+Combining the two bounds gives the claim.
+\end{proof}
+
+\begin{lemma}[Deviation-value Lipschitz bound]
+\label{lem:deviation-lipschitz}
+Fix $\eta\in(0,1)$ and a node $C$. There exists a finite constant $L_{\eta,C}$
+such that for every player $i$, every two opponents' kernels
+$\sigma_{-i},\tau_{-i}\in\prod_{j\ne i}\Sigma_{j,C}$, and every continuation vector
+$v\in[0,d_\eta(C)-1]^{B_C\times N}$,
+\[
+\bigl|\operatorname{Val}_{i,C}(\tau_{-i},v)-\operatorname{Val}_{i,C}(\sigma_{-i},v)\bigr|
+\le L_{\eta,C}\,\|\tau_{-i}-\sigma_{-i}\|_1,
+\]
+where $\operatorname{Val}_{i,C}(\cdot,v)$ denotes the optimal average reward of the
+deviation MDP. One may take
+\[
+L_{\eta,C}=K_{i,C}(1+2H_\eta),
+\]
+with $K_{i,C}$ as in \Cref{lem:coeff-affine}.
+\end{lemma}
+
+\begin{proof}
+Fix $\sigma_{-i}$ and let $(g,h)$ be an optimal Bellman certificate for the MDP with
+coefficients induced by $(\sigma_{-i},v)$. By \Cref{prop:bias-span},
+$\spn(h)\le 2H_\eta$. Apply \Cref{lem:coefficient-transfer} with the primed
+coefficients induced by $(\tau_{-i},v)$. Using the Lipschitz estimates from
+\Cref{lem:coeff-affine} yields
+\[
+\operatorname{Val}_{i,C}(\tau_{-i},v)
+\le
+\operatorname{Val}_{i,C}(\sigma_{-i},v)
++
+K_{i,C}(1+2H_\eta)\,\|\tau_{-i}-\sigma_{-i}\|_1.
+\]
+Interchanging the roles of $\sigma_{-i}$ and $\tau_{-i}$ gives the reverse
+inequality.
+\end{proof}
+
+
+
+
+\subsection{The induced one-player MDP and the stage-by-stage potential diagnostic}
+
+The fatal v19 defect is structural. The auxiliary visit functional
+\[
+\widetilde U_i(V)
+=
+U_i^{\mathrm{act}}(V)
++
+\sum_{b\in B_C}I_V(b)\,v_{i,C}^{x^*}(b)
+\]
+credits a strict exit, but it does not subtract the successor-node entry bias. If
+a visit in node $C$ exits through $b$ and the next visit starts in $D=C[b]$, the
+next visit begins with the child bias $h_{i,D}^*(X_{\mathrm{in}})$, not with
+$-v_{i,C}^{x^*}(b)$. Hence no legitimate proof may telescope
+$\widetilde U_i$ across visits, and the raw nodewise bias
+$h_{i,C_t}^*(X_t)$ alone is not a valid global potential either.
+
+Fix a fixed point $x^*\in\BR_\eta(x^*)$, a player $i$, and freeze the
+nondeviators at the realized finite-memory profile
+$(\sigma_{\eta,\delta,M_*})_{-i}$. By \Cref{prop:public-routing}, the resulting
+unilateral control problem is a finite routed MDP: a state records the current
+node, the current internal/controller state, and the finite public memory of the
+frozen cap schedule. A unilateral deviation is exactly a policy in this MDP, and
+the compliant behavior of player $i$ is the stationary policy induced by the
+local kernels $\sigma_{i,C}^*$.
+
+The Bellman packages $(g_{i,C}^*,h_{i,C}^*)$ were built precisely against this
+frozen environment. The only obstruction to a global telescope is that a strict
+exit from $C$ produces a Bellman continuation credit $v_{i,C}^{x^*}(b)$,
+whereas the next stage starts with the child-node bias. The stock variable $Z$
+is introduced exactly to transport the local Bellman certificates across those
+node changes.
+
+Set $Z_{i,1}(\varsigma):=0$; equivalently, one may view $Z_{i,0}=0$ before the
+first live stage. For $t\ge 1$, define the transition stock recursively by
+\begin{equation}
+\label{eq:psi-stock-update}
+Z_{i,t+1}(\varsigma)
+=
+Z_{i,t}(\varsigma)
++
+\sum_{b\in B_{C_t}}
+\1_{\{\textnormal{stage }t\textnormal{ exits }C_t\textnormal{ through }b\}}
+\Bigl(
+v_{i,C_t}^{x^*}(b)-h_{i,C_t[b]}^*(X_{t+1})
+\Bigr).
+\end{equation}
+Thus a strict exit from $C$ to $D=C[b]$ adds exactly the Bellman exit credit
+minus the successor entry bias. Define the augmented potential
+\begin{equation}
+\label{eq:psi-def}
+\Psi_{i,t}(\varsigma)
+:=
+\Phi_{i,t}(\varsigma)+Z_{i,t}(\varsigma)
+=
+h_{i,C_t}^*(X_t)+Z_{i,t}(\varsigma).
+\end{equation}
+At a nonexit stage one has $Z_{i,t+1}=Z_{i,t}$, while at a strict exit through
+$b$ one has
+\[
+\Psi_{i,t+1}(\varsigma)=Z_{i,t}(\varsigma)+v_{i,C_t}^{x^*}(b),
+\]
+so the jump of the raw bias is exactly compensated by the increment of $Z$.
+
+Every stock jump is uniformly bounded by
+\[
+\bigl|v_{i,C_t}^{x^*}(b)-h_{i,C_t[b]}^*(X_{t+1})\bigr|
+\le
+(D_\eta-1)+H_\eta.
+\]
+By \Cref{prop:public-routing}\textnormal{(R3)}, along any play path there are at
+most $D_\eta$ strict child moves. Hence
+\begin{equation}
+\label{eq:psi-bound}
+|Z_{i,t}(\varsigma)|
+\le
+D_\eta\bigl(D_\eta-1+H_\eta\bigr),
+\qquad
+|\Psi_{i,t}(\varsigma)|
+\le
+\Psi_\eta^{\max}:=
+H_\eta+D_\eta\bigl(D_\eta-1+H_\eta\bigr)
+\end{equation}
+for all $t$, all players $i$, and all routed profiles $\varsigma$. This is the
+explicit endpoint control missing from v20.
+
+Define the total stagewise gain term
+\begin{equation}
+\label{eq:gain-chain-def}
+\mathfrak G_{i,T}(\varsigma)
+:=
+\sum_{t\in\mathcal T_T(\varsigma)} g_{i,C_t}^*
+=
+\sum_{V\in\mathcal V_T(\varsigma)} g_{i,C(V)}^*\,\ell(V),
+\end{equation}
+and the total complete-tail length
+\[
+L_T(\varsigma):=|\mathcal T_T(\varsigma)|
+=
+\sum_{V\in\mathcal V_T(\varsigma)}\ell(V).
+\]
+
+\begin{lemma}[Stagewise potential drift]
+\label{lem:visit-bellman}
+There exists a constant $K_\eta^{\mathrm{pot}}<\infty$ and a finite constant
+$A_\eta^{\mathrm{pot}}\ge 1$ such that for every player $i$ the following holds.
+
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2.8em]
+\item For the compliant profile $\sigma_{\eta,\delta,M_*}$,
+\begin{equation}
+\label{eq:stagewise-potential-compliant}
+\E\left[
+\sum_{t\in\mathcal T_T(\sigma_{\eta,\delta,M_*})}
+u_i^t(\sigma_{\eta,\delta,M_*})
+\right]
+\ge
+\E\bigl[\mathfrak G_{i,T}(\sigma_{\eta,\delta,M_*})\bigr]
+-
+C_\eta\delta\,\E\bigl[L_T(\sigma_{\eta,\delta,M_*})\bigr]
+-
+K_\eta^{\mathrm{pot}}.
+\end{equation}
+
+\item For every unilateral deviation $\tau_i$ and
+$\varsigma^\tau:=(\tau_i,(\sigma_{\eta,\delta,M_*})_{-i})$,
+\begin{equation}
+\label{eq:stagewise-potential-deviator}
+\E\left[
+\sum_{t\in\mathcal T_T(\varsigma^\tau)}
+u_i^t(\varsigma^\tau)
+\right]
+\le
+\E\bigl[\mathfrak G_{i,T}(\varsigma^\tau)\bigr]
++
+A_\eta^{\mathrm{pot}}\eta\,
+\E\bigl[L_T(\varsigma^\tau)\bigr]
++
+K_\eta^{\mathrm{pot}}.
+\end{equation}
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+If $\mathcal T_T(\varsigma)=\varnothing$, then the sums in both displays are zero,
+so both claims are immediate after enlarging $K_\eta^{\mathrm{pot}}$ once.
+Assume henceforth that the complete tail set is nonempty. Because the frozen
+schedule has only a finite prelude before the tail cap is reached and then runs
+through contiguous tail visits until the final incomplete fragment, there exist
+random times
+\[
+\underline t_T(\varsigma)\le \overline t_T(\varsigma)
+\]
+such that
+\[
+\mathcal T_T(\varsigma)
+=
+\{\underline t_T(\varsigma),\underline t_T(\varsigma)+1,\dots,
+\overline t_T(\varsigma)\}.
+\]
+
+Fix a stage $t\in\mathcal T_T(\varsigma)$ lying inside a complete tail visit in
+node $C=C_t$, with current phase-state $\xi=X_t$. For any action $a_i\in A_i(\xi)$,
+the definition of $Z$ gives
+\begin{align}
+\label{eq:psi-one-step-expansion}
+\E\bigl[\Psi_{i,t+1}(\varsigma)\mid \cF_t,\ a_i^t=a_i\bigr]
+&=
+Z_{i,t}(\varsigma)
++
+\sum_{\xi'}Q_{i,C}^{\sigma_{-i,C}^*}(\xi'\mid\xi,a_i)\,h_{i,C}^*(\xi')
+\nonumber\\
+&\qquad
++
+\sum_{b\in B_C}\Lambda_{i,C}^{\sigma_{-i,C}^*}(b\mid\xi,a_i)\,
+v_{i,C}^{x^*}(b).
+\end{align}
+Indeed, if the current visit stays in node $C$, then $Z$ does not move and the
+next potential contribution is $h_{i,C}^*(X_{t+1})$; if stage $t$ exits through
+$b$, then the increment in \eqref{eq:psi-stock-update} cancels the child-node
+bias and leaves exactly the Bellman continuation credit $v_{i,C}^{x^*}(b)$.
+
+For a unilateral deviator $\varsigma^\tau$, the nondeviators still generate the
+frozen one-step coefficients of the Bellman problem. Combining
+\eqref{eq:psi-one-step-expansion} with the Bellman inequalities in
+\eqref{eq:Bellman-ineq-def} yields
+\[
+\E\bigl[u_i^t(\varsigma^\tau)\mid \cF_t\bigr]
+\le
+g_{i,C_t}^*
++
+\Psi_{i,t}(\varsigma^\tau)
+-
+\E\bigl[\Psi_{i,t+1}(\varsigma^\tau)\mid \cF_t\bigr]
++\eta
+\qquad (t\in\mathcal T_T(\varsigma^\tau)).
+\]
+Summing over the interval $\mathcal T_T(\varsigma^\tau)$ and using
+\eqref{eq:psi-bound} gives
+\[
+\E\left[
+\sum_{t\in\mathcal T_T(\varsigma^\tau)}
+u_i^t(\varsigma^\tau)
+\right]
+\le
+\E\bigl[\mathfrak G_{i,T}(\varsigma^\tau)\bigr]
++
+\eta\,\E\bigl[L_T(\varsigma^\tau)\bigr]
++
+2\Psi_\eta^{\max}.
+\]
+This is \eqref{eq:stagewise-potential-deviator} after taking
+$A_\eta^{\mathrm{pot}}\ge 1$ and $K_\eta^{\mathrm{pot}}\ge 2\Psi_\eta^{\max}$.
+
+Under the compliant profile, every action in the support of
+$\sigma_{i,C_t}^*(\cdot\mid X_t)$ attains equality in the Bellman system, so the
+previous display is an equality without the $+\eta$ term:
+\[
+\E\bigl[u_i^t(\sigma_{\eta,\delta,M_*})\mid \cF_t\bigr]
+=
+g_{i,C_t}^*
++
+\Psi_{i,t}(\sigma_{\eta,\delta,M_*})
+-
+\E\bigl[\Psi_{i,t+1}(\sigma_{\eta,\delta,M_*})\mid \cF_t\bigr].
+\]
+Summing over $\mathcal T_T(\sigma_{\eta,\delta,M_*})$ and using
+\eqref{eq:psi-bound} yields
+\[
+\E\left[
+\sum_{t\in\mathcal T_T(\sigma_{\eta,\delta,M_*})}
+u_i^t(\sigma_{\eta,\delta,M_*})
+\right]
+=
+\E\bigl[\mathfrak G_{i,T}(\sigma_{\eta,\delta,M_*})\bigr]
++
+\E\bigl[
+\Psi_{i,\underline t_T(\sigma_{\eta,\delta,M_*})}
+-
+\Psi_{i,\overline t_T(\sigma_{\eta,\delta,M_*})+1}
+\bigr]
+\]
+and hence
+\[
+\E\left[
+\sum_{t\in\mathcal T_T(\sigma_{\eta,\delta,M_*})}
+u_i^t(\sigma_{\eta,\delta,M_*})
+\right]
+\ge
+\E\bigl[\mathfrak G_{i,T}(\sigma_{\eta,\delta,M_*})\bigr]
+-
+2\Psi_\eta^{\max}.
+\]
+Since $C_\eta\delta\,\E[L_T(\sigma_{\eta,\delta,M_*})]\ge 0$, this implies
+\eqref{eq:stagewise-potential-compliant} after taking
+$K_\eta^{\mathrm{pot}}\ge 2\Psi_\eta^{\max}$.
+\end{proof}
+
+\begin{remark}[What changed from v20]
+The stagewise telescope variable is not the raw bias $\Phi_{i,t}$ but the
+stock-augmented potential $\Psi_{i,t}=h_{i,C_t}^*(X_t)+Z_{i,t}$. The explicit
+stock $Z$ repairs the boundary mismatch between a parent-node Bellman credit
+$v_{i,C}^{x^*}(b)$ and the successor-node entry bias. Version~26 keeps this
+process as the correct local Bellman-transport device across node exits, but the
+final global comparison is now taken from the optimal bias of the induced MDP
+itself rather than from a routed sum of local gains.
+\end{remark}
+
+\begin{lemma}[Global comparison in the induced MDP]
+\label{lem:global-mdp-comparison}
+Fix a player $i$, the realized profile $\sigma_{\eta,\delta,M_*}$, an initial
+state $s$, a horizon $T$, and a unilateral deviation $\tau_i$. Write
+\[
+\varsigma^\sigma:=\sigma_{\eta,\delta,M_*},
+\qquad
+\varsigma^\tau:=(\tau_i,(\sigma_{\eta,\delta,M_*})_{-i}).
+\]
+Then there exist finite constants
+$A_\eta^{\mathrm{mdp}},K_\eta^{\mathrm{mdp}}<\infty$ such that
+\begin{equation}
+\label{eq:global-mdp-comparison}
+\gamma_i^T\bigl(s,\varsigma^\tau\bigr)
+-
+\gamma_i^T\bigl(s,\varsigma^\sigma\bigr)
+\le
+A_\eta^{\mathrm{mdp}}\eta + C_\eta\delta + \frac{K_\eta^{\mathrm{mdp}}}{T}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Apply \Cref{prop:mdp-global-comparison} to the compliant profile
+$\varsigma^\sigma$ and the deviation profile $\varsigma^\tau$. That proposition
+compares both profiles through the global optimal gain $g_i^*$ of the induced
+unichain MDP and yields
+\[
+\gamma_i^T\bigl(s,\varsigma^\tau\bigr)
+-
+\gamma_i^T\bigl(s,\varsigma^\sigma\bigr)
+\le
+A_\eta^{\mathrm{opt}}\eta + C_\eta\delta + \frac{2K_\eta^{\mathrm{mdp}}}{T}.
+\]
+After enlarging $A_\eta^{\mathrm{mdp}}$ and $K_\eta^{\mathrm{mdp}}$ to dominate the
+right-hand constants, this is exactly \eqref{eq:global-mdp-comparison}.
+\end{proof}
+
+\begin{remark}[What v26 no longer compares]
+The local gains $g_{i,C}^*$ remain the local Bellman data used to define the
+fixed point and the compliant kernels. They are not compared across compliant
+and deviating node sequences, no gain-near-constancy statement is invoked, and
+no identity of the form
+\[
+\sum_t g_{i,C_t}^*=g_i^* T
+\]
+enters the proof. The final benchmark is the global optimal gain $g_i^*$ of the
+induced one-player MDP.
+\end{remark}
+
+Fix once and for all a constant
+\[
+A_\eta\ge 1+A_\eta^{\mathrm{mdp}}.
+\]
+
+
+\subsection{Proof of the main theorem}
+
+
+\begin{proof}[Proof of \Cref{thm:main}]
+Fix $\eps>0$. Choose parameters in the order
+\[
+\eta,\qquad \delta,\qquad M_*,\qquad T_0.
+\]
+
+\smallskip
+\noindent\textbf{Step 1: fixed point and MDP error scale.}
+Choose $\eta>0$ so small that
+\[
+A_\eta\eta\le \frac{\eps}{3}.
+\]
+By \Cref{thm:kakutani-global}, there exists a fixed point $x^*\in\BR_\eta(x^*)$.
+
+\smallskip
+\noindent\textbf{Step 2: realization scale.}
+Let $C_\eta$ dominate the finitely many $\delta$-loss constants appearing in
+\Cref{thm:realization,lem:global-mdp-comparison}. Choose $\delta>0$ such that
+\[
+C_\eta\delta\le \frac{\eps}{3}.
+\]
+Since the tree is finite, there is a common cap threshold
+\[
+L_\eta(\delta):=\max_{C\in\cT_\eta}L_C(\delta)
+\]
+from \Cref{thm:local-controller}. Freeze a superexponential schedule at a level
+$R$ so large that the associated tail cap $M_*=M_R$ satisfies
+$M_*\ge L_\eta(\delta)$. Let
+\[
+\sigma^\eps:=\sigma_{\eta,\delta,M_*}
+\]
+be the realized profile from \Cref{thm:realization}.
+
+\smallskip
+\noindent\textbf{Step 3: horizon threshold.}
+Let $K_\eta<\infty$ dominate the remainder constant from
+\Cref{lem:global-mdp-comparison}. Choose $T_0$ so large that
+\[
+\frac{K_\eta}{T_0}\le \frac{\eps}{3}.
+\]
+
+Now fix $T\ge T_0$, an initial state $s$, a player $i$, and a unilateral
+deviation $\tau_i$. By \Cref{lem:global-mdp-comparison},
+\begin{equation}
+\label{eq:global-mdp-comparison-proof}
+\gamma_i^T\bigl(s,(\tau_i,\sigma^\eps_{-i})\bigr)
+-
+\gamma_i^T(s,\sigma^\eps)
+\le
+A_\eta\eta + C_\eta\delta + \frac{K_\eta}{T}.
+\end{equation}
+By construction, the right-hand side is at most
+\[
+\frac{\eps}{3}+\frac{\eps}{3}+\frac{\eps}{3}=\eps.
+\]
+Therefore
+\[
+\gamma_i^T(s,\sigma^\eps)
+\ge
+\gamma_i^T\bigl(s,(\tau_i,\sigma^\eps_{-i})\bigr)-\eps.
+\]
+Since $T\ge T_0$, $s$, $i$, and $\tau_i$ were arbitrary, $\sigma^\eps$ is a
+public finite-memory uniform $\eps$-equilibrium.
+\end{proof}
+
+
+
+\section{Discussion}
+
+The full Neyman conjecture remains open. What the present paper proves is the
+downstream implication from a finite universal $\eta$-tree plus its first-exit
+controller realization to a public finite-memory uniform $\eps$-equilibrium,
+under condition~\textnormal{(a)} and the global induced-MDP comparison from
+\Cref{lem:global-mdp-comparison}.
+
+The conceptual point of v26 is that the final benchmark is global from the start.
+The identity
+\[
+g_{i,C}^*
+=
+\alpha_{i,C}^*
++
+\sum_{b\in B_C}\beta_C^*(b)\,v_{i,C}^{x^*}(b)
+\]
+belongs to the compliant node data and remains useful only there. It is part of
+the construction of the fixed point and of the compliant local kernels, but it
+is not compared across different routed node sequences and it is not used as a
+global scalar benchmark.
+
+Once player $i$ deviates, the other players continue to play
+$(\sigma_{\eta,\delta,M_*})_{-i}$, so player $i$ faces a finite one-player MDP
+with fixed environment. The final regret estimate then comes from standard
+average-reward MDP theory. The global optimal gain $g_i^*$ and optimal bias
+$h_i^*$ bound every unilateral deviation from above by
+$g_i^*+O(1/T)$. The compliant stationary policy selected by the fixed point is
+$O(\eta+\delta)$-optimal in that same induced MDP, and its own bias gives the
+matching lower bound
+$g_i^*-O(\eta+\delta+1/T)$. Subtracting the two estimates yields the uniform
+regret bound.
+
+This is exactly the repair required by Pass~114: the local tree machinery is
+retained intact, but the failed local-to-global bridge is removed. No routed
+comparison of local gains is needed in the final step.
+\appendix
+
+
+
+
+\section{Finite average-reward MDP facts and the global induced-MDP comparison}
+\label{app:mdp}
+
+This appendix records the one-player facts used in the final comparison.
+All statements are standard; see Puterman's monograph \cite{Puterman1994} for
+background. The point specific to v26 is that once player $i$ deviates and the
+other players keep the realized profile, player $i$ faces a finite induced MDP,
+and the regret estimate is obtained directly from the global gain-bias theory of
+that MDP rather than from routed comparisons of local gains.
+
+Consider a finite average-reward MDP with state space $X$, action sets $A(x)$,
+bounded reward function $r(x,a)\in[0,\overline r]$ for some $\overline r<\infty$,
+and transition kernel $Q(\cdot\mid x,a)$.
+
+\begin{proposition}[Primal-dual formulation]
+\label{prop:mdp-duality}
+The optimal average reward is the common value of the primal and dual linear
+programs
+\begin{align*}
+\textnormal{maximize }&\sum_{x\in X}\sum_{a\in A(x)}\nu(x,a)r(x,a)
+\\
+\textnormal{subject to }&\nu\ge 0,
+\qquad \sum_{x,a}\nu(x,a)=1,
+\\
+&\sum_{a\in A(y)}\nu(y,a)=\sum_{x,a}\nu(x,a)Q(y\mid x,a)
+\qquad (y\in X),
+\end{align*}
+and
+\begin{align*}
+\textnormal{minimize }&g
+\\
+\textnormal{subject to }&g+h(x)\ge r(x,a)+\sum_y Q(y\mid x,a)h(y)
+\qquad (x\in X,\ a\in A(x)).
+\end{align*}
+There exists an optimal stationary mixed policy and an optimal dual pair $(g,h)$.
+Moreover, after the linear normalization $h(x^\circ)=0$ at any fixed reference
+state $x^\circ\in X$, one may choose $h$ in a compact box.
+\end{proposition}
+
+\begin{proof}
+This is the classical average-reward LP formulation for finite MDPs. Feasibility is
+immediate. The primal feasible set is a nonempty compact polytope, so an optimum
+exists. The dual feasible set is nonempty because choosing $g=\overline r$ and
+$h\equiv 0$ is feasible. Finite-dimensional LP duality gives equality of primal
+and dual
+optima and existence of optimal primal and dual solutions. The occupation measure
+of an optimal primal solution induces an optimal stationary mixed policy. The
+normalization $h(x^\circ)=0$ is obtained by subtracting the constant $h(x^\circ)$.
+\end{proof}
+
+\begin{proposition}[Uniqueness of the normalized bias in the communicating case]
+\label{prop:bias-unique}
+If the finite average-reward MDP is communicating, then any two optimal bias
+vectors differ by a constant. Consequently, after fixing one reference coordinate
+$h(x^\circ)=0$, the optimal bias is unique.
+\end{proposition}
+
+\begin{proof}
+This is the standard communicating-MDP relative-value theorem; see
+\cite[Chapter~8]{Puterman1994}. In the communicating case the optimal average
+reward is state-independent and every optimal bias vector is unique up to an
+additive constant. Fixing one coordinate removes that one-dimensional freedom.
+\end{proof}
+
+\begin{proposition}[Unichain optimality equation and finite-horizon comparison]
+\label{prop:unichain-horizon}
+Assume that the finite average-reward MDP is unichain. Then there exist a scalar
+optimal gain $g^*$ and a bias $h^*:X\to\R$ such that
+\[
+g^*+h^*(x)=\max_{a\in A(x)}\Bigl(r(x,a)+\sum_y Q(y\mid x,a)h^*(y)\Bigr)
+\qquad (x\in X).
+\]
+For every admissible policy $\pi$ (stationary or history-dependent), every
+initial state $x\in X$, and every horizon $T\ge 1$,
+\[
+\frac1T\,\E_x^\pi\!\left[\sum_{t=1}^T r(X_t,A_t)\right]
+\le
+g^*+\frac{\spn(h^*)}{T}.
+\]
+If $\pi$ is stationary and $(g^\pi,h^\pi)$ is any gain-bias pair satisfying
+\[
+g^\pi+h^\pi(x)=r^\pi(x)+\sum_y Q^\pi(y\mid x)h^\pi(y)
+\qquad (x\in X),
+\]
+then for every initial state $x$ and every horizon $T\ge 1$,
+\[
+\frac1T\,\E_x^\pi\!\left[\sum_{t=1}^T r(X_t,A_t)\right]
+=
+g^\pi+\frac{h^\pi(x)-\E_x^\pi[h^\pi(X_{T+1})]}{T},
+\]
+and in particular
+\[
+g^\pi-\frac{\spn(h^\pi)}{T}
+\le
+\frac1T\,\E_x^\pi\!\left[\sum_{t=1}^T r(X_t,A_t)\right]
+\le
+g^\pi+\frac{\spn(h^\pi)}{T}.
+\]
+\end{proposition}
+
+\begin{proof}
+Existence of $(g^*,h^*)$ is the standard unichain average-reward optimality
+equation; see \cite[Chapter~8]{Puterman1994}. Its maximizing form implies the
+Bellman inequality
+\[
+r(x,a)-g^*
+\le
+h^*(x)-\sum_y Q(y\mid x,a)h^*(y)
+\qquad (x\in X,\ a\in A(x)).
+\]
+Let $(X_t,A_t)$ evolve under an arbitrary admissible policy $\pi$ from initial
+state $x$. Define
+\[
+M_t:=h^*(X_t)-\sum_{k=1}^{t-1}\bigl(r(X_k,A_k)-g^*\bigr)
+\qquad (t\ge 1).
+\]
+The displayed Bellman inequality gives
+\[
+\E_x^\pi[M_{t+1}\mid \cF_t]\le M_t,
+\]
+so $(M_t)_{t\ge 1}$ is a supermartingale. Therefore
+\[
+\E_x^\pi[M_{T+1}]\le M_1=h^*(x),
+\]
+which rearranges to
+\[
+\E_x^\pi\!\left[\sum_{t=1}^T r(X_t,A_t)\right]
+\le
+Tg^*+h^*(x)-\E_x^\pi[h^*(X_{T+1})]
+\le
+Tg^*+\spn(h^*).
+\]
+Dividing by $T$ gives the first bound.
+
+Now let $\pi$ be stationary. Its Poisson equation implies that the same process
+built from $(g^\pi,h^\pi)$ is a martingale, hence
+\[
+\E_x^\pi\!\left[\sum_{t=1}^T r(X_t,A_t)\right]
+=
+Tg^\pi+h^\pi(x)-\E_x^\pi[h^\pi(X_{T+1})].
+\]
+Dividing by $T$ gives the exact identity, and the span bounds are immediate.
+\end{proof}
+
+\begin{remark}
+For every fixed finite unichain MDP, the spans $\spn(h^*)$ and $\spn(h^\pi)$ are
+finite. One may bound them explicitly in terms of the MDP diameter and the reward
+range; see again \cite[Chapter~8]{Puterman1994}. In the main text we use only
+finiteness and absorb the resulting constants into $K_\eta$.
+\end{remark}
+
+
+\begin{proposition}[The unilateral-control problem is a finite unichain MDP]
+\label{prop:induced-routed-mdp}
+Fix a player $i$, a fixed point $x^*\in\BR_\eta(x^*)$, and the realized profile
+$\sigma_{\eta,\delta,M_*}$. If the other players keep
+$(\sigma_{\eta,\delta,M_*})_{-i}$, then player $i$ faces a finite average-reward
+MDP on a finite public-memory state space. Its state records the current
+stochastic-game state together with the public memory of the realized profile,
+including the current routed node, the current local controller state, and the
+finite memory of the frozen cap schedule. The stage reward is the expected stage
+payoff against the frozen opponents, and the transition kernel is the induced law
+of the next public-memory state. Every unilateral deviation strategy $\tau_i$
+determines a policy in this MDP, and the compliant behavior of player $i$ is the
+stationary policy induced by the local kernels $\sigma_{i,C}^*$. Under
+condition~\textnormal{(a)}, this MDP is unichain.
+\end{proposition}
+
+\begin{proof}
+By \Cref{prop:public-routing}\textnormal{(R4)}, the realized profile uses only
+finite public memory. Once the nondeviators' mixed actions are frozen, the law of
+the next augmented public-memory state depends only on the current augmented
+public-memory state and on player $i$'s current action. The expected stage payoff
+at that state is therefore a bounded function of the same data. This is exactly a
+finite average-reward MDP.
+
+Any unilateral deviation strategy induces a possibly history-dependent policy of
+this MDP, and conversely the compliant local kernels $\sigma_{i,C}^*$ define a
+stationary policy on the augmented state space. Finally, condition~\textnormal{(a)}
+prevents a unilateral deviation from splitting the stabilized tail dynamics into
+several communicating classes: the finite prelude states are transient, while the
+tail regime remains irreducible under every stationary policy of player $i$.
+Hence the induced MDP has a single recurrent class and is unichain.
+\end{proof}
+
+\begin{proposition}[Global comparison through the optimal gain of the induced MDP]
+\label{prop:mdp-global-comparison}
+Fix a player $i$, an initial state $s$, a horizon $T$, a fixed point
+$x^*\in\BR_\eta(x^*)$, the compliant profile
+$\varsigma^\sigma:=\sigma_{\eta,\delta,M_*}$, and a unilateral deviation
+$\varsigma^\tau:=(\tau_i,(\sigma_{\eta,\delta,M_*})_{-i})$. Let $g_i^*$ denote the
+optimal gain of the induced unichain MDP from \Cref{prop:induced-routed-mdp}.
+Then there exist finite constants
+$A_\eta^{\mathrm{opt}},K_\eta^{\mathrm{mdp}}<\infty$ such that for every horizon
+$T$,
+\begin{align*}
+\gamma_i^T\bigl(s,\varsigma^\sigma\bigr)
+&\ge
+g_i^* - A_\eta^{\mathrm{opt}}\eta - C_\eta\delta - \frac{K_\eta^{\mathrm{mdp}}}{T},
+\\
+\gamma_i^T\bigl(s,\varsigma^\tau\bigr)
+&\le
+g_i^* + \frac{K_\eta^{\mathrm{mdp}}}{T}.
+\end{align*}
+Consequently,
+\[
+\gamma_i^T\bigl(s,\varsigma^\tau\bigr)
+-
+\gamma_i^T\bigl(s,\varsigma^\sigma\bigr)
+\le
+A_\eta^{\mathrm{opt}}\eta + C_\eta\delta + \frac{2K_\eta^{\mathrm{mdp}}}{T}.
+\]
+In particular, the compliant and deviating profiles are compared through the
+single global optimal gain $g_i^*$ of the induced MDP, not through routed
+comparisons of the local gains $(g_{i,C}^*)_{C\in\cT_\eta}$.
+\end{proposition}
+
+\begin{proof}
+By \Cref{prop:induced-routed-mdp}, once the nondeviators are frozen at
+$(\sigma_{\eta,\delta,M_*})_{-i}$, player $i$ faces a finite unichain
+average-reward MDP. Let $h_i^*$ be an optimal bias for that MDP, and let
+$(g_i^\sigma,\widehat h_i^\sigma)$ be a gain-bias pair for the stationary policy
+induced by the compliant profile $\varsigma^\sigma$.
+
+The only nonstandard input is the retained output of
+Sections~\ref{sec:global}--\ref{sec:realization}: the fixed-point construction,
+together with the realized first-exit controllers, produces a stationary policy
+whose average reward is $O(\eta+\delta)$-optimal in the induced MDP. Thus
+\begin{equation}
+\label{eq:compliant-gain-eta-optimal}
+g_i^\sigma
+\ge
+g_i^* - A_\eta^{\mathrm{opt}}\eta - C_\eta\delta.
+\end{equation}
+
+Apply \Cref{prop:unichain-horizon} to the optimal pair $(g_i^*,h_i^*)$ and the
+possibly history-dependent policy generated by $\varsigma^\tau$. Since the
+initial stochastic-game state $s$ and the initial public memory determine one
+initial MDP state, this yields
+\[
+\gamma_i^T\bigl(s,\varsigma^\tau\bigr)
+\le
+g_i^*+\frac{\spn(h_i^*)}{T}.
+\]
+Apply the stationary-policy part of \Cref{prop:unichain-horizon} to the
+compliant stationary policy $\varsigma^\sigma$:
+\[
+\gamma_i^T\bigl(s,\varsigma^\sigma\bigr)
+\ge
+g_i^\sigma-\frac{\spn(\widehat h_i^\sigma)}{T}.
+\]
+Combining this with \eqref{eq:compliant-gain-eta-optimal} gives
+\[
+\gamma_i^T\bigl(s,\varsigma^\sigma\bigr)
+\ge
+g_i^* - A_\eta^{\mathrm{opt}}\eta - C_\eta\delta - \frac{\spn(\widehat h_i^\sigma)}{T}.
+\]
+Now choose $K_\eta^{\mathrm{mdp}}$ large enough to dominate both
+$\spn(h_i^*)$ and $\spn(\widehat h_i^\sigma)$. The two displayed inequalities and
+the regret bound follow immediately.
+\end{proof}
+
+
+
+\section{Summing stagewise drift inequalities}
+\label{app:aggregation}
+
+\begin{lemma}
+\label{lem:aggregation}
+Let $(\cF_t)_{t=1}^{T+1}$ be a filtration, let $(Y_t)_{t=1}^{T+1}$ be an adapted
+process with $|Y_t|\le H$ almost surely for every $t$, and let
+$(\Delta_t)_{t=1}^T$ and $(a_t)_{t=1}^T$ be integrable. If
+\[
+\E[\Delta_t\mid \cF_t]
+\le
+a_t + Y_t - \E[Y_{t+1}\mid \cF_t]
+\qquad (1\le t\le T),
+\]
+then
+\[
+\E\left[\sum_{t=1}^T \Delta_t\right]
+\le
+\E\left[\sum_{t=1}^T a_t\right] + 2H.
+\]
+The same conclusion holds with the reverse inequality throughout.
+\end{lemma}
+
+\begin{proof}
+Taking expectations and summing over $t$ gives
+\[
+\E\left[\sum_{t=1}^T \Delta_t\right]
+\le
+\E\left[\sum_{t=1}^T a_t\right]
++
+\E[Y_1-Y_{T+1}],
+\]
+and the last term is bounded in absolute value by $2H$.
+\end{proof}
+
+\begin{thebibliography}{99}
+
+
+\bibitem{BewleyKohlberg1976}
+T.~Bewley and E.~Kohlberg.
+\newblock The asymptotic theory of stochastic games.
+\newblock \emph{Mathematics of Operations Research}, 1(3):197--208, 1976.
+
+\bibitem{FleschThuijsmanVrieze1997}
+J.~Flesch, F.~Thuijsman, and K.~Vrieze.
+\newblock Cyclic {M}arkov equilibria in stochastic games.
+\newblock \emph{International Journal of Game Theory}, 26:303--314, 1997.
+
+\bibitem{Kakutani1941}
+S.~Kakutani.
+\newblock A generalization of {B}rouwer's fixed point theorem.
+\newblock \emph{Duke Mathematical Journal}, 8(3):457--459, 1941.
+
+\bibitem{MertensNeyman1981}
+J.-F.~Mertens and A.~Neyman.
+\newblock Stochastic games.
+\newblock \emph{International Journal of Game Theory}, 10(2):53--66, 1981.
+
+\bibitem{MertensSorinZamir2003}
+J.-F.~Mertens, S.~Sorin, and S.~Zamir.
+\newblock Stochastic games.
+\newblock In R.~Aumann and S.~Hart, editors, \emph{Handbook of Game Theory with
+Economic Applications}, volume~3, chapter~47, pages 1811--1832. Elsevier,
+Amsterdam, 2003.
+
+\bibitem{Neyman2003}
+A.~Neyman.
+\newblock From {M}arkov chains to stochastic games.
+\newblock In A.~Neyman and S.~Sorin, editors, \emph{Stochastic Games and
+Applications}, NATO Science Series C, volume~570, pages 9--25. Kluwer Academic
+Publishers, Dordrecht, 2003.
+
+\bibitem{Nowak2003}
+A.~S.~Nowak.
+\newblock N-person stochastic games: Extensions of the finite state space case and
+correlation.
+\newblock In A.~Neyman and S.~Sorin, editors, \emph{Stochastic Games and
+Applications}, NATO Science Series C, volume~570, pages 93--106. Kluwer Academic
+Publishers, Dordrecht, 2003.
+
+\bibitem{Puterman1994}
+M.~L.~Puterman.
+\newblock \emph{Markov Decision Processes: Discrete Stochastic Dynamic
+Programming}.
+\newblock John Wiley \& Sons, New York, 1994.
+
+\bibitem{Shapley1953}
+L.~S.~Shapley.
+\newblock Stochastic games.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+States of America}, 39(10):1095--1100, 1953.
+
+\bibitem{Solan1999}
+E.~Solan.
+\newblock Three-player absorbing games.
+\newblock \emph{Mathematics of Operations Research}, 24(3):669--698, 1999.
+
+\bibitem{Solan2003}
+E.~Solan.
+\newblock Uniform equilibrium: More than two players.
+\newblock In A.~Neyman and S.~Sorin, editors, \emph{Stochastic Games and
+Applications}, NATO Science Series C, volume~570, pages 285--294. Kluwer Academic
+Publishers, Dordrecht, 2003.
+
+\bibitem{SolanVieille2002}
+E.~Solan and N.~Vieille.
+\newblock Correlated equilibrium in stochastic games.
+\newblock \emph{Games and Economic Behavior}, 38(2):362--399, 2002.
+
+\bibitem{Vieille2000I}
+N.~Vieille.
+\newblock Equilibrium in two-person stochastic games {I}: A reduction.
+\newblock \emph{Israel Journal of Mathematics}, 119:55--91, 2000.
+
+\bibitem{Vieille2000II}
+N.~Vieille.
+\newblock Equilibrium in two-person stochastic games {II}: The case of recursive
+games.
+\newblock \emph{Israel Journal of Mathematics}, 119:93--126, 2000.
+
+\bibitem{Vieille2002}
+N.~Vieille.
+\newblock Stochastic games: Recent results.
+\newblock In R.~Aumann and S.~Hart, editors, \emph{Handbook of Game Theory with
+Economic Applications}, volume~3, chapter~48, pages 1833--1850. Elsevier,
+Amsterdam, 2002.
+
+\end{thebibliography}
+
+\end{document}
