@@ -1,0 +1,938 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+\usepackage{microtype}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{condition}[theorem]{Condition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\1}{\mathbf{1}}
+\DeclareMathOperator{\spn}{sp}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\argmax}{arg\,max}
+
+\title{Uniform Equilibrium under Neyman's Condition~(a):\\
+A Regenerative-Hub Extension of the v28 Irreducible Argument}
+\author{Anonymous draft}
+\date{v29}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Version~v28 established the following classical fact. If every stationary mixed profile induces an irreducible chain on the finite raw state space $S$, then a stationary average-reward equilibrium yields a uniform $\varepsilon$-equilibrium with explicit $O(1/T)$ regret. The present paper keeps that result and extends the proof mechanism to Neyman's condition~(a) by adding a public regenerative memory device.
+
+For each $\varepsilon>0$ we choose a finite working memory $Z_\varepsilon$, add a single sticky hub memory state $m^\star$, and consider the augmented space
+\[
+\Omega=S\times M,
+\qquad
+M=\{m^\star\}\cup Z_\varepsilon.
+\]
+From any working memory state, the public memory jumps to $m^\star$ with probability $\eta>0$. From the hub, the memory stays in $m^\star$ with probability $\lambda>0$ and otherwise restarts at a canonical working state $z_0$. The technical heart is a reset-hub unichain lemma: under condition~(a), every stationary mixed profile on $\Omega$ induces a Markov chain with exactly one recurrent class. The proof has the repaired form identified in pass~127: every closed class must intersect the hub because $\eta>0$ forces hub entry, the hub states communicate because condition~(a) makes the raw hub kernel irreducible and $\lambda>0$ allows arbitrarily long hub stretches, and therefore two distinct recurrent classes cannot coexist. The same reasoning covers mixed stationary deviators. The hypothesis $\lambda>0$ is essential, and we record the standard counterexample when $\lambda=0$.
+
+Once the augmented stationary-unichain property is in place, the v28 machinery applies on $\Omega$: average-reward optimality equations for unilateral MDPs, the Bellman supermartingale for arbitrary behavioral deviations, continuity of invariant distributions, and a Kakutani-Fan-Glicksberg fixed point for the average-reward meta-game. The resulting stationary profile on $\Omega$ is a finite-memory public-history profile in the original stochastic game and satisfies an explicit $O(1/T)$ regret bound. We also compute the exact invariant hub mass
+\[
+\beta_{\eta,\lambda}=\frac{\eta}{1-\lambda+\eta},
+\]
+which makes precise the small-reset interpretation: for fixed $\lambda<1$, the public refresh layer occupies only $O(\eta)$ of the long run.
+\end{abstract}
+
+\section{Introduction}
+
+Finite stochastic games, introduced by Shapley \cite{Shapley1953}, are the basic finite-state model of dynamic strategic interaction with publicly observed states. In the zero-sum two-player case, Mertens and Neyman \cite{MertensNeyman1981} proved existence of the uniform value. In the nonzero-sum two-player case, Vieille \cite{Vieille2000a,Vieille2000b} proved existence of uniform equilibrium payoffs. For general multiplayer finite stochastic games, however, the existence of uniform equilibria remains open in full generality; see Solan and Vieille \cite{SolanVieille2015}, Solan \cite{Solan2022}, and the open-problem list maintained by the Game Theory Society \cite{OpenProblems2026}. This paper proves the condition~(a) case in the regenerative-hub framework requested in the present project.
+
+Version~v28 already isolated one clean positive regime. There the proof is run on the original finite state space $S$, and every stationary mixed profile on $S$ induces an irreducible chain. In that classical setting, against fixed stationary opponents each player faces a finite unichain average-reward Markov decision process; a normalized bias satisfying the average-reward optimality equation yields a supermartingale that bounds the payoff of every unilateral behavioral deviation; and a standard Kakutani-Fan-Glicksberg argument produces a stationary average-reward equilibrium. The finite-horizon regret is then $O(1/T)$.
+
+The point of the present paper is that this v28 mechanism is really a theorem about the state space on which the proof is run. It does not need literal irreducibility. It needs a weaker structural fact: on the chosen finite state space, every stationary mixed profile must induce a Markov chain with exactly one recurrent class. We call this the stationary-unichain property. Once that is available, the average-reward MDP theory, the fixed-point step, and the Bellman supermartingale go through exactly as before.
+
+Why is any new work needed under condition~(a)? On the raw state space $S$, the stationary formulation of condition~(a) used in this paper implies irreducibility of every stationary mixed raw-state profile by the usual support-selector argument. The difficulty appears only after one enriches the strategy space with public memory. A stationary profile on an augmented space $S\times M$ may use different raw-state stationary rules on different memory fibers. Even if every raw-state fiber is irreducible on $S$, the lifted chain on $S\times M$ can split into several recurrent classes that all project onto all of $S$. The obstruction is therefore not raw-state irreducibility. It is memory-created recurrent-class selection.
+
+The regenerative hub kills exactly that obstruction. We enlarge the public memory to
+\[
+M=\{m^\star\}\cup Z_\varepsilon,
+\]
+where $Z_\varepsilon$ is any finite ``working memory'' and $m^\star$ is a single public hub state. From each working memory state there is a reset to $m^\star$ with probability $\eta>0$. From the hub there is a geometric hub episode: the memory stays at $m^\star$ with probability $\lambda>0$ and restarts at a canonical working state $z_0$ with probability $1-\lambda$. The hub is a \emph{single} memory atom, not a deterministic cycle of refresh phases. This is crucial. A stationary deviator restricted to the hub is then a genuine raw-state stationary rule, exactly the object appearing in condition~(a).
+
+The key new lemma is the following.
+\begin{quote}
+Under condition~(a), if $\eta>0$ and $\lambda>0$, then every stationary mixed profile on the augmented state space $\Omega=S\times M$ induces a chain with exactly one recurrent class.
+\end{quote}
+The proof must be written in the repaired form identified in pass~127. The right Step~1 is a closed-class argument: any nonempty closed class containing a working state must also contain a hub state because working states jump to the hub with positive probability. The right Step~2 is not that the hub fiber itself is closed, which is false when $1-\lambda>0$, but that all hub states communicate. This uses condition~(a) on the raw hub kernel together with the fact that the chain can remain in the hub for as many consecutive steps as needed. Once those two points are in place, uniqueness of the recurrent class is immediate. We also record the standard counterexample showing that $\lambda>0$ is genuinely necessary.
+
+After the unichain lemma, the rest is the v28 machine on a new state space. The augmented game on $\Omega$ is a finite stochastic game in its own right. Every stationary mixed profile on $\Omega$ now has one recurrent class, so invariant distributions are unique and continuous, each player's unilateral stationary optimization problem is a finite unichain average-reward MDP on $\Omega$, the average-reward meta-game admits a stationary equilibrium by Kakutani-Fan-Glicksberg, and the Bellman-supermartingale estimate applies to every unilateral behavioral deviation. Translating that stationary equilibrium on $\Omega$ back to the original game gives a finite-memory public-history profile that is a uniform $\varepsilon$-equilibrium.
+
+The paper is organized as follows. Section~\ref{sec:model} introduces the raw game, public finite memory, and condition~(a). Section~\ref{sec:template} abstracts the v28 proof to any finite state space satisfying the stationary-unichain property. Section~\ref{sec:raw-v28} recovers the v28 raw-state theorem as a corollary. Section~\ref{sec:hub-memory} defines the regenerative hub memory. Section~\ref{sec:hub-lemma} proves the reset-hub unichain lemma, including the $\lambda=0$ counterexample. Section~\ref{sec:main} applies the template to the augmented space $\Omega$ and obtains the condition~(a) theorem. Section~\ref{sec:hub-mass} computes the exact invariant hub mass and explains the $O(\eta)$ interpretation of the reset layer.
+
+\section{The model, public finite memory, and condition~(a)}\label{sec:model}
+
+\subsection{Raw finite stochastic game}
+
+A finite stochastic game is given by
+\[
+G=(N,S,(A_i)_{i\in N},u,P),
+\]
+where:
+\begin{itemize}[leftmargin=2.3em]
+\item $N=\{1,\dots,n\}$ is the finite set of players,
+\item $S$ is a finite nonempty set of raw states,
+\item for each player $i$ and each state $s\in S$, the action set $A_i(s)$ is finite and nonempty,
+\item for each player $i$, the stage payoff satisfies
+\[
+0\le u_i(s,a)\le 1
+\qquad\text{for every }s\in S,\ a=(a_j)_{j\in N}\in A(s):=\prod_{j\in N}A_j(s),
+\]
+\item $P(\cdot\mid s,a)\in\Delta(S)$ is the transition law from $s$ under action profile $a$.
+\end{itemize}
+
+At stage $t$, the current raw state $s_t$ is publicly observed, the players simultaneously choose an action profile $a_t\in A(s_t)$, player $i$ receives stage payoff $u_i(s_t,a_t)$, and the next raw state is drawn from $P(\cdot\mid s_t,a_t)$.
+
+A behavioral strategy of player $i$ assigns to every finite public history
+\[
+h_t=(s_1,a_1,s_2,a_2,\dots,s_t)
+\]
+a mixed action in $\Delta(A_i(s_t))$. The pre-action public filtration is
+\[
+\mathcal F_t:=\sigma(s_1,a_1,\dots,s_{t-1},a_{t-1},s_t),
+\qquad t\ge1.
+\]
+Thus $\mathcal F_t$ is exactly the public information available just before the stage-$t$ actions are chosen.
+
+For horizon $T\ge1$, the expected average payoff of player $i$ from initial raw state $s$ under profile $\sigma$ is
+\[
+\gamma_i^T(s,\sigma)
+:=\E_s^{\sigma}\!\left[\frac1T\sum_{t=1}^{T}u_i(s_t,a_t)\right].
+\]
+
+\begin{definition}
+A strategy profile $\sigma$ is a \emph{uniform $\varepsilon$-equilibrium} if there exists $T_0\in\mathbb N$ such that for every horizon $T\ge T_0$, every initial raw state $s\in S$, every player $i$, and every behavioral deviation $\tau_i$ of player $i$,
+\[
+\gamma_i^T(s,\sigma)
+\ge
+\gamma_i^T\bigl(s,(\tau_i,\sigma_{-i})\bigr)-\varepsilon.
+\]
+\end{definition}
+
+We write
+\[
+X_i^S:=\prod_{s\in S}\Delta(A_i(s)),
+\qquad
+X^S:=\prod_{i\in N}X_i^S,
+\]
+for the stationary mixed raw-state strategies and profiles. The finite set of pure stationary strategies of player $i$ is
+\[
+F_i:=\prod_{s\in S}A_i(s).
+\]
+Given $x\in X^S$, write
+\[
+x(a\mid s):=\prod_{j\in N}x_j(a_j\mid s),
+\qquad a\in A(s),
+\]
+and denote the induced raw-state transition matrix by
+\[
+P^x(s,s'):=\sum_{a\in A(s)}x(a\mid s)P(s'\mid s,a),
+\qquad s,s'\in S.
+\]
+For a pure stationary strategy $f_i\in F_i$ and a stationary mixed opponents' profile $x_{-i}\in X_{-i}^S$, the corresponding transition matrix is
+\[
+P^{f_i,x_{-i}}(s,s')
+:=\sum_{a_{-i}\in A_{-i}(s)}x_{-i}(a_{-i}\mid s)
+P\bigl(s'\mid s,f_i(s),a_{-i}\bigr).
+\]
+
+\subsection{Public finite memory and the augmented state space}
+
+Fix a finite public memory set $M$. A public finite-memory profile can be represented as a stationary mixed profile on the augmented state space
+\[
+\Omega:=S\times M.
+\]
+At an augmented state $\omega=(s,m)$ the feasible action sets are still the raw action sets,
+\[
+A_i(\omega):=A_i(s),
+\qquad
+A(\omega):=\prod_{j\in N}A_j(s).
+\]
+Thus the stationary mixed strategy spaces on $\Omega$ are
+\[
+X_i^\Omega:=\prod_{(s,m)\in\Omega}\Delta(A_i(s)),
+\qquad
+X^\Omega:=\prod_{i\in N}X_i^\Omega.
+\]
+
+Let
+\[
+\Lambda(\cdot\mid m,s,a,s')\in\Delta(M)
+\]
+be a public memory-update kernel. Then the augmented transition law is
+\begin{equation}\label{eq:aug-general}
+Q^\Omega\bigl((s',m')\mid (s,m),a\bigr)
+:=P(s'\mid s,a)\,\Lambda(m'\mid m,s,a,s').
+\end{equation}
+The stage payoff on $\Omega$ is just the raw payoff,
+\[
+\nu_i^\Omega((s,m),a):=u_i(s,a).
+\]
+A stationary mixed profile on $\Omega$ therefore corresponds to a public-history behavioral profile in the original game together with the public memory process generated by $\Lambda$.
+
+\subsection{Condition~(a)}
+
+The condition used throughout the paper is the following stationary unilateral irreducibility hypothesis.
+
+\begin{condition}[Neyman's condition~(a)]\label{cond:a}
+For every player $i\in N$, every pure stationary strategy
+\[
+f_i\in F_i,
+\]
+and every stationary mixed profile $x_{-i}\in X_{-i}^S$ of the other players, the Markov chain on $S$ induced by $(f_i,x_{-i})$ is irreducible.
+\end{condition}
+
+The raw support-selector argument from v28 will be used repeatedly on the hub fiber.
+
+\begin{proposition}[Mixed raw-state profiles are irreducible]\label{prop:raw-mixed-irreducible}
+Assume condition~\ref{cond:a}. Then every stationary mixed raw-state profile
+\[
+y\in X^S
+\]
+induces an irreducible Markov chain on $S$.
+\end{proposition}
+
+\begin{proof}
+Fix $y\in X^S$ and fix a player $i$. For each pure stationary strategy $f_i\in F_i$, define
+\[
+\lambda_{f_i}(y_i):=\prod_{s\in S}y_i\bigl(f_i(s)\mid s\bigr).
+\]
+Then $\sum_{f_i\in F_i}\lambda_{f_i}(y_i)=1$, and the induced transition matrix satisfies the convex-combination identity
+\begin{equation}\label{eq:raw-convex-combination}
+P^y=\sum_{f_i\in F_i}\lambda_{f_i}(y_i)\,P^{f_i,y_{-i}}.
+\end{equation}
+Choose $f_i^\sharp\in F_i$ so that $y_i(f_i^\sharp(s)\mid s)>0$ for every state $s$. Then $\lambda_{f_i^\sharp}(y_i)>0$. By condition~\ref{cond:a}, the chain $P^{f_i^\sharp,y_{-i}}$ is irreducible. Therefore, for every pair of raw states $p,q\in S$, there exists $m\ge1$ such that
+\[
+\bigl(P^{f_i^\sharp,y_{-i}}\bigr)^m(p,q)>0.
+\]
+From \eqref{eq:raw-convex-combination} we have the entrywise inequality
+\[
+P^y\ge \lambda_{f_i^\sharp}(y_i)\,P^{f_i^\sharp,y_{-i}},
+\]
+and hence, by monotonicity of matrix multiplication for nonnegative matrices,
+\[
+(P^y)^m\ge \lambda_{f_i^\sharp}(y_i)^m\bigl(P^{f_i^\sharp,y_{-i}}\bigr)^m.
+\]
+So
+\[
+(P^y)^m(p,q)
+\ge
+\lambda_{f_i^\sharp}(y_i)^m\bigl(P^{f_i^\sharp,y_{-i}}\bigr)^m(p,q)
+>
+0.
+\]
+Thus $P^y$ is irreducible.
+\end{proof}
+
+\begin{remark}[Raw $S$ versus lifted $S\times M$]\label{rem:raw-vs-aug}
+On the raw state space $S$, condition~\ref{cond:a} implies irreducibility of every stationary mixed profile by Proposition~\ref{prop:raw-mixed-irreducible}. The new difficulty is therefore not on $S$. It appears only after the state space is augmented with public memory. A stationary profile on $S\times M$ may induce several recurrent classes even when its restriction to each memory fiber is irreducible on $S$. The hub construction is designed to rule out exactly that lifted-state obstruction.
+\end{remark}
+
+\section{A finite-state stationary-unichain template}\label{sec:template}
+
+This section abstracts the v28 mechanism. The proof uses only the following property of the chosen finite state space: every stationary mixed profile induces a chain with exactly one recurrent class.
+
+\subsection{Finite stochastic game on a state space $\Theta$}
+
+Fix a finite nonempty state space $\Theta$. For each state $\theta\in\Theta$ and each player $i$, let $A_i(\theta)$ be a finite nonempty action set. Let $A(\theta)=\prod_i A_i(\theta)$, let
+\[
+\nu_i(\theta,a)\in[0,1]
+\qquad (\theta\in\Theta,\ a\in A(\theta))
+\]
+be the stage payoff, and let
+\[
+Q(\cdot\mid \theta,a)\in\Delta(\Theta)
+\]
+be the state transition law.
+
+A stationary mixed strategy of player $i$ on $\Theta$ is an element of
+\[
+X_i^\Theta:=\prod_{\theta\in\Theta}\Delta(A_i(\theta)),
+\qquad
+X^\Theta:=\prod_{i\in N}X_i^\Theta.
+\]
+For $x\in X^\Theta$, the induced Markov matrix is
+\[
+Q^x(\theta,\theta')
+:=\sum_{a\in A(\theta)}x(a\mid \theta)Q(\theta'\mid \theta,a),
+\qquad
+x(a\mid \theta):=\prod_{j\in N}x_j(a_j\mid \theta).
+\]
+
+\begin{condition}[Stationary-unichain hypothesis on $\Theta$]\label{cond:theta-unichain}
+Every stationary mixed profile $x\in X^\Theta$ induces a Markov chain on $\Theta$ with exactly one recurrent class.
+\end{condition}
+
+For finite chains, condition~\ref{cond:theta-unichain} is equivalent to uniqueness of the invariant distribution. We denote it by $\pi^x$ and define the average-reward meta-game payoff by
+\begin{equation}\label{eq:theta-meta-payoff}
+g_i(x):=\sum_{\theta\in\Theta}\pi^x(\theta)\,\bar\nu_i^x(\theta),
+\qquad
+\bar\nu_i^x(\theta):=\sum_{a\in A(\theta)}x(a\mid \theta)\nu_i(\theta,a).
+\end{equation}
+Because $Q^x$ has one recurrent class, $g_i(x)$ is the unique long-run average payoff of player $i$ under the stationary profile $x$, independent of the initial state.
+
+\begin{proposition}[Continuity of invariant distributions and average rewards]\label{prop:theta-continuity}
+Assume condition~\ref{cond:theta-unichain}. For every player $i$, the map
+\[
+x\longmapsto \pi^x\in\Delta(\Theta)
+\]
+is continuous on $X^\Theta$, and consequently the payoff map
+\[
+x\longmapsto g_i(x)
+\]
+is continuous on $X^\Theta$.
+\end{proposition}
+
+\begin{proof}
+The map $x\mapsto Q^x$ is multilinear, hence continuous. Let $x^m\to x$ in $X^\Theta$, and write $\pi^m:=\pi^{x^m}$. By compactness of $\Delta(\Theta)$, every subsequence of $(\pi^m)$ has a further convergent subsequence; let $\pi^{m_k}\to\bar\pi$. Since $\pi^{m_k}Q^{x^{m_k}}=\pi^{m_k}$ for each $k$, passing to the limit yields
+\[
+\bar\pi Q^x=\bar\pi.
+\]
+Thus $\bar\pi$ is an invariant distribution of $Q^x$. By condition~\ref{cond:theta-unichain}, that invariant distribution is unique, so $\bar\pi=\pi^x$. Therefore every convergent subsequence of $(\pi^m)$ converges to $\pi^x$, hence the full sequence converges. This proves continuity of $x\mapsto\pi^x$.
+
+The map $x\mapsto\bar\nu_i^x(\theta)$ is multilinear for each state $\theta$, so \eqref{eq:theta-meta-payoff} yields continuity of $g_i$.
+\end{proof}
+
+\subsection{Unilateral average-reward MDPs on $\Theta$}
+
+Fix a player $i$ and stationary mixed opponents $x_{-i}\in X_{-i}^\Theta$. The unilateral control problem of player $i$ is the finite MDP on state space $\Theta$ with actions $A_i(\theta)$, reward
+\[
+r_i^{x_{-i}}(\theta,a_i)
+:=\sum_{a_{-i}\in A_{-i}(\theta)}x_{-i}(a_{-i}\mid \theta)\nu_i(\theta,a_i,a_{-i}),
+\]
+and transition kernel
+\[
+Q_i^{x_{-i}}(\theta'\mid \theta,a_i)
+:=\sum_{a_{-i}\in A_{-i}(\theta)}x_{-i}(a_{-i}\mid \theta)Q(\theta'\mid \theta,a_i,a_{-i}).
+\]
+Because a pure stationary policy of this MDP is a special case of a stationary mixed profile on $\Theta$, condition~\ref{cond:theta-unichain} implies that the MDP is finite and unichain.
+
+Fix a reference state $\theta^\dagger\in\Theta$. The following is standard finite unichain average-reward MDP theory; see Puterman \cite[Chapter~8]{Puterman1994}.
+
+\begin{theorem}[Average-reward optimality equation on $\Theta$]\label{thm:theta-aroe}
+Assume condition~\ref{cond:theta-unichain}. For each player $i$ and each stationary mixed opponents' profile $x_{-i}\in X_{-i}^\Theta$, there exist a scalar $g_i^*(x_{-i})\in\R$ and a normalized bias $h_i^{x_{-i}}:\Theta\to\R$, with
+\[
+h_i^{x_{-i}}(\theta^\dagger)=0,
+\]
+such that for every $\theta\in\Theta$,
+\begin{equation}\label{eq:theta-bellman}
+g_i^*(x_{-i})+h_i^{x_{-i}}(\theta)
+=
+\max_{a_i\in A_i(\theta)}\Bigl[r_i^{x_{-i}}(\theta,a_i)+\sum_{\theta'\in\Theta}Q_i^{x_{-i}}(\theta'\mid \theta,a_i)h_i^{x_{-i}}(\theta')\Bigr].
+\end{equation}
+The scalar $g_i^*(x_{-i})$ is the optimal average reward of player $i$ against $x_{-i}$ over all admissible policies, including arbitrary history-dependent randomized policies. Every stationary selector of the maximizers in \eqref{eq:theta-bellman} is average-reward optimal.
+\end{theorem}
+
+\begin{proof}
+This is the standard finite unichain average-reward optimality equation; see Puterman \cite[Chapter~8]{Puterman1994}. The normalization at $\theta^\dagger$ fixes the additive constant of the bias.
+\end{proof}
+
+Define the maximizing action set at state $\theta$ by
+\[
+A_i^*(\theta;x_{-i})
+:=
+\argmax_{a_i\in A_i(\theta)}\Bigl[r_i^{x_{-i}}(\theta,a_i)+\sum_{\theta'\in\Theta}Q_i^{x_{-i}}(\theta'\mid \theta,a_i)h_i^{x_{-i}}(\theta')\Bigr].
+\]
+Each set $A_i^*(\theta;x_{-i})$ is nonempty.
+
+\begin{proposition}[Supermartingale upper bound for arbitrary deviations]\label{prop:theta-supermartingale}
+Assume condition~\ref{cond:theta-unichain}. Fix a player $i$ and stationary mixed opponents $x_{-i}\in X_{-i}^\Theta$. Let $g_i^*=g_i^*(x_{-i})$ and $h_i=h_i^{x_{-i}}$ be given by Theorem~\ref{thm:theta-aroe}. Then for every initial state $\theta\in\Theta$, every horizon $T\ge1$, and every behavioral strategy $\tau_i$ of player $i$,
+\begin{equation}\label{eq:theta-dev-upper}
+\Gamma_i^T\bigl(\theta,(\tau_i,x_{-i})\bigr)
+\le g_i^*+\frac{\spn(h_i)}{T},
+\end{equation}
+where
+\[
+\Gamma_i^T(\theta,\sigma)
+:=\E_\theta^\sigma\!\left[\frac1T\sum_{t=1}^{T}\nu_i(\theta_t,a_t)\right].
+\]
+Equivalently, if $u_t:=\nu_i(\theta_t,a_t)$ and
+\[
+M_t:=h_i(\theta_t)+\sum_{k=1}^{t-1}(g_i^*-u_k),
+\qquad t\ge1,
+\]
+then $(M_t)_{t\ge1}$ is a supermartingale under $\Prob_\theta^{(\tau_i,x_{-i})}$.
+\end{proposition}
+
+\begin{proof}
+The proof is exactly the v28 argument. Let $\mathcal F_t$ be the pre-action filtration generated by the public history up to stage $t$. The Bellman inequality from \eqref{eq:theta-bellman} gives, for every state-action pair,
+\[
+r_i^{x_{-i}}(\theta,a_i)+\sum_{\theta'}Q_i^{x_{-i}}(\theta'\mid \theta,a_i)h_i(\theta')
+\le g_i^*+h_i(\theta).
+\]
+Conditioning on $\mathcal F_t$, averaging over the $\mathcal F_t$-measurable deviation mixed action chosen by $\tau_i$, and then rearranging yields
+\[
+\E[M_{t+1}\mid\mathcal F_t]\le M_t.
+\]
+Taking expectations and telescoping gives
+\[
+\E_\theta^{(\tau_i,x_{-i})}\!\left[\sum_{t=1}^{T}u_t\right]
+\le Tg_i^*+h_i(\theta)-\E_\theta^{(\tau_i,x_{-i})}[h_i(\theta_{T+1})].
+\]
+Because the difference between any two values of $h_i$ is at most $\spn(h_i)$, division by $T$ yields \eqref{eq:theta-dev-upper}.
+\end{proof}
+
+\begin{proposition}[Optimal stationary responses]\label{prop:theta-optimal-stationary}
+Assume condition~\ref{cond:theta-unichain}. Fix a player $i$ and stationary mixed opponents $x_{-i}\in X_{-i}^\Theta$. Let $g_i^*=g_i^*(x_{-i})$ and $h_i=h_i^{x_{-i}}$.
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2.4em]
+\item If a stationary mixed strategy $\mu_i\in X_i^\Theta$ satisfies
+\[
+\supp \mu_i(\cdot\mid \theta)\subseteq A_i^*(\theta;x_{-i})
+\qquad\text{for every }\theta\in\Theta,
+\]
+then for every initial state $\theta\in\Theta$ and every horizon $T\ge1$,
+\begin{equation}\label{eq:theta-exact-identity}
+\Gamma_i^T\bigl(\theta,(\mu_i,x_{-i})\bigr)
+=
+g_i^*+\frac{h_i(\theta)-\E_\theta^{(\mu_i,x_{-i})}[h_i(\theta_{T+1})]}{T}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:theta-exact-bound}
+\left|\Gamma_i^T\bigl(\theta,(\mu_i,x_{-i})\bigr)-g_i^*\right|
+\le \frac{\spn(h_i)}{T},
+\end{equation}
+so $\mu_i$ is average-reward optimal.
+\item Conversely, the stationary mixed strategies that are average-reward optimal against $x_{-i}$ are exactly those whose support is contained statewise in the maximizing sets $A_i^*(\theta;x_{-i})$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Part~(a) is the same telescoping argument as in v28. If $\mu_i$ mixes only over maximizing actions, averaging the Bellman equality over $\mu_i(\cdot\mid \theta)$ gives
+\[
+g_i^*+h_i(\theta)
+=
+\bar r_i^{\mu_i,x_{-i}}(\theta)+\sum_{\theta'}Q^{\mu_i,x_{-i}}(\theta,\theta')h_i(\theta').
+\]
+Taking conditional expectations and summing from $1$ to $T$ yields \eqref{eq:theta-exact-identity}, and \eqref{eq:theta-exact-bound} follows immediately.
+
+Part~(b) is the standard characterization of optimal stationary policies in finite unichain average-reward MDPs; see Puterman \cite[Chapter~8]{Puterman1994}. In particular, the stationary average-reward optimal responses are exactly the stationary selectors of the maximizing sets in the average-reward optimality equation.
+\end{proof}
+
+\subsection{The average-reward meta-game on $\Theta$}
+
+For each player $i$, define the stationary best-response correspondence in the meta-game by
+\[
+B_i(x_{-i})
+:=\argmax_{\mu_i\in X_i^\Theta}g_i(\mu_i,x_{-i}).
+\]
+
+\begin{proposition}[Structure of stationary best responses]\label{prop:theta-best-response-structure}
+Assume condition~\ref{cond:theta-unichain}. For each player $i$ and each $x_{-i}\in X_{-i}^\Theta$,
+\[
+B_i(x_{-i})
+=
+\Bigl\{\mu_i\in X_i^\Theta:\ \supp\mu_i(\cdot\mid\theta)\subseteq A_i^*(\theta;x_{-i})\text{ for every }\theta\in\Theta\Bigr\}.
+\]
+In particular, $B_i(x_{-i})$ is nonempty, compact, and convex.
+\end{proposition}
+
+\begin{proof}
+Because $X_i^\Theta$ is compact and $\mu_i\mapsto g_i(\mu_i,x_{-i})$ is continuous by Proposition~\ref{prop:theta-continuity}, the set $B_i(x_{-i})$ is nonempty and compact. Proposition~\ref{prop:theta-optimal-stationary} identifies it with the stated product of simplices, which is therefore convex as well.
+\end{proof}
+
+\begin{proposition}[Closed graph of the best-response correspondence]\label{prop:theta-best-response-closed}
+Assume condition~\ref{cond:theta-unichain}. For each player $i$, the correspondence $B_i:X_{-i}^\Theta\rightrightarrows X_i^\Theta$ has closed graph. Consequently it is upper hemicontinuous.
+\end{proposition}
+
+\begin{proof}
+Let $x_{-i}^m\to x_{-i}$ in $X_{-i}^\Theta$, let $\mu_i^m\to\mu_i$ in $X_i^\Theta$, and suppose $\mu_i^m\in B_i(x_{-i}^m)$ for all $m$. Then for every fixed $\eta_i\in X_i^\Theta$,
+\[
+g_i(\mu_i^m,x_{-i}^m)\ge g_i(\eta_i,x_{-i}^m).
+\]
+Passing to the limit and using continuity of $g_i$ from Proposition~\ref{prop:theta-continuity} gives
+\[
+g_i(\mu_i,x_{-i})\ge g_i(\eta_i,x_{-i})
+\qquad\text{for every }\eta_i\in X_i^\Theta.
+\]
+Hence $\mu_i\in B_i(x_{-i})$, so the graph is closed. Since the domain is compact and the values are compact by Proposition~\ref{prop:theta-best-response-structure}, upper hemicontinuity follows.
+\end{proof}
+
+\begin{theorem}[Kakutani-Fan-Glicksberg fixed-point theorem]\label{thm:kfg}
+Let $K$ be a nonempty compact convex subset of a Euclidean space, and let $\Phi:K\rightrightarrows K$ have nonempty compact convex values and closed graph. Then there exists $x\in K$ such that $x\in\Phi(x)$.
+\end{theorem}
+
+\begin{proof}
+This is the classical Kakutani-Fan-Glicksberg fixed-point theorem; see Glicksberg \cite{Glicksberg1952}.
+\end{proof}
+
+\begin{theorem}[Stationary average-reward equilibrium on $\Theta$]\label{thm:theta-meta-equilibrium}
+Assume condition~\ref{cond:theta-unichain}. Then there exists a stationary mixed profile $x^\star\in X^\Theta$ such that for every player $i$,
+\[
+x_i^\star\in B_i(x_{-i}^\star).
+\]
+Equivalently,
+\[
+g_i(x^\star)\ge g_i(\mu_i,x_{-i}^\star)
+\qquad\text{for every }\mu_i\in X_i^\Theta.
+\]
+\end{theorem}
+
+\begin{proof}
+Define the product correspondence
+\[
+B(x):=\prod_{i\in N}B_i(x_{-i}),
+\qquad x\in X^\Theta.
+\]
+The set $X^\Theta$ is a nonempty compact convex subset of a finite-dimensional Euclidean space. By Propositions~\ref{prop:theta-best-response-structure} and \ref{prop:theta-best-response-closed}, the correspondence $B$ has nonempty compact convex values and closed graph. Theorem~\ref{thm:kfg} therefore yields $x^\star\in X^\Theta$ with $x^\star\in B(x^\star)$.
+\end{proof}
+
+\subsection{Uniform $O(1/T)$ regret on $\Theta$}
+
+\begin{theorem}[Finite-state stationary-unichain template]\label{thm:theta-uniform}
+Assume condition~\ref{cond:theta-unichain}. Let $x^\star\in X^\Theta$ be a stationary average-reward equilibrium from Theorem~\ref{thm:theta-meta-equilibrium}. For each player $i$, let
+\[
+g_i^\star:=g_i^*(x_{-i}^\star),
+\qquad
+h_i^\star:=h_i^{x_{-i}^\star},
+\qquad
+H_i:=\spn(h_i^\star).
+\]
+Then for every initial state $\theta\in\Theta$, every horizon $T\ge1$, every player $i$, and every behavioral deviation $\tau_i$ of player $i$,
+\begin{equation}\label{eq:theta-regret}
+\Gamma_i^T\bigl(\theta,(\tau_i,x_{-i}^\star)\bigr)-\Gamma_i^T(\theta,x^\star)
+\le \frac{2H_i}{T}.
+\end{equation}
+Consequently, if
+\[
+H:=\max_{i\in N}H_i,
+\qquad
+T_0:=\left\lceil\frac{2H}{\varepsilon}\right\rceil,
+\]
+then $x^\star$ is a uniform $\varepsilon$-equilibrium on the finite state space $\Theta$ for all horizons $T\ge T_0$.
+\end{theorem}
+
+\begin{proof}
+Fix a player $i$. Because $x_i^\star\in B_i(x_{-i}^\star)$ and Proposition~\ref{prop:theta-best-response-structure} identifies $B_i(x_{-i}^\star)$ with the stationary Bellman-maximizing selectors, Proposition~\ref{prop:theta-optimal-stationary}(a) applies to the stationary profile $x^\star$ itself. Thus, for every initial state $\theta$ and horizon $T$,
+\[
+\Gamma_i^T(\theta,x^\star)
+= g_i^\star+\frac{h_i^\star(\theta)-\E_\theta^{x^\star}[h_i^\star(\theta_{T+1})]}{T}
+\ge g_i^\star-\frac{H_i}{T}.
+\]
+On the other hand, Proposition~\ref{prop:theta-supermartingale} gives, for every behavioral deviation $\tau_i$,
+\[
+\Gamma_i^T\bigl(\theta,(\tau_i,x_{-i}^\star)\bigr)
+\le g_i^\star+\frac{H_i}{T}.
+\]
+Subtracting the lower bound for the compliant payoff from the upper bound for the deviator yields \eqref{eq:theta-regret}. The choice of $T_0$ is immediate.
+\end{proof}
+
+\section{The raw-state v28 theorem, retained}\label{sec:raw-v28}
+
+Version~v28 treated the case in which the proof is run directly on the raw state space $S$.
+
+\begin{condition}[Classical irreducibility on the raw state space]\label{cond:raw-classical}
+Every stationary mixed raw-state profile $x\in X^S$ induces an irreducible Markov chain on $S$.
+\end{condition}
+
+\begin{corollary}[v28 classical irreducibility theorem]\label{cor:v28}
+Assume condition~\ref{cond:raw-classical}. Then the raw stochastic game satisfies the hypotheses of Theorem~\ref{thm:theta-uniform} with $\Theta=S$. Hence there exists a stationary mixed raw-state profile $x^\star\in X^S$ such that, for every player $i$, every initial raw state $s\in S$, every horizon $T\ge1$, and every behavioral deviation $\tau_i$,
+\[
+\gamma_i^T\bigl(s,(\tau_i,x_{-i}^\star)\bigr)-\gamma_i^T(s,x^\star)
+\le \frac{2\spn(h_i^\star)}{T}
+\le \frac{2\max_j\spn(h_j^\star)}{T},
+\]
+where $h_i^\star$ is the normalized optimal bias against $x_{-i}^\star$ on the raw state space $S$. In particular, $x^\star$ is a uniform $\varepsilon$-equilibrium for every sufficiently large horizon.
+\end{corollary}
+
+\begin{proof}
+Condition~\ref{cond:raw-classical} implies condition~\ref{cond:theta-unichain} on $\Theta=S$, because irreducibility is stronger than the one-recurrent-class property. Theorem~\ref{thm:theta-uniform} therefore applies directly.
+\end{proof}
+
+\begin{remark}
+By Proposition~\ref{prop:raw-mixed-irreducible}, condition~\ref{cond:a} implies condition~\ref{cond:raw-classical} on the raw state space. The new issue addressed below is not the raw-state theorem itself. It is the persistence of the v28 mechanism after one passes to a larger public-memory state space $S\times M$.
+\end{remark}
+
+\section{Regenerative hub memory}\label{sec:hub-memory}
+
+Fix $\varepsilon>0$. Choose an arbitrary nonempty finite working memory set $Z_\varepsilon$, choose a canonical restart state $z_0\in Z_\varepsilon$, and choose any deterministic working update rule
+\[
+U:Z_\varepsilon\times\bigcup_{s\in S}\{s\}\times A(s)\times S\longrightarrow Z_\varepsilon.
+\]
+The proof uses only finiteness of $Z_\varepsilon$ and the existence of the distinguished point $z_0$. The role of $Z_\varepsilon$ is to leave room for any rich working-mode construction one may wish to encode.
+
+Fix parameters
+\[
+0<\eta\le1,
+\qquad
+0<\lambda\le1,
+\]
+and define
+\[
+M:=\{m^\star\}\cup Z_\varepsilon,
+\qquad
+\Omega:=S\times M.
+\]
+We write
+\[
+H:=S\times\{m^\star\}
+\qquad\text{and}\qquad
+W:=S\times Z_\varepsilon
+\]
+for the hub fiber and the working fiber.
+
+\begin{definition}[Reset-hub memory kernel]\label{def:hub-kernel}
+The public memory-update kernel $\Lambda_{\eta,\lambda}$ is defined as follows.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.5em]
+\item If the current memory state is $z\in Z_\varepsilon$, then after the next raw-state draw the next memory is
+\[
+m_{t+1}=
+\begin{cases}
+m^\star, &\text{with probability }\eta,\\
+U(z,s_t,a_t,s_{t+1}), &\text{with probability }1-\eta.
+\end{cases}
+\]
+\item If the current memory state is $m^\star$, then after the next raw-state draw the next memory is
+\[
+m_{t+1}=
+\begin{cases}
+m^\star, &\text{with probability }\lambda,\\
+z_0, &\text{with probability }1-\lambda.
+\end{cases}
+\]
+\end{enumerate}
+Equivalently,
+\begin{align*}
+\Lambda_{\eta,\lambda}(m'\mid z,s,a,s')
+&=
+\eta\,\1_{\{m'=m^\star\}}+(1-\eta)\,\1_{\{m'=U(z,s,a,s')\}},
+\qquad z\in Z_\varepsilon,
+\\
+\Lambda_{\eta,\lambda}(m'\mid m^\star,s,a,s')
+&=
+\lambda\,\1_{\{m'=m^\star\}}+(1-\lambda)\,\1_{\{m'=z_0\}}.
+\end{align*}
+\end{definition}
+
+The augmented stochastic game on $\Omega$ has action sets $A_i((s,m))=A_i(s)$, stage payoffs
+\[
+\nu_i^\Omega((s,m),a):=u_i(s,a),
+\]
+and transition law
+\begin{equation}\label{eq:hub-aug-transition}
+Q^{\Omega}_{\eta,\lambda}\bigl((s',m')\mid (s,m),a\bigr)
+:=P(s'\mid s,a)\,\Lambda_{\eta,\lambda}(m'\mid m,s,a,s').
+\end{equation}
+A stationary mixed profile $x\in X^\Omega$ therefore corresponds to a finite-memory public-history profile in the original game with reset-hub memory.
+
+For a stationary mixed profile $x\in X^\Omega$, its hub restriction is the stationary mixed raw-state profile
+\[
+\xi_x(\cdot\mid s):=x(\cdot\mid (s,m^\star)),
+\qquad s\in S.
+\]
+The only property used in the sequel is that, while the public memory equals $m^\star$, the action rule depends only on the current raw state $s$ and not on the previous working memory.
+
+\section{The reset-hub unichain lemma}\label{sec:hub-lemma}
+
+The following lemma is the technical pivot of the paper.
+
+\begin{lemma}[Reset-hub unichain lemma]\label{lem:hub-unichain}
+Assume condition~\ref{cond:a}. Fix $\eta>0$ and $\lambda>0$, and consider the augmented game on $\Omega=S\times M$ defined by \eqref{eq:hub-aug-transition}. Then every stationary mixed profile $x\in X^\Omega$ induces a Markov chain on $\Omega$ with exactly one recurrent class.
+\end{lemma}
+
+\begin{proof}
+Fix a stationary mixed profile $x\in X^\Omega$, and let $\mathcal P^x$ denote the induced transition matrix on $\Omega$.
+
+\smallskip
+\noindent
+\textbf{Step 1: every closed class intersects the hub.}
+Let $C\subseteq\Omega$ be a nonempty closed set. Suppose, toward a contradiction, that $C\cap H=\varnothing$. Then $C\subseteq W$, so choose $(s,z)\in C$ with $z\in Z_\varepsilon$. By Definition~\ref{def:hub-kernel}, the total one-step probability of jumping from $(s,z)$ to the hub fiber is exactly $\eta>0$:
+\[
+\sum_{t\in S}\mathcal P^x\bigl((s,z),(t,m^\star)\bigr)=\eta.
+\]
+Hence there exists $t\in S$ such that
+\[
+\mathcal P^x\bigl((s,z),(t,m^\star)\bigr)>0.
+\]
+Since $C$ is closed and $(s,z)\in C$, every one-step successor reached with positive probability must also lie in $C$. Therefore $(t,m^\star)\in C$, contradicting $C\cap H=\varnothing$. Thus every nonempty closed set intersects the hub fiber. In particular, every recurrent class intersects $H$.
+
+\smallskip
+\noindent
+\textbf{Step 2: all hub states communicate.}
+Fix raw states $p,q\in S$. On the hub fiber $H$, the profile $x$ restricts to the stationary mixed raw-state profile $\xi_x$. Let $K_H^x$ be the induced raw-state transition kernel on $S$ while the memory stays at $m^\star$:
+\[
+K_H^x(s,t)
+:=\sum_{a\in A(s)}\xi_x(a\mid s)P(t\mid s,a),
+\qquad s,t\in S.
+\]
+By Proposition~\ref{prop:raw-mixed-irreducible}, $K_H^x$ is irreducible. Hence there exists $n\ge1$ such that
+\[
+\bigl(K_H^x\bigr)^n(p,q)>0.
+\]
+Starting from $(p,m^\star)$, there is probability $\lambda^n>0$ that the memory remains in $m^\star$ for $n$ consecutive steps. Conditional on that event, the raw state evolves according to the kernel $K_H^x$. Therefore
+\[
+(\mathcal P^x)^n\bigl((p,m^\star),(q,m^\star)\bigr)
+\ge \lambda^n\bigl(K_H^x\bigr)^n(p,q)
+>
+0.
+\]
+By symmetry the reverse reachability also holds, so every hub state communicates with every other hub state.
+
+\smallskip
+\noindent
+\textbf{Step 3: uniqueness of the recurrent class.}
+Let $C_1$ and $C_2$ be recurrent classes of $\mathcal P^x$. By Step~1, each intersects the hub fiber. Choose
+\[
+h_1\in C_1\cap H,
+\qquad
+h_2\in C_2\cap H.
+\]
+By Step~2, $h_1$ and $h_2$ communicate. Hence they belong to the same communicating class, so $C_1=C_2$. Since a finite Markov chain always has at least one recurrent class, there is exactly one recurrent class.
+\end{proof}
+
+\begin{corollary}[Unilateral MDPs on $\Omega$ are unichain]\label{cor:omega-unichain-mdp}
+Assume condition~\ref{cond:a}, and fix $\eta>0$, $\lambda>0$. For every player $i$ and every stationary mixed opponents' profile $x_{-i}\in X_{-i}^\Omega$, the unilateral control problem of player $i$ on the augmented state space $\Omega$ is a finite unichain average-reward MDP.
+\end{corollary}
+
+\begin{proof}
+A pure stationary policy of player $i$ on $\Omega$ is a special case of a stationary mixed profile on $\Omega$. Lemma~\ref{lem:hub-unichain} therefore implies that every such pure stationary policy induces a chain on $\Omega$ with exactly one recurrent class. That is precisely the unichain property for the unilateral MDP.
+\end{proof}
+
+\begin{remark}[$\lambda=0$ is a genuine counterexample]\label{rem:lambda-zero}
+The assumption $\lambda>0$ cannot be dropped. Let
+\[
+S=\{0,1\},
+\qquad
+Z_\varepsilon=\{z_0\},
+\qquad
+\eta=1,
+\qquad
+\lambda=0,
+\]
+and suppose the raw state deterministically alternates $0\leftrightarrow1$, independently of actions. Then condition~\ref{cond:a} holds trivially. However the augmented chain on
+\[
+\Omega=\{(0,m^\star),(1,m^\star),(0,z_0),(1,z_0)\}
+\]
+satisfies
+\[
+(0,m^\star)\to(1,z_0)\to(0,m^\star),
+\qquad
+(1,m^\star)\to(0,z_0)\to(1,m^\star),
+\]
+so it has two recurrent classes,
+\[
+\{(0,m^\star),(1,z_0)\}
+\qquad\text{and}\qquad
+\{(1,m^\star),(0,z_0)\}.
+\]
+Thus the sticky-hub hypothesis $\lambda>0$ is essential.
+\end{remark}
+
+\section{Main theorem under condition~(a)}\label{sec:main}
+
+We now apply the finite-state stationary-unichain template from Section~\ref{sec:template} to the augmented game on $\Omega=S\times M$.
+
+\begin{theorem}[Uniform equilibrium under condition~(a) via regenerative hub memory]\label{thm:main}
+Assume the raw stochastic game $G=(N,S,(A_i),u,P)$ satisfies condition~\ref{cond:a}. Fix $\varepsilon>0$. Choose any finite nonempty working memory set $Z_\varepsilon$, any restart state $z_0\in Z_\varepsilon$, any deterministic working update rule $U$, and any parameters $\eta>0$, $\lambda>0$. Let $M=\{m^\star\}\cup Z_\varepsilon$, let $\Omega=S\times M$, and let $\Lambda_{\eta,\lambda}$ be the reset-hub kernel from Definition~\ref{def:hub-kernel}.
+
+Then there exists a stationary mixed profile
+\[
+x^\star\in X^\Omega
+\]
+in the augmented game on $\Omega$ such that the induced finite-memory public-history profile $\sigma^\star$ in the original game, started from memory state $z_0$, satisfies the following property. For every initial raw state $s\in S$, every horizon $T\ge1$, every player $i$, and every behavioral deviation $\tau_i$ of player $i$,
+\begin{equation}\label{eq:main-regret-raw}
+\gamma_i^T\bigl(s,(\tau_i,\sigma_{-i}^\star)\bigr)-\gamma_i^T(s,\sigma^\star)
+\le \frac{2H_i}{T},
+\end{equation}
+where
+\[
+H_i:=\spn(h_i^\star)
+\]
+and $h_i^\star$ is the normalized optimal bias of player $i$ against $x_{-i}^\star$ in the augmented unilateral MDP on $\Omega$. Consequently, with
+\[
+H:=\max_{i\in N}H_i,
+\qquad
+T_0:=\left\lceil\frac{2H}{\varepsilon}\right\rceil,
+\]
+the profile $\sigma^\star$ is a uniform $\varepsilon$-equilibrium of the original game for all horizons $T\ge T_0$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:hub-unichain}, every stationary mixed profile on $\Omega$ induces a chain with exactly one recurrent class. Thus the augmented game satisfies condition~\ref{cond:theta-unichain} with $\Theta=\Omega$. Applying Theorem~\ref{thm:theta-meta-equilibrium} on $\Omega$ yields a stationary mixed profile $x^\star\in X^\Omega$. Applying Theorem~\ref{thm:theta-uniform} on $\Omega$ then gives, for every initial augmented state $\omega\in\Omega$, every horizon $T\ge1$, every player $i$, and every behavioral deviation $\widehat\tau_i$ of player $i$ on the augmented public history,
+\begin{equation}\label{eq:omega-regret}
+\Gamma_i^T\bigl(\omega,(\widehat\tau_i,x_{-i}^\star)\bigr)-\Gamma_i^T(\omega,x^\star)
+\le \frac{2H_i}{T}.
+\end{equation}
+Here $\Gamma_i^T$ is the $T$-stage average payoff in the augmented game, whose stage payoffs are the same raw payoffs $u_i$.
+
+Now interpret $x^\star$ as a finite-memory public-history profile in the original game driven by the public memory kernel $\Lambda_{\eta,\lambda}$, with initial memory state $m_1=z_0$. Denote the resulting behavioral profile by $\sigma^\star$. Starting from raw state $s$, the law of the original game under $\sigma^\star$ is exactly the law of the augmented game started from
+\[
+\omega_1=(s,z_0).
+\]
+Therefore
+\[
+\gamma_i^T(s,\sigma^\star)=\Gamma_i^T((s,z_0),x^\star).
+\]
+Likewise, every unilateral behavioral deviation $\tau_i$ against $\sigma_{-i}^\star$ lifts to a unilateral deviation $\widehat\tau_i$ against $x_{-i}^\star$ on the augmented public history, and the induced raw-state/action law is the same. Hence
+\[
+\gamma_i^T\bigl(s,(\tau_i,\sigma_{-i}^\star)\bigr)=\Gamma_i^T\bigl((s,z_0),(\widehat\tau_i,x_{-i}^\star)\bigr).
+\]
+Applying \eqref{eq:omega-regret} at $\omega=(s,z_0)$ yields \eqref{eq:main-regret-raw}. The choice of $T_0$ is immediate.
+\end{proof}
+
+\begin{corollary}[Exact augmented-space formulation]\label{cor:augmented-formulation}
+Under the hypotheses of Theorem~\ref{thm:main}, the stationary profile $x^\star\in X^\Omega$ satisfies
+\[
+\Gamma_i^T\bigl(\omega,(\tau_i,x_{-i}^\star)\bigr)-\Gamma_i^T(\omega,x^\star)
+\le \frac{2\spn(h_i^\star)}{T}
+\]
+for every initial augmented state $\omega\in\Omega$, every horizon $T\ge1$, every player $i$, and every unilateral behavioral deviation $\tau_i$ in the augmented game.
+\end{corollary}
+
+\section{The exact hub mass and the small-reset interpretation}\label{sec:hub-mass}
+
+The main theorem is exact and does not need a perturbative estimate. Still, the regenerative design is often motivated as a rare reset layer added on top of a richer working-mode construction. The next proposition makes the size of that layer precise.
+
+\begin{proposition}[Exact invariant hub mass]\label{prop:hub-mass}
+Fix $\eta>0$ and $\lambda>0$. For every stationary mixed profile $x\in X^\Omega$, the indicator process
+\[
+\chi_t:=\1_{\{m_t=m^\star\}}
+\]
+is a two-state Markov chain on $\{0,1\}$ with transition matrix
+\[
+\begin{pmatrix}
+\lambda & 1-\lambda\\
+\eta & 1-\eta
+\end{pmatrix},
+\]
+where state $1$ means ``hub'' and state $0$ means ``working.'' Its unique invariant hub mass is
+\begin{equation}\label{eq:hub-mass}
+\beta_{\eta,\lambda}=\frac{\eta}{1-\lambda+\eta}.
+\end{equation}
+Consequently, under every stationary profile $x$,
+\[
+\frac1T\sum_{t=1}^{T}\1_{\{m_t=m^\star\}}
+\longrightarrow \beta_{\eta,\lambda}
+\qquad\text{almost surely and in }L^1.
+\]
+\end{proposition}
+
+\begin{proof}
+The next memory state depends on the current memory only through whether that current memory is in the hub or in the working region. If $m_t=m^\star$, then by Definition~\ref{def:hub-kernel} one has
+\[
+\Prob(m_{t+1}=m^\star\mid m_t=m^\star)=\lambda.
+\]
+If $m_t\in Z_\varepsilon$, then
+\[
+\Prob(m_{t+1}=m^\star\mid m_t\in Z_\varepsilon)=\eta.
+\]
+Therefore $\chi_t$ is the stated two-state Markov chain. Since $\eta>0$ and $1-\lambda\ge0$, this chain has a unique invariant distribution. Writing $\beta$ for its hub mass, the balance equation is
+\[
+\beta=\beta\lambda+(1-\beta)\eta,
+\]
+which solves to
+\[
+\beta=\frac{\eta}{1-\lambda+\eta}.
+\]
+The ergodic theorem for the irreducible two-state chain gives the almost sure and $L^1$ convergence of empirical hub occupation.
+\end{proof}
+
+\begin{remark}[Why the reset layer is $O(\eta)$]\label{rem:hub-perturbation}
+Formula \eqref{eq:hub-mass} shows that for fixed $\lambda<1$,
+\[
+\beta_{\eta,\lambda}\le \frac{\eta}{1-\lambda}.
+\]
+Thus the public refresh layer occupies only $O(\eta)$ of the long run when $\lambda$ is held away from $1$. In particular, given any constant $K>0$, the choice
+\[
+\eta\le \frac{(1-\lambda)\varepsilon}{K}
+\]
+ensures
+\[
+\beta_{\eta,\lambda}\le \frac{\varepsilon}{K}.
+\]
+This is the precise quantitative content behind the informal statement that the hub reset is a rare perturbation of the working regime.
+\end{remark}
+
+\section{Discussion}\label{sec:discussion}
+
+The paper extends v28 in the specific direction requested by the regenerative-hub route. The raw-state v28 theorem remains intact. The genuinely new ingredient is the reset-hub unichain lemma on the augmented space $\Omega=S\times M$.
+
+Two structural points are worth highlighting.
+
+First, the repaired proof of the hub lemma matters. Step~1 must be a closed-class argument, not a transience slogan. Step~2 must show that the hub states communicate, not that the hub fiber itself is a recurrent class. The hub fiber is not closed when $1-\lambda>0$. What matters is only that every recurrent class must touch the hub and that all hub states lie in one communicating class. That pair of facts forces uniqueness of the recurrent class.
+
+Second, the hypothesis $\lambda>0$ is not a cosmetic extra. Remark~\ref{rem:lambda-zero} shows that the lemma fails when $\lambda=0$. A one-step reset without stickiness can preserve a phase split in the lifted chain. The geometric hub episode is exactly what lets the process run the raw hub kernel for as many consecutive steps as needed.
+
+One may ask why any of this is needed if condition~\ref{cond:a} already implies raw-state irreducibility by Proposition~\ref{prop:raw-mixed-irreducible}. The answer is that the strategy space used in the present proof is the finite-memory space $S\times M$, not the raw stationary space $S$ alone. Irreducibility on $S$ does not prevent full-projection splitting on $S\times M$. The hub construction is the device that makes the v28 bias-span argument safe after the memory lift.
+
+The exact hub-mass formula in Proposition~\ref{prop:hub-mass} clarifies the perturbative side of the construction. The main theorem itself is exact and does not need any $O(\eta)$ estimate. Nevertheless, if one wishes to overlay the hub on top of a separately designed working-mode approximate Nash construction, the long-run fraction of time spent in the public refresh layer is exactly $\eta/(1-\lambda+\eta)$. This is the natural quantitative parameter that should be matched to the desired accuracy scale.
+
+In summary, the paper shows that the v28 route survives finite-memory augmentation once the memory is equipped with a single sticky regenerative hub. Under condition~\ref{cond:a}, the hub blocks memory-created recurrent-class splitting, restores the stationary-unichain property on the augmented state space, and lets the Bellman-supermartingale argument run exactly as before.
+
+\begin{thebibliography}{99}
+
+\bibitem{Glicksberg1952}
+I.~L. Glicksberg.
+\newblock A further generalization of the Kakutani fixed point theorem, with application to Nash equilibrium points.
+\newblock \emph{Proceedings of the American Mathematical Society}, 3(1):170--174, 1952.
+
+\bibitem{MertensNeyman1981}
+J.-F. Mertens and A. Neyman.
+\newblock Stochastic games.
+\newblock \emph{International Journal of Game Theory}, 10(2):53--66, 1981.
+
+\bibitem{Neyman2003MarkovChains}
+A. Neyman.
+\newblock From {M}arkov chains to stochastic games.
+\newblock In A. Neyman and S. Sorin, editors, \emph{Stochastic Games and Applications}, volume 570 of \emph{NATO Science Series C: Mathematical and Physical Sciences}, pages 9--25. Springer, Dordrecht, 2003.
+
+\bibitem{OpenProblems2026}
+Game Theory Society (Israel Chapter).
+\newblock Open problems.
+\newblock \url{https://sites.google.com/view/thegametheorysocietyilchapter/open-problems}, accessed April 2, 2026.
+
+\bibitem{Puterman1994}
+M.~L. Puterman.
+\newblock \emph{Markov Decision Processes: Discrete Stochastic Dynamic Programming}.
+\newblock Wiley, New York, 1994.
+
+\bibitem{Shapley1953}
+L.~S. Shapley.
+\newblock Stochastic games.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, 39(10):1095--1100, 1953.
+
+\bibitem{Solan2022}
+E. Solan.
+\newblock \emph{A Course in Stochastic Game Theory}.
+\newblock Cambridge University Press, Cambridge, 2022.
+
+\bibitem{SolanVieille2015}
+E. Solan and N. Vieille.
+\newblock Stochastic games.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, 112(45):13743--13746, 2015.
+
+\bibitem{Vieille2000a}
+N. Vieille.
+\newblock Two-player stochastic games {I}: A reduction.
+\newblock \emph{Israel Journal of Mathematics}, 119:55--91, 2000.
+
+\bibitem{Vieille2000b}
+N. Vieille.
+\newblock Two-player stochastic games {II}: The case of recursive games.
+\newblock \emph{Israel Journal of Mathematics}, 119:93--126, 2000.
+
+\end{thebibliography}
+
+\end{document}
